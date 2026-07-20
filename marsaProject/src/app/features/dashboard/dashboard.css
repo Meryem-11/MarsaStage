@@ -1,0 +1,245 @@
+/* --- Variables globales inspirées du thème --- */
+:root {
+  --purple-main: #b66dff;
+  --bg-light: #f2edf3;
+  --text-dark: #343a40;
+  --text-muted: #9c9fa6;
+}
+
+.dashboard {
+  padding: 2.5rem;
+  background-color: var(--bg-light);
+  min-height: 100vh;
+  font-family: "Ubuntu", sans-serif;
+}
+/* --- Header --- */
+/* --- Header --- */
+.dashboard__header {
+  margin-bottom: 30px;
+}
+
+.header__title-container {
+  display: flex;
+  align-items: center;
+  gap: 16px; /* Augmenté légèrement pour équilibrer la grande icône */
+  margin-bottom: 4px;
+}
+
+.header__icon {
+  color: #0F172A; /* MODIFICATION : Icône en noir moderne */
+  background: #F1F5F9; /* Garde le fond gris/bleu clair pour faire ressortir le noir */
+  width: 46px;  /* MODIFICATION : Plus grand (ancienne valeur : 38px) */
+  height: 46px; /* MODIFICATION : Plus grand */
+  border-radius: 10px; /* Arrondi légèrement plus prononcé pour la taille */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px; /* MODIFICATION : Icône nettement plus grande et visible (ancienne valeur : 22px) */
+  flex-shrink: 0;
+}
+/* --- Nouvelle Icône de Tableau de bord avec Dégradé --- */
+.header__icon-gradient {
+  /* Conteneur et fond */
+  background: #FFFFFF; 
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08); /* Effet de relief moderne */
+
+  /* Taille de l'icône Material Symbol */
+  font-size: 28px; 
+
+  /* Application du dégradé sur le symbole textuel */
+  background: linear-gradient(135deg, #004B87 0%, #8A2BE2 100%); /* Dégradé Bleu Marsa -> Violet */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}
+.dashboard__header h1 {
+  font-size: 1.45rem; /* Un poil plus grand pour s'aligner avec la taille de l'icône */
+  font-weight: 600;
+  color: #0F172A;
+  margin: 0;
+}
+
+.dashboard__header p {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin: 0;
+  padding-left: 62px; /* MODIFICATION : Aligne parfaitement le texte sous le titre (46px icône + 16px gap) */
+}
+
+/* Ajustement de l'icône interne des cartes KPI */
+.kpi-card__icon {
+  font-size: 24px;
+  opacity: 0.4; /* Translucide sur la carte pour laisser le chiffre lisible */
+}
+
+/* --- Grille des KPIs --- */
+.dashboard__kpis {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  margin-bottom: 30px;
+}
+
+/* --- Cartes KPI (Style Purple) --- */
+.kpi-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 5px;
+  padding: 25px;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s;
+}
+
+/* Éléments de décoration (cercles en arrière-plan) */
+.kpi-card__circle-decor {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 50%;
+  width: 150px;
+  height: 150px;
+  top: -30px;
+  right: -30px;
+}
+
+.kpi-card::after {
+  content: '';
+  position: absolute;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  bottom: -40px;
+  right: 20px;
+}
+
+/* Structure interne de la carte */
+.kpi-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  z-index: 1;
+}
+
+.kpi-card__label {
+  font-size: 15px;
+  font-weight: 400;
+  text-transform: capitalize;
+}
+
+.kpi-card__icon {
+  font-size: 24px;
+  opacity: 0.8;
+}
+
+.kpi-card__value {
+  font-size: 30px;
+  font-weight: 500;
+  margin-bottom: 15px;
+  z-index: 1;
+}
+
+.kpi-card__trend {
+  font-size: 14px;
+  font-weight: 300;
+  z-index: 1;
+  opacity: 0.9;
+}
+/* --- Structure des Cartes KPI (Nettoyée et unifiée) --- */
+.kpi-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px; /* Arrondi moderne */
+  color: #ffffff;
+  padding: 24px;
+  border: none;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.04), 0 4px 12px rgba(0, 0, 0, 0.02);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+}
+
+.kpi-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 35px rgba(0, 75, 135, 0.12); /* Ombre teintée au bleu Marsa */
+}
+
+/* Cercles décoratifs adoucis */
+.kpi-card::before {
+  content: "";
+  position: absolute;
+  width: 160px;
+  height: 160px;
+  top: -60px;
+  right: -50px;
+  background: linear-gradient(135deg, rgba(255,255,255, 0.16) 0%, rgba(255,255,255, 0) 100%);
+  border-radius: 50%;
+  z-index: 0;
+}
+
+.kpi-card::after {
+  content: "";
+  position: absolute;
+  width: 110px;
+  height: 110px;
+  bottom: -30px;
+  left: -20px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 50%;
+  z-index: 0;
+}
+
+
+/* --- NOUVEAUX DÉGRADÉS MODERNES & HARMONISÉS --- */
+
+/* 1. Bleu Corporate (Identité principale / Processus) */
+.kpi-card--theme-1 {
+  background: linear-gradient(135deg, #004B87 0%, #0072CE 100%);
+}
+
+/* 2. Bleu Canard / Sarcelle (Moderne, parfait pour les projets ou l'environnement) */
+.kpi-card--theme-2 {
+  background: linear-gradient(135deg, #0F766E 0%, #14B8A6 100%);
+}
+
+/* 3. Vert Émeraude Institutionnel (Conformité, SST, Validations) */
+.kpi-card--theme-3 {
+  background: linear-gradient(135deg, #047857 0%, #10B981 100%);
+}
+
+/* 4. Indigo Profond (Audits, Planification, Documents) */
+.kpi-card--theme-4 {
+  background: linear-gradient(135deg, #4338CA 0%, #6366F1 100%);
+}
+
+/* 5. Ambre Cuivré (Pour les alertes légères, Risques ou Non-conformités) */
+.kpi-card--theme-5 {
+  background: linear-gradient(135deg, #B45309 0%, #F59E0B 100%);
+}
+
+/* 6. Ardoise / Bleu Nuit (Performances globales ou Statistiques neutres) */
+.kpi-card--theme-6 {
+  background: linear-gradient(135deg, #1E293B 0%, #475569 100%);
+}
+/* --- Zone Placeholder (Similaire aux blocs du bas) --- */
+.dashboard__placeholder {
+  background: #ffffff;
+  border-radius: 5px;
+  padding: 40px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 14px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.03);
+}

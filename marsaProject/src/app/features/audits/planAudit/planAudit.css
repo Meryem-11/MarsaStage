@@ -1,0 +1,334 @@
+.plan-audit-page {
+  padding: 1.5rem;
+  max-width: 920px;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.page-header h2 {
+  margin: 0 0 4px 0;
+  font-size: 22px;
+  font-weight: 600;
+  color: #0b2545;
+}
+
+.page-subtitle {
+  margin: 0;
+  font-size: 13px;
+  color: #888;
+}
+
+.progress-indicator {
+  position: relative;
+  width: 48px;
+  height: 48px;
+}
+
+.progress-ring {
+  width: 48px;
+  height: 48px;
+  transform: rotate(-90deg);
+}
+
+.progress-ring-bg,
+.progress-ring-fill {
+  fill: none;
+  stroke-width: 3;
+}
+
+.progress-ring-bg {
+  stroke: #eee;
+}
+
+.progress-ring-fill {
+  stroke: #0b6fb0;
+  stroke-linecap: round;
+  transition: stroke-dasharray 0.3s ease;
+}
+
+.progress-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 11px;
+  font-weight: 700;
+  color: #0b2545;
+}
+
+.audit-selector-card {
+  background: linear-gradient(135deg, #0b6fb0, #0a4d7a);
+  border-radius: 14px;
+  padding: 16px 18px;
+  margin-bottom: 20px;
+  color: white;
+}
+
+.field-label {
+  display: block;
+  font-size: 11px;
+  opacity: 0.85;
+  margin-bottom: 6px;
+}
+
+.audit-select {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  outline: none;
+}
+
+.audit-select option {
+  color: #1a1a1a;
+}
+
+.audit-selected-info {
+  margin-top: 10px;
+}
+
+.terminal-tag {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+}
+
+.plan-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.plan-section {
+  background: white;
+  border: 1px solid #eee;
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 14px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.plan-section--full {
+  grid-column: 1 / -1;
+}
+
+.plan-grid .plan-section {
+  margin-bottom: 0;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.section-icon {
+  font-size: 16px;
+}
+
+.section-header h3 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.section-textarea {
+  width: 100%;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 13px;
+  font-family: inherit;
+  resize: none;
+  outline: none;
+  box-sizing: border-box;
+  color: #333;
+}
+
+.section-textarea:focus {
+  border-color: #0b6fb0;
+}
+
+.section-textarea::placeholder {
+  color: #b5b5b5;
+}
+
+/* Équipe */
+
+.equipe-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.equipe-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #fafafa;
+  border-radius: 8px;
+  padding: 6px 8px;
+}
+
+.equipe-nom {
+  flex: 1.2;
+  border: none;
+  background: transparent;
+  font-size: 13px;
+  outline: none;
+  padding: 4px;
+}
+
+.equipe-role {
+  flex: 1;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  font-size: 12px;
+  padding: 5px 6px;
+  background: white;
+  outline: none;
+}
+
+/* Planning */
+
+.planning-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 10px;
+  position: relative;
+  padding-left: 4px;
+}
+
+.planning-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+}
+
+.timeline-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #0b6fb0;
+  flex-shrink: 0;
+}
+
+.planning-jour {
+  width: 90px;
+  flex-shrink: 0;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  padding: 6px 8px;
+  font-size: 12px;
+  font-weight: 600;
+  outline: none;
+}
+
+.planning-horaire {
+  width: 90px;
+  flex-shrink: 0;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  padding: 6px 8px;
+  font-size: 12px;
+  outline: none;
+}
+
+.planning-activite {
+  flex: 1;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  padding: 6px 8px;
+  font-size: 12px;
+  outline: none;
+}
+
+.planning-jour:focus,
+.planning-horaire:focus,
+.planning-activite:focus {
+  border-color: #0b6fb0;
+}
+
+/* Boutons communs */
+
+.btn-icon-delete {
+  border: none;
+  background: transparent;
+  color: #ccc;
+  cursor: pointer;
+  font-size: 13px;
+  padding: 4px 6px;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.btn-icon-delete:hover {
+  color: #ef4444;
+  background: #fef2f2;
+}
+
+.btn-add-line {
+  border: 1px dashed #ddd;
+  background: transparent;
+  border-radius: 8px;
+  padding: 8px;
+  font-size: 12px;
+  color: #666;
+  cursor: pointer;
+  width: 100%;
+}
+
+.btn-add-line:hover {
+  border-color: #0b6fb0;
+  color: #0b6fb0;
+  background: #f4f8fb;
+}
+
+.plan-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+.btn-save {
+  background: #0b6fb0;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 14px 32px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  letter-spacing: 0.2px;
+  box-shadow: 0 2px 6px rgba(11, 111, 176, 0.25);
+  transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn-save:hover {
+  background: #08578c;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(11, 111, 176, 0.35);
+}
+
+.btn-save:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(11, 111, 176, 0.25);
+}

@@ -1,0 +1,69 @@
+/* ===== Reset minimal ===== */
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+/* ===== Design tokens globaux — SMI Platform ===== */
+:root {
+  --color-bg: #F4F5F7;
+  --color-surface: #FFFFFF;
+  --color-border: #E2E5EA;
+  --color-text: #1F2733;
+  --color-text-muted: #6B7684;
+
+  --color-sidebar-bg: #1B2431;
+  --color-sidebar-text: #C7CDD6;
+  --color-sidebar-text-active: #FFFFFF;
+
+  --color-accent: #C8963E;
+
+  --color-success: #2E8B57;
+  --color-warning: #A87526;
+  --color-danger: #C0392B;
+
+  --header-h: 64px;
+  --sidebar-w: 260px;
+  --sidebar-w-collapsed: 72px;
+}
+/* Conteneur principal qui aligne la sidebar et le contenu sur une ligne */
+.app-layout {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+/* La sidebar garde une taille fixe (ex: 260px) */
+app-sidebar {
+  width: 260px;
+  flex-shrink: 0;
+  height: 100%;
+}
+
+/* Le contenu principal prend tout l'espace restant et défile si nécessaire */
+.app-content {
+  flex: 1;
+  height: 100%;
+  overflow-y: auto;
+  background-color: #F8FAFC; /* Couleur de fond de votre tableau de bord */
+}

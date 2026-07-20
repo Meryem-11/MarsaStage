@@ -1,0 +1,128 @@
+<div class="page-container">
+
+  <div class="page-header">
+    <div class="header__title-container">
+      <span class="material-symbols-outlined header__icon">fact_check</span>
+      <div class="header__text">
+        <h1>Liste des exigences</h1>
+        <p>Recensement et suivi des exigences légales, réglementaires et normatives applicables</p>
+      </div>
+    </div>
+    <button class="btn-primary" (click)="addExigence()">
+      <span class="material-symbols-outlined">add</span>
+      Ajouter une exigence
+    </button>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div>
+        <span>Total exigences</span>
+        <strong>{{ totalExigences }}</strong>
+      </div>
+      <span class="material-symbols-outlined stat-icon stat-icon--blue">fact_check</span>
+    </div>
+
+    <div class="stat-card">
+      <div>
+        <span>Conformes</span>
+        <strong>{{ exigencesConformes }}</strong>
+      </div>
+      <span class="material-symbols-outlined stat-icon stat-icon--green">check_circle</span>
+    </div>
+
+    <div class="stat-card">
+      <div>
+        <span>Partiellement conformes</span>
+        <strong>{{ exigencesPartielles }}</strong>
+      </div>
+      <span class="material-symbols-outlined stat-icon stat-icon--amber">warning</span>
+    </div>
+
+    <div class="stat-card">
+      <div>
+        <span>Non conformes</span>
+        <strong>{{ exigencesNonConformes }}</strong>
+      </div>
+      <span class="material-symbols-outlined stat-icon stat-icon--red">cancel</span>
+    </div>
+  </div>
+
+  <div class="table-container-card">
+
+    <div class="exg-grid-header">
+      <div>Réf.</div>
+      <div>Exigence</div>
+      <div>Source / Référentiel</div>
+      <div class="text-center">Applicable</div>
+      <div>Responsable</div>
+      <div>Échéance</div>
+      <div class="text-center">Conformité</div>
+      <div></div>
+    </div>
+
+    <div class="exg-grid-body">
+      @for (exg of exigencesList; track exg.id) {
+        <div class="exg-row">
+
+          <div class="col-ref font-bold">{{ exg.reference }}</div>
+
+          <div class="col-texte">
+            <input type="text" class="form-control" [(ngModel)]="exg.texte"
+                   placeholder="Décrire l'exigence applicable..." />
+          </div>
+
+          <div class="col-source">
+            <select class="form-control" [(ngModel)]="exg.source">
+              <option value="" disabled selected>Choisir...</option>
+              @for (src of sourcesDisponibles; track src) {
+                <option [value]="src">{{ src }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="col-applicable text-center">
+            <input type="checkbox" [(ngModel)]="exg.applicable" class="checkbox" />
+          </div>
+
+          <div class="col-resp">
+            <select class="form-control" [(ngModel)]="exg.responsable">
+              <option value="" disabled selected>Choisir...</option>
+              @for (resp of responsablesDisponibles; track resp) {
+                <option [value]="resp">{{ resp }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="col-echeance">
+            <input type="date" class="form-control" [(ngModel)]="exg.echeance" />
+          </div>
+
+          <div class="col-conformite text-center">
+            <select class="form-control conformite-select"
+                    [(ngModel)]="exg.niveauConformite"
+                    [class]="'form-control conformite-select conformite-select--' + (exg.niveauConformite === 'À évaluer' ? 'a-evaluer' : exg.niveauConformite.toLowerCase().replace(' ', '-'))">
+              <option value="Conforme">Conforme</option>
+              <option value="Partiellement conforme">Partiellement conforme</option>
+              <option value="Non conforme">Non conforme</option>
+              <option value="À évaluer">À évaluer</option>
+            </select>
+          </div>
+
+          <div class="col-delete text-center">
+            <button class="btn-delete-row" title="Supprimer" (click)="removeExigence(exg.id)">
+              <span class="material-symbols-outlined">close</span>
+            </button>
+          </div>
+
+        </div>
+      } @empty {
+        <div class="empty-state">
+          <span class="material-symbols-outlined">fact_check</span>
+          <p>Aucune exigence recensée. Cliquez sur « Ajouter une exigence » pour commencer.</p>
+        </div>
+      }
+    </div>
+
+  </div>
+</div>

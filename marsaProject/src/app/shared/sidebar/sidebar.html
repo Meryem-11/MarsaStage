@@ -1,0 +1,65 @@
+<aside class="sidebar" [class.sidebar--collapsed]="collapsed">
+
+  <div class="sidebar__brand">
+    @if (collapsed) {
+      <img src="/logo.png" alt="SMI" class="sidebar__logo-icon" />
+    } @else {
+      <img src="/logo.png" alt="SMI" class="sidebar__logo-full" />
+    }
+  </div>
+
+  <nav class="sidebar__nav">
+    @for (item of navItems; track item.label) {
+      <div class="sidebar__item-group">
+        
+        <!-- CAS 1 : Lien Direct (Ex: Tableau de bord) -->
+        @if (item.route) {
+          <a [routerLink]="item.route"
+             routerLinkActive="is-active"
+             class="sidebar__link"
+             [title]="collapsed ? item.label : ''">
+            <span class="material-symbols-outlined sidebar__icon" [attr.data-icon]="item.icon">{{ item.icon }}</span>
+            @if (!collapsed) { 
+              <span class="sidebar__label">{{ item.label }}</span> 
+            }
+          </a>
+        } 
+        
+        <!-- CAS 2 : Menu Déroulant (Ex: Processus, Contexte...) -->
+        @else {
+          <button (click)="toggleModule(item.label)"
+                  class="sidebar__link sidebar__link--btn"
+                  [class.is-expanded]="openModule === item.label"
+                  [title]="collapsed ? item.label : ''">
+            <span class="material-symbols-outlined sidebar__icon" [attr.data-icon]="item.icon">{{ item.icon }}</span>
+            @if (!collapsed) {
+              <span class="sidebar__label">{{ item.label }}</span>
+              <span class="material-symbols-outlined sidebar__arrow">expand_more</span>
+            }
+          </button>
+
+          <!-- Sous-modules (Uniquement rendus si des enfants existent et qu'on n'est pas collapsed) -->
+          @if (item.children && item.children.length > 0 && !collapsed) {
+            <div class="sidebar__submenu" [class.is-open]="openModule === item.label">
+              @for (sub of item.children; track sub.route) {
+                <a [routerLink]="sub.route"
+                   routerLinkActive="sub-is-active"
+                   class="sidebar__sublink">
+                  {{ sub.label }}
+                </a>
+              }
+            </div>
+          }
+        }
+
+      </div>
+    }
+  </nav>
+
+  <div class="sidebar__footer">
+    @if (!collapsed) {
+      <span class="sidebar__version">SMI MARSA MAROC AGADIR</span>
+    }
+  </div>
+
+</aside>

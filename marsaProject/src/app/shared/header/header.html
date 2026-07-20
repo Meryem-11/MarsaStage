@@ -1,0 +1,46 @@
+<header class="header">
+
+  <!-- Bouton Toggle Sidebar Moderne (Effet asymétrique) -->
+  <button
+    type="button"
+    class="header__toggle"
+    (click)="onToggleClick()"
+    [attr.aria-label]="sidebarCollapsed ? 'Déplier le menu' : 'Replier le menu'">
+    <span class="header__toggle-bar bar-top"></span>
+    <span class="header__toggle-bar bar-middle"></span>
+    <span class="header__toggle-bar bar-bottom"></span>
+  </button>
+
+  <!-- Barre de recherche avec icône intégrée -->
+  <div class="header__search">
+    <span class="material-symbols-outlined search-icon">search</span>
+    <input type="text" placeholder="Rechercher un document, un audit..." />
+  </div>
+
+  <!-- Actions à droite -->
+  <div class="header__actions">
+    
+    <!-- Bouton notification épuré -->
+    <button type="button" class="header__icon-btn" aria-label="Notifications">
+      <span class="material-symbols-outlined icon-bell">notifications</span>
+      <span class="header__badge">3</span>
+    </button>
+
+    <!-- Séparateur vertical discret -->
+    <div class="header__divider"></div>
+
+    <!-- Profil Utilisateur avec effet carte -->
+    <div class="header__user">
+      <div class="header__user-avatar">
+        <span>MH</span>
+        <div class="avatar-status-indicator"></div>
+      </div>
+      <div class="header__user-info">
+        <span class="header__user-name">Meryem/Hajar</span>
+        <span class="header__user-role">Administrateur</span>
+      </div>
+      <span class="material-symbols-outlined user-chevron">keyboard_arrow_down</span>
+    </div>
+  </div>
+
+</header>

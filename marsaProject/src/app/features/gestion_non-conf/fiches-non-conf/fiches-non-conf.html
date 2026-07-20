@@ -1,0 +1,184 @@
+<div class="fnc-page">
+
+  <header class="fnc-header">
+    <div class="fnc-header__identity">
+      <span class="fnc-header__badge material-symbols-outlined">assignment_late</span>
+      <div>
+        <h1>Fiche de non-conformité</h1>
+        <p>Analyse détaillée, recherche de cause racine et plan d'actions correctives</p>
+      </div>
+    </div>
+    <button class="fnc-header__cta" (click)="addFiche()">
+      <span class="material-symbols-outlined">post_add</span>
+      Nouvelle fiche
+    </button>
+  </header>
+
+  <div class="fnc-dossiers">
+    @for (fiche of fiches; track fiche.id) {
+      <div class="dossier" [class]="'dossier dossier--' + fiche.gravite.toLowerCase()">
+
+        <!-- En-tête cliquable -->
+        <div class="dossier__header" (click)="toggleFiche(fiche)">
+          <span class="dossier__numero">{{ fiche.numero }}</span>
+          <span class="dossier__titre-preview">{{ fiche.titre || 'Nouvelle non-conformité...' }}</span>
+
+          <span class="gravite-chip" [class]="'gravite-chip gravite-chip--' + fiche.gravite.toLowerCase()">
+            {{ fiche.gravite }}
+          </span>
+
+          <button class="dossier__delete" title="Supprimer" (click)="removeFiche(fiche.id); $event.stopPropagation()">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+
+          <span class="material-symbols-outlined dossier__chevron" [class.dossier__chevron--open]="fiche.expanded">
+            expand_more
+          </span>
+        </div>
+
+        @if (fiche.expanded) {
+          <div class="dossier__body" (click)="$event.stopPropagation()">
+
+            <!-- Stepper cycle de vie -->
+            <div class="stepper">
+              @for (etape of etapes; track etape; let i = $index) {
+                <div class="stepper__step" [class.stepper__step--done]="i <= etapeIndex(fiche.statut)">
+                  <span class="stepper__circle">{{ i + 1 }}</span>
+                  <span class="stepper__label">{{ etape }}</span>
+                </div>
+              }
+            </div>
+
+            <!-- Section 1 : Identification -->
+            <section class="dossier__section">
+              <h3 class="dossier__section-title">01 · Identification</h3>
+
+              <input type="text" class="fnc-input fnc-input--title" [(ngModel)]="fiche.titre"
+                     placeholder="Intitulé de la non-conformité..." />
+
+              <div class="fnc-grid">
+                <label class="fnc-field">
+                  <span>Processus concerné</span>
+                  <input type="text" class="form-control" [(ngModel)]="fiche.processus" placeholder="Ex : HSE, Maintenance..." />
+                </label>
+                <label class="fnc-field">
+                  <span>Détectée par</span>
+                  <input type="text" class="form-control" [(ngModel)]="fiche.detecteePar" placeholder="Audit, réclamation..." />
+                </label>
+                <label class="fnc-field">
+                  <span>Date de détection</span>
+                  <input type="date" class="form-control" [(ngModel)]="fiche.dateDetection" />
+                </label>
+                <label class="fnc-field">
+                  <span>Gravité</span>
+                  <select class="form-control" [(ngModel)]="fiche.gravite">
+                    <option value="Mineure">Mineure</option>
+                    <option value="Majeure">Majeure</option>
+                    <option value="Critique">Critique</option>
+                  </select>
+                </label>
+              </div>
+
+              <label class="fnc-field fnc-field--full">
+                <span>Description factuelle de l'écart</span>
+                <textarea class="form-control" rows="3" [(ngModel)]="fiche.description"
+                          placeholder="Décrire précisément les faits constatés..."></textarea>
+              </label>
+            </section>
+
+            <!-- Section 2 : Analyse des causes -->
+            <section class="dossier__section">
+              <h3 class="dossier__section-title">02 · Analyse des causes (méthode des 5 pourquoi)</h3>
+
+              <div class="pourquoi-list">
+                @for (p of fiche.pourquois; track p.id; let i = $index) {
+                  <div class="pourquoi-item">
+                    <span class="pourquoi-item__index">Pourquoi {{ i + 1 }}</span>
+                    <input type="text" class="form-control" [(ngModel)]="p.texte" placeholder="Réponse..." />
+                    <button class="pourquoi-item__remove" (click)="removePourquoi(fiche, p.id)">
+                      <span class="material-symbols-outlined">remove</span>
+                    </button>
+                  </div>
+                }
+              </div>
+
+              @if (fiche.pourquois.length < 5) {
+                <button class="add-pourquoi" (click)="addPourquoi(fiche)">
+                  <span class="material-symbols-outlined">add</span>
+                  Ajouter un niveau
+                </button>
+              }
+
+              <label class="fnc-field fnc-field--full">
+                <span>Cause racine identifiée</span>
+                <input type="text" class="form-control" [(ngModel)]="fiche.causeRacine"
+                       placeholder="Synthèse de la cause profonde..." />
+              </label>
+            </section>
+
+            <!-- Section 3 : Actions -->
+            <section class="dossier__section">
+              <h3 class="dossier__section-title">03 · Plan d'actions</h3>
+
+              <label class="fnc-field fnc-field--full">
+                <span>Action immédiate / de confinement</span>
+                <input type="text" class="form-control" [(ngModel)]="fiche.actionImmediate"
+                       placeholder="Mesure prise dans l'urgence..." />
+              </label>
+
+              <label class="fnc-field fnc-field--full">
+                <span>Action corrective de fond</span>
+                <input type="text" class="form-control" [(ngModel)]="fiche.actionCorrective"
+                       placeholder="Action visant à supprimer la cause racine..." />
+              </label>
+
+              <div class="fnc-grid">
+                <label class="fnc-field">
+                  <span>Responsable de l'action</span>
+                  <input type="text" class="form-control" [(ngModel)]="fiche.responsableAction" />
+                </label>
+                <label class="fnc-field">
+                  <span>Échéance</span>
+                  <input type="date" class="form-control" [(ngModel)]="fiche.echeanceAction" />
+                </label>
+              </div>
+            </section>
+
+            <!-- Section 4 : Vérification & clôture -->
+            <section class="dossier__section">
+              <h3 class="dossier__section-title">04 · Vérification et clôture</h3>
+
+              <label class="fnc-field fnc-field--full">
+                <span>Vérification de l'efficacité</span>
+                <textarea class="form-control" rows="2" [(ngModel)]="fiche.verificationEfficacite"
+                          placeholder="Preuve que l'action a résolu le problème durablement..."></textarea>
+              </label>
+
+              <div class="fnc-grid">
+                <label class="fnc-field">
+                  <span>Date de clôture</span>
+                  <input type="date" class="form-control" [(ngModel)]="fiche.dateCloture" />
+                </label>
+                <label class="fnc-field">
+                  <span>Statut du dossier</span>
+                  <select class="form-control" [(ngModel)]="fiche.statut">
+                    @for (etape of etapes; track etape) {
+                      <option [value]="etape">{{ etape }}</option>
+                    }
+                  </select>
+                </label>
+              </div>
+            </section>
+
+          </div>
+        }
+      </div>
+    } @empty {
+      <div class="empty-state">
+        <span class="material-symbols-outlined">assignment_late</span>
+        <p>Aucune fiche ouverte. Cliquez sur « Nouvelle fiche » pour démarrer une analyse.</p>
+      </div>
+    }
+  </div>
+
+</div><p>fiches-non-conf works!</p>

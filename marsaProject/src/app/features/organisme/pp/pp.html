@@ -1,0 +1,133 @@
+<div class="pp-page">
+
+  <div class="page-header">
+    <div>
+      <h2>Analyse des Parties Prenantes</h2>
+      <p>Identification et suivi des parties prenantes du SMI</p>
+    </div>
+
+    <button class="add-btn" (click)="addPartie()">
+      + Ajouter
+    </button>
+  </div>
+
+  <div class="table-container">
+
+    <table>
+
+      <thead>
+        <tr>
+          <th>Partie Prenante</th>
+          <th>Rôle</th>
+          <th>Type</th>
+          <th>Influence</th>
+          <th>Intérêt</th>
+          <th>Attentes</th>
+          <th>Risque</th>
+          <th>Actions</th>
+          <th></th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        @for (partie of parties; track partie.id) {
+
+        <tr>
+
+          <td>
+            <input
+              type="text"
+              [(ngModel)]="partie.nom"
+              placeholder="Nom">
+          </td>
+          <td>
+  <input
+    list="roles"
+    [(ngModel)]="partie.role"
+    placeholder="Choisir ou saisir un rôle">
+
+  <datalist id="roles">
+    <option value="Pilotage stratégique">
+    <option value="Management du SMI">
+    <option value="Réalisation des opérations">
+    <option value="Utilisation des services portuaires">
+    <option value="Fourniture de biens et services">
+    <option value="Sous-traitance">
+    <option value="Contrôle réglementaire">
+    <option value="Régulation portuaire">
+    <option value="Certification et audit">
+    <option value="Contrôle sanitaire">
+    <option value="Sécurité portuaire">
+    <option value="Voisinage et environnement">
+  </datalist>
+
+</td>
+
+          <td>
+            <select [(ngModel)]="partie.type">
+              <option>Interne</option>
+              <option>Externe</option>
+            </select>
+          </td>
+
+          <td>
+            <select
+              [(ngModel)]="partie.influence"
+              [class]="getBadgeClass(partie.influence)">
+              <option>Faible</option>
+              <option>Moyenne</option>
+              <option>Élevée</option>
+            </select>
+          </td>
+
+          <td>
+            <select
+              [(ngModel)]="partie.interet"
+              [class]="getBadgeClass(partie.interet)">
+              <option>Faible</option>
+              <option>Moyen</option>
+              <option>Élevé</option>
+            </select>
+          </td>
+
+          <td>
+            <input
+              type="text"
+              [(ngModel)]="partie.attentes"
+              placeholder="Attentes">
+          </td>
+
+          <td>
+            <input
+              type="text"
+              [(ngModel)]="partie.risque"
+              placeholder="Risque">
+          </td>
+
+          <td>
+            <input
+              type="text"
+              [(ngModel)]="partie.action"
+              placeholder="Action">
+          </td>
+
+          <td>
+            <button
+              class="delete-btn"
+              (click)="removePartie(partie.id)">
+              ✕
+            </button>
+          </td>
+
+        </tr>
+
+        }
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+</div>

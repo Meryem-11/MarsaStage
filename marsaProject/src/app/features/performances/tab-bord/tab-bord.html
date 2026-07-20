@@ -1,0 +1,142 @@
+<div class="page-container">
+  
+  <!-- Header de la page -->
+  <div class="page-header">
+    <div class="header__title-container">
+      <span class="material-symbols-outlined header__icon">dashboard</span>
+      <div class="header__text">
+        <h1>Tableaux de bord</h1>
+        <p>Suivi des performances, objectifs et indicateurs clés par processus</p>
+      </div>
+    </div>
+    <button class="btn-primary" (click)="addTableauLine()">
+      <span class="material-symbols-outlined">add</span>
+      Créer un indicateur
+    </button>
+  </div>
+
+  <!-- Section de résumé (Cards KPI) -->
+  <div class="kpi-cards-container">
+    <div class="kpi-card card-total">
+      <div class="kpi-card-content">
+        <span class="kpi-title">Total Indicateurs</span>
+        <span class="kpi-value">{{ totalIndicateurs }}</span>
+      </div>
+      <span class="material-symbols-outlined kpi-icon">analytics</span>
+    </div>
+    
+    <div class="kpi-card card-success">
+      <div class="kpi-card-content">
+        <span class="kpi-title">Objectifs Atteints</span>
+        <span class="kpi-value">{{ indicateursConformes }}</span>
+      </div>
+      <span class="material-symbols-outlined kpi-icon">check_circle</span>
+    </div>
+
+    <div class="kpi-card card-warning">
+      <div class="kpi-card-content">
+        <span class="kpi-title">En Alerte</span>
+        <span class="kpi-value">{{ indicateursAlerte }}</span>
+      </div>
+      <span class="material-symbols-outlined kpi-icon">error</span>
+    </div>
+
+    <div class="kpi-card card-danger">
+      <div class="kpi-card-content">
+        <span class="kpi-title">Non Atteints</span>
+        <span class="kpi-value">{{ indicateursNonAtteints }}</span>
+      </div>
+      <span class="material-symbols-outlined kpi-icon">cancel</span>
+    </div>
+  </div>
+
+  <!-- Unique carte blanche contenant tout le tableau -->
+  <div class="table-container-card">
+    
+    <!-- En-tête du tableau (Gris clair intégré) -->
+    <div class="tb-grid-header">
+      <div class="col-code">Code</div>
+      <div class="col-processus">Processus</div>
+      <div class="col-indic">Indicateur Clé</div>
+      <div class="col-cible text-center">Cible</div>
+      <div class="col-valeur text-center">Actuel</div>
+      <div class="col-freq text-center">Fréquence</div>
+      <div class="col-status text-center">État</div>
+      <div class="col-delete"></div>
+    </div>
+
+    <!-- Lignes du tableau -->
+    <div class="tb-grid-body">
+      @for (row of tableauxList; track row.id) {
+        <div class="tb-row">
+          
+          <!-- Code -->
+          <div class="col-code font-bold text-dark">
+            {{ row.code }}
+          </div>
+
+          <!-- Sélection Processus -->
+          <div class="col-processus">
+            <select class="form-control" [(ngModel)]="row.nomProcessus">
+              <option value="" disabled selected>Choisir un processus...</option>
+              @for (proc of processusDisponibles; track proc) {
+                <option [value]="proc">{{ proc }}</option>
+              }
+            </select>
+          </div>
+
+          <!-- Indicateur clé -->
+          <div class="col-indic">
+            <input type="text" class="form-control" [(ngModel)]="row.indicateurCle" placeholder="Ex: Taux de satisfaction..." />
+          </div>
+
+          <!-- Cible -->
+          <div class="col-cible text-center">
+            <input type="text" class="form-control text-center font-bold" [(ngModel)]="row.cible" placeholder=">= 90%" />
+          </div>
+
+          <!-- Valeur actuelle + Unité -->
+          <div class="col-valeur text-center valign-inputs">
+            <input type="number" class="form-control text-center" [(ngModel)]="row.valeurActuelle" style="width: 60px;" />
+            <input type="text" class="form-control text-center" [(ngModel)]="row.unite" style="width: 45px; padding: 9px 4px;" placeholder="%" />
+          </div>
+
+          <!-- Fréquence -->
+          <div class="col-freq text-center">
+            <select class="form-control" [(ngModel)]="row.frequence">
+              <option value="Mensuel">Mensuel</option>
+              <option value="Trimestriel">Trimestriel</option>
+              <option value="Semestriel">Semestriel</option>
+              <option value="Annuel">Annuel</option>
+            </select>
+          </div>
+
+          <!-- Statut (Style sélecteur Badge dynamique) -->
+          <div class="col-status text-center">
+            <select class="form-control text-center select-status" 
+                    [(ngModel)]="row.statut"
+                    [class]="'status-select--' + row.statut.toLowerCase().replace(' ', '-')">
+              <option value="Conforme">Conforme</option>
+              <option value="Alerte">Alerte</option>
+              <option value="Non atteint">Non atteint</option>
+            </select>
+          </div>
+
+          <!-- Action Supprimer -->
+          <div class="col-delete text-center">
+            <button class="btn-delete-row" title="Supprimer cet indicateur" (click)="removeTableau(row.id)">
+              <span class="material-symbols-outlined">close</span>
+            </button>
+          </div>
+
+        </div>
+      } @empty {
+        <div class="empty-state">
+          <span class="material-symbols-outlined">analytics</span>
+          <p>Aucun indicateur de performance enregistré. Cliquez sur "Créer un indicateur" pour démarrer.</p>
+        </div>
+      }
+    </div>
+
+  </div>
+</div>

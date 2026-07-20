@@ -1,0 +1,111 @@
+<div class="ncr-page">
+
+  <header class="ncr-header">
+    <div class="ncr-header__identity">
+      <span class="ncr-header__badge material-symbols-outlined">report</span>
+      <div>
+        <h1>Registre des non-conformités</h1>
+        <p>Recensement et suivi des écarts détectés dans le système de management intégré</p>
+      </div>
+    </div>
+    <button class="ncr-header__cta" (click)="addNonConformite()">
+      <span class="material-symbols-outlined">add</span>
+      Ouvrir un dossier
+    </button>
+  </header>
+
+  <div class="ncr-kpis">
+    <div class="ncr-kpi">
+      <span class="ncr-kpi__value">{{ total }}</span>
+      <span class="ncr-kpi__label">Dossiers enregistrés</span>
+    </div>
+    <div class="ncr-kpi ncr-kpi--critical">
+      <span class="ncr-kpi__value">{{ critiques }}</span>
+      <span class="ncr-kpi__label">Critiques</span>
+    </div>
+    <div class="ncr-kpi ncr-kpi--open">
+      <span class="ncr-kpi__value">{{ ouvertes }}</span>
+      <span class="ncr-kpi__label">En cours de traitement</span>
+    </div>
+    <div class="ncr-kpi ncr-kpi--closed">
+      <span class="ncr-kpi__value">{{ cloturees }}</span>
+      <span class="ncr-kpi__label">Clôturés</span>
+    </div>
+  </div>
+
+  <div class="ncr-registry">
+    @for (nc of nonConformites; track nc.id) {
+      <div class="case-row" [class]="'case-row case-row--' + nc.gravite.toLowerCase()">
+
+        <div class="case-row__flag"></div>
+
+        <div class="case-row__main">
+
+          <div class="case-row__top">
+            <span class="case-row__numero">{{ nc.numero }}</span>
+
+            <select class="gravite-tag"
+                    [(ngModel)]="nc.gravite"
+                    [class]="'gravite-tag gravite-tag--' + nc.gravite.toLowerCase()">
+              <option value="Mineure">Mineure</option>
+              <option value="Majeure">Majeure</option>
+              <option value="Critique">Critique</option>
+            </select>
+
+            <button class="case-row__delete" title="Supprimer" (click)="removeNonConformite(nc.id)">
+              <span class="material-symbols-outlined">close</span>
+            </button>
+          </div>
+
+          <input type="text" class="case-row__titre" [(ngModel)]="nc.titre"
+                 placeholder="Intitulé de la non-conformité constatée..." />
+
+          <div class="case-row__fields">
+            <select class="form-control" [(ngModel)]="nc.processus">
+              <option value="" disabled selected>Processus...</option>
+              @for (p of processusDisponibles; track p) {
+                <option [value]="p">{{ p }}</option>
+              }
+            </select>
+
+            <input type="text" class="form-control" [(ngModel)]="nc.detecteePar" placeholder="Détectée par..." />
+
+            <select class="form-control" [(ngModel)]="nc.responsable">
+              <option value="" disabled selected>Responsable...</option>
+              @for (r of responsablesDisponibles; track r) {
+                <option [value]="r">{{ r }}</option>
+              }
+            </select>
+
+            <input type="date" class="form-control" [(ngModel)]="nc.echeance" />
+          </div>
+
+          <!-- Mini stepper de cycle de vie -->
+          <div class="mini-stepper">
+            @for (etape of ['Ouverte','En analyse','Action en cours','En vérification','Clôturée']; track etape; let i = $index) {
+              <div class="mini-stepper__step" [class.mini-stepper__step--done]="i <= etapeIndex(nc.statut)">
+                <span class="mini-stepper__dot"></span>
+                <span class="mini-stepper__label">{{ etape }}</span>
+              </div>
+            }
+          </div>
+
+          <select class="form-control statut-select" [(ngModel)]="nc.statut">
+            <option value="Ouverte">Ouverte</option>
+            <option value="En analyse">En analyse</option>
+            <option value="Action en cours">Action en cours</option>
+            <option value="En vérification">En vérification</option>
+            <option value="Clôturée">Clôturée</option>
+          </select>
+
+        </div>
+      </div>
+    } @empty {
+      <div class="empty-state">
+        <span class="material-symbols-outlined">task_alt</span>
+        <p>Aucune non-conformité enregistrée. Cliquez sur « Ouvrir un dossier » pour commencer.</p>
+      </div>
+    }
+  </div>
+
+</div>

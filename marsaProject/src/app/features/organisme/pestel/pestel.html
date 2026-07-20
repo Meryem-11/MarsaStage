@@ -1,0 +1,41 @@
+<div class="pestel-page">
+  <div class="pestel-header">
+    <h2>Analyse PESTEL</h2>
+    <p class="pestel-subtitle">Politique, Économique, Social, Technologique, Écologique, Légal</p>
+  </div>
+
+  <div class="pestel-grid">
+    @for (category of categories; track category.key) {
+      <div class="pestel-card pestel-card--{{ category.key }}">
+        <div class="pestel-card-header">
+          <span class="pestel-badge">{{ category.label.charAt(0) }}</span>
+          <h3>{{ category.label }}</h3>
+        </div>
+
+        <div class="pestel-items">
+          @for (item of category.items; track item.id) {
+            <div class="pestel-item">
+              <input
+                type="text"
+                [(ngModel)]="item.text"
+                [placeholder]="category.placeholder" />
+              <button
+                type="button"
+                class="pestel-remove-btn"
+                (click)="removeItem(category, item.id)"
+                aria-label="Supprimer">✕</button>
+            </div>
+          }
+
+          @if (category.items.length === 0) {
+            <p class="pestel-empty">Aucun élément ajouté</p>
+          }
+        </div>
+
+        <button type="button" class="pestel-add-btn" (click)="addItem(category)">
+          + Ajouter
+        </button>
+      </div>
+    }
+  </div>
+</div>

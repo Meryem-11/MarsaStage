@@ -1,0 +1,173 @@
+.actions-page {
+  padding: 1.5rem;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.page-header h2 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.page-header p {
+  margin-top: 4px;
+  color: #64748b;
+}
+
+.add-btn {
+  border: none;
+  background: #2563eb;
+  color: white;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.stat-card {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 10px rgba(0,0,0,.06);
+}
+
+.stat-card span {
+  display: block;
+  color: #64748b;
+  font-size: 13px;
+}
+
+.stat-card strong {
+  font-size: 28px;
+}
+
+.table-container {
+  background: white;
+  border-radius: 12px;
+  overflow-x: auto;
+  box-shadow: 0 2px 10px rgba(0,0,0,.06);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  background: #f8fafc;
+  padding: 14px;
+  text-align: left;
+  font-size: 13px;
+}
+
+td {
+  padding: 10px;
+  border-top: 1px solid #edf2f7;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #dbe2ea;
+  border-radius: 8px;
+}
+
+input[type="range"] {
+  border: none;
+  padding: 0;
+}
+
+.upload-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: #2563eb;
+  color: white;
+  cursor: pointer;
+}
+
+.proof-name {
+  margin-top: 4px;
+  font-size: 12px;
+  color: #475569;
+}
+
+.delete-btn {
+  border: none;
+  background: transparent;
+  color: #ef4444;
+  cursor: pointer;
+  font-size: 18px;
+}
+.proof-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.proof-name {
+  font-size: 12px;
+  color: #475569;
+  max-width: 90px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.download-btn {
+  border: none;
+  background: #10b981;
+  color: white;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 11px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.download-btn:hover {
+  background: #059669;
+}
+input,
+select {
+  width: 100%;
+  min-width: 120px;
+  padding: 8px 10px;
+  font-size: 13px;
+  border: 1px solid #dbe2ea;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+
+@media (max-width: 1200px) {
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  table {
+    min-width: 1400px;
+  }
+
+}

@@ -1,0 +1,154 @@
+<div class="page-container">
+  
+  <!-- Header de la page -->
+  <div class="page-header">
+    <div class="header__title-container">
+      <span class="material-symbols-outlined header__icon">calendar_today</span>
+      <div class="header__text">
+        <h1>Programme SST</h1>
+        <p>Planification des actions de prévention, allocation des budgets et suivi d'avancement</p>
+      </div>
+    </div>
+    <button class="btn-primary" (click)="addActionSST()">
+      <span class="material-symbols-outlined">add</span>
+      Planifier une action
+    </button>
+  </div>
+
+  <!-- Section Résumé (KPI Cards) -->
+  <div class="kpi-cards-container">
+    <div class="kpi-card card-total">
+      <div class="kpi-card-content">
+        <span class="kpi-title">Actions Totales</span>
+        <span class="kpi-value">{{ totalActions }}</span>
+      </div>
+      <span class="material-symbols-outlined kpi-icon">list_alt</span>
+    </div>
+    
+    <div class="kpi-card card-success">
+      <div class="kpi-card-content">
+        <span class="kpi-title">Actions Réalisées</span>
+        <span class="kpi-value">{{ actionsRealisees }}</span>
+      </div>
+      <span class="material-symbols-outlined kpi-icon">task_alt</span>
+    </div>
+
+    <div class="kpi-card card-warning">
+      <div class="kpi-card-content">
+        <span class="kpi-title">Actions En Cours</span>
+        <span class="kpi-value">{{ actionsEnCours }}</span>
+      </div>
+      <span class="material-symbols-outlined kpi-icon">pending</span>
+    </div>
+
+    <div class="kpi-card card-budget">
+      <div class="kpi-card-content">
+        <span class="kpi-title">Budget Total Estimé</span>
+        <span class="kpi-value">{{ budgetTotal | number:'1.0-0' }} DH</span>
+      </div>
+      <span class="material-symbols-outlined kpi-icon">payments</span>
+    </div>
+  </div>
+
+  <!-- Unique carte blanche contenant tout le tableau -->
+  <div class="table-container-card">
+    
+    <!-- En-tête du tableau -->
+    <div class="prog-grid-header">
+      <div class="col-ref">Réf.</div>
+      <div class="col-action">Action à mener</div>
+      <div class="col-risque">Risque associé</div>
+      <div class="col-resp">Responsable</div>
+      <div class="col-date text-center">Échéance</div>
+      <div class="col-budget text-center">Budget (DH)</div>
+      <div class="col-status text-center">Statut</div>
+      <div class="col-progress">Avancement</div>
+      <div class="col-delete"></div>
+    </div>
+
+    <!-- Lignes du tableau -->
+    <div class="prog-grid-body">
+      @for (action of actionsSstList; track action.id) {
+        <div class="prog-row">
+          
+          <!-- Référence -->
+          <div class="col-ref font-bold text-dark">
+            {{ action.ref }}
+          </div>
+
+          <!-- Action à mener -->
+          <div class="col-action">
+            <input type="text" class="form-control" [(ngModel)]="action.actionMener" placeholder="Ex: Rénover le garde-corps..." />
+          </div>
+
+          <!-- Risque associé -->
+          <div class="col-risque">
+            <select class="form-control" [(ngModel)]="action.risqueAssocie">
+              <option value="" disabled selected>Associer à un risque...</option>
+              @for (risque of risquesSstIdentifies; track risque) {
+                <option [value]="risque">{{ risque }}</option>
+              }
+            </select>
+          </div>
+
+          <!-- Responsable -->
+          <div class="col-resp">
+            <select class="form-control" [(ngModel)]="action.responsable">
+              <option value="" disabled selected>Sélectionner...</option>
+              @for (collab of collaborateurs; track collab) {
+                <option [value]="collab">{{ collab }}</option>
+              }
+            </select>
+          </div>
+
+          <!-- Échéance -->
+          <div class="col-date text-center">
+            <input type="date" class="form-control text-center" [(ngModel)]="action.delai" />
+          </div>
+
+          <!-- Budget -->
+          <div class="col-budget text-center">
+            <input type="number" class="form-control text-center font-bold" [(ngModel)]="action.budget" placeholder="0" />
+          </div>
+
+          <!-- Statut -->
+          <div class="col-status text-center">
+            <select class="form-control text-center select-status" 
+                    [(ngModel)]="action.statut"
+                    (change)="onStatutChange(action)"
+                    [class]="'status-select--' + action.statut.toLowerCase().replace(' ', '-')">
+              <option value="Non commencée">Non commencée</option>
+              <option value="En cours">En cours</option>
+              <option value="Réalisée">Réalisée</option>
+              <option value="Annulée">Annulée</option>
+            </select>
+          </div>
+
+          <!-- Barre d'avancement interactive (Range slider) -->
+          <div class="col-progress">
+            <div class="progress-container">
+              <input type="range" min="0" max="100" step="5" class="range-slider" 
+                     [(ngModel)]="action.avancement" 
+                     (input)="onAvancementChange(action)" />
+              <span class="progress-percentage font-bold text-dark">{{ action.avancement }}%</span>
+            </div>
+          </div>
+
+          <!-- Bouton de suppression -->
+          <div class="col-delete text-center">
+            <button class="btn-delete-row" title="Supprimer cette action" (click)="removeActionSST(action.id)">
+              <span class="material-symbols-outlined">close</span>
+            </button>
+          </div>
+
+        </div>
+      } @empty {
+        <div class="empty-state">
+          <span class="material-symbols-outlined">calendar_today</span>
+          <p>Aucune action de prévention programmée. Cliquez sur "Planifier une action" pour initialiser le programme SST.</p>
+        </div>
+      }
+    </div>
+
+  </div>
+</div>

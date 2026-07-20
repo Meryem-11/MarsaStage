@@ -1,0 +1,93 @@
+<div class="liste-audit-page">
+
+  <div class="page-header">
+    <div>
+      <h2>Liste des Audits & Actions</h2>
+      <p class="page-subtitle">Marsa Maroc — Vue d'ensemble et suivi des actions correctives</p>
+    </div>
+  </div>
+
+  <div class="master-detail">
+
+    <!-- Colonne gauche : liste des audits -->
+    <div class="audits-panel">
+      <div class="search-box">
+        <input type="text" [(ngModel)]="recherche" placeholder="Rechercher un audit..." />
+      </div>
+
+      <div class="audits-scroll">
+        @for (audit of auditsFiltres; track audit.id) {
+          <div
+            class="audit-list-item"
+            [class.audit-list-item--active]="audit.id === auditSelectionne.id"
+            (click)="selectAudit(audit)">
+            <div class="audit-item-top">
+              <span class="audit-ref">{{ audit.reference }}</span>
+              <span class="audit-badge" [ngClass]="auditStatutClass(audit.statutAudit)">{{ audit.statutAudit }}</span>
+            </div>
+            <p class="audit-item-title">{{ audit.titre }}</p>
+            <span class="audit-item-terminal">{{ audit.terminal }}</span>
+          </div>
+        }
+
+        @if (auditsFiltres.length === 0) {
+          <div class="empty-search">Aucun audit trouvé</div>
+        }
+      </div>
+    </div>
+
+    <!-- Colonne droite : détail + actions -->
+    <div class="detail-panel">
+
+      <div class="detail-top">
+        <div>
+          <span class="detail-ref">{{ auditSelectionne.reference }}</span>
+          <h3>{{ auditSelectionne.titre }}</h3>
+          <span class="detail-terminal">{{ auditSelectionne.terminal }} · {{ auditSelectionne.dateRealisation }}</span>
+        </div>
+        <span class="detail-open-count">{{ totalActionsOuvertes }} action(s) ouverte(s)</span>
+      </div>
+
+      <div class="actions-header">
+        <h4>Actions correctives</h4>
+        <button type="button" class="btn-add-action" (click)="addAction()">+ Ajouter une action</button>
+      </div>
+
+      <div class="actions-list">
+        @for (action of actionsSelectionnees; track action.id) {
+          <div class="action-row" [class.action-row--done]="action.statut === 'Terminée'" [class.action-row--overdue]="isOverdue(action)">
+
+            <button type="button" class="check-btn" [class.check-btn--checked]="action.statut === 'Terminée'" (click)="toggleDone(action)" aria-label="Marquer terminée">
+              @if (action.statut === 'Terminée') { ✓ }
+            </button>
+
+            <div class="action-content">
+              <input type="text" [(ngModel)]="action.description" placeholder="Décrire l'action corrective..." class="action-desc-input" />
+              <div class="action-meta">
+                <input type="text" [(ngModel)]="action.responsable" placeholder="Responsable..." class="action-meta-input" />
+                <input type="date" [(ngModel)]="action.echeance" class="action-meta-input" />
+                <select [(ngModel)]="action.priorite" class="prio-select" [ngClass]="prioriteClass(action.priorite)">
+                  <option value="Haute">Haute</option>
+                  <option value="Moyenne">Moyenne</option>
+                  <option value="Basse">Basse</option>
+                </select>
+              </div>
+              @if (isOverdue(action)) {
+                <span class="overdue-tag">En retard</span>
+              }
+            </div>
+
+            <button type="button" class="btn-icon-delete" (click)="removeAction(action.id)" aria-label="Supprimer">✕</button>
+          </div>
+        }
+
+        @if (actionsSelectionnees.length === 0) {
+          <div class="empty-actions">Aucune action corrective pour cet audit</div>
+        }
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

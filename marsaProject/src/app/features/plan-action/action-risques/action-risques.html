@@ -1,0 +1,95 @@
+<div class="page-container">
+  
+  <!-- Header de la page -->
+  <div class="page-header">
+    <div class="header__title-container">
+      <span class="material-symbols-outlined header__icon">playlist_add_check</span>
+      <div class="header__text">
+        <h1>Actions face aux risques</h1>
+        <p>Planification, affectation et suivi des actions préventives et correctives</p>
+      </div>
+    </div>
+    <button class="btn-primary" (click)="addActionLine()">
+      <span class="material-symbols-outlined">add</span>
+      Ajouter une action
+    </button>
+  </div>
+
+  <!-- Unique carte blanche contenant tout le tableau -->
+  <div class="table-container-card">
+    
+    <!-- En-tête du tableau -->
+    <div class="actions-grid-header">
+      <div class="col-risque">Risque concerné</div>
+      <div class="col-action-desc">Action à mener</div>
+      <div class="col-resp">Responsable</div>
+      <div class="col-delai text-center">Délai</div>
+      <div class="col-status text-center">Statut</div>
+      <div class="col-delete"></div>
+    </div>
+
+    <!-- Lignes du tableau -->
+    <div class="actions-grid-body">
+      @for (action of actionsList; track action.id) {
+        <div class="action-row">
+          
+          <!-- Sélection du Risque -->
+          <div class="col-risque">
+            <select class="form-control" [(ngModel)]="action.risqueConcerne">
+              <option value="" disabled selected>Choisir un risque...</option>
+              @for (risque of risquesDisponibles; track risque) {
+                <option [value]="risque">{{ risque }}</option>
+              }
+            </select>
+          </div>
+
+          <!-- Action à mener -->
+          <div class="col-action-desc">
+            <input type="text" class="form-control" [(ngModel)]="action.descriptionAction" placeholder="Description de l'action..." />
+          </div>
+
+          <!-- Responsable -->
+          <div class="col-resp">
+            <select class="form-control" [(ngModel)]="action.responsable">
+              <option value="" disabled selected>Responsable...</option>
+              @for (collab of collaborateurs; track collab) {
+                <option [value]="collab">{{ collab }}</option>
+              }
+            </select>
+          </div>
+
+          <!-- Délai -->
+          <div class="col-delai text-center">
+            <input type="date" class="form-control text-center" [(ngModel)]="action.delai" />
+          </div>
+
+          <!-- Statut avec badge -->
+          <div class="col-status text-center">
+            <select class="form-control text-center select-status" 
+                    [(ngModel)]="action.statut"
+                    [class]="'status-select--' + action.statut.toLowerCase().replace(' ', '-')">
+              <option value="Non commencée">Non commencée</option>
+              <option value="En cours">En cours</option>
+              <option value="Réalisée">Réalisée</option>
+              <option value="En retard">En retard</option>
+            </select>
+          </div>
+
+          <!-- Bouton de suppression -->
+          <div class="col-delete text-center">
+            <button class="btn-delete-row" title="Supprimer cette action" (click)="removeAction(action.id)">
+              <span class="material-symbols-outlined">close</span>
+            </button>
+          </div>
+
+        </div>
+      } @empty {
+        <div class="empty-state">
+          <span class="material-symbols-outlined">check_circle</span>
+          <p>Aucune action enregistrée. Cliquez sur "Ajouter une action" pour commencer.</p>
+        </div>
+      }
+    </div>
+
+  </div>
+</div>

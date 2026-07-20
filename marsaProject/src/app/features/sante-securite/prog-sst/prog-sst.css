@@ -1,0 +1,289 @@
+.page-container {
+  padding: 2.5rem;
+  background-color: #f3f4f6; /* Fond clair */
+  min-height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* --- Page Header --- */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.header__title-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header__icon {
+  color: #1e3a8a; /* Bleu marine Marsa Maroc */
+  background: transparent !important;
+  box-shadow: none !important;
+  font-size: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header__text h1 {
+  font-size: 1.45rem;
+  font-weight: 600;
+  color: #0F172A;
+  margin: 0;
+}
+
+.header__text p {
+  font-size: 13px;
+  color: #7c8089;
+  margin: 4px 0 0 0;
+}
+
+/* Bouton bleu primaire */
+.btn-primary {
+  background: #2563EB;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+  transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+  background: #1D4ED8;
+  transform: translateY(-1px);
+}
+
+/* --- KPI CARDS --- */
+.kpi-cards-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.kpi-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #eef2f6;
+  box-shadow: 0 4px 6px rgba(15, 23, 42, 0.015);
+}
+
+.kpi-card-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.kpi-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: #64748b;
+  margin-bottom: 6px;
+}
+
+.kpi-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: #0F172A;
+}
+
+.kpi-icon {
+  font-size: 28px;
+  padding: 8px;
+  border-radius: 50%;
+}
+
+.card-total .kpi-icon { background: #eff6ff; color: #2563eb; }
+.card-success .kpi-icon { background: #ecfdf5; color: #10b981; }
+.card-warning .kpi-icon { background: #fffbeb; color: #f59e0b; }
+.card-budget .kpi-icon { background: #f5f3ff; color: #8b5cf6; }
+
+/* --- LE CONTENEUR UNIQUE (Tableau unifié) --- */
+.table-container-card {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.03);
+  border: 1px solid #eef2f6;
+  overflow: hidden;
+}
+
+/* Définition de la grille */
+.prog-grid-header,
+.prog-row {
+  display: grid;
+  grid-template-columns: 95px 1.5fr 1.2fr 1fr 130px 110px 135px 160px 40px;
+  gap: 14px;
+  align-items: center;
+}
+
+/* En-tête gris clair du tableau */
+.prog-grid-header {
+  background-color: #f8fafc;
+  padding: 18px 24px;
+  font-weight: 600;
+  color: #475569;
+  font-size: 13.5px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+/* Lignes de données */
+.prog-row {
+  padding: 16px 24px;
+  background: transparent;
+  border-bottom: 1px solid #f8fafc;
+}
+
+.prog-row:last-child {
+  border-bottom: none;
+}
+
+/* --- Formulaires & Inputs --- */
+.form-control {
+  width: 100%;
+  border: 1px solid #E2E8F0;
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 9px 12px;
+  font-size: 13px;
+  color: #334155;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.15s ease;
+}
+
+.form-control:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+select.form-control {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 14px;
+  padding-right: 30px;
+}
+
+/* --- INTERFACE DE BARRE D'AVANCEMENT --- */
+.progress-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.range-slider {
+  flex: 1;
+  -webkit-appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 5px;
+  background: #e2e8f0;
+  outline: none;
+  transition: background 0.3s;
+}
+
+.range-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #2563eb;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+
+.range-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+.progress-percentage {
+  font-size: 13px;
+  min-width: 35px;
+  text-align: right;
+}
+
+/* --- BADGES ET STATUS DYNAMIQUES --- */
+.select-status {
+  font-weight: 500;
+  border-radius: 6px;
+}
+
+.status-select--non-commencée {
+  background-color: #f1f5f9 !important;
+  color: #64748b !important;
+  border-color: #cbd5e1;
+}
+
+.status-select--en-cours {
+  background-color: #FEF3C7 !important;
+  color: #D97706 !important;
+  border-color: #fde68a;
+}
+
+.status-select--réalisée {
+  background-color: #DCFCE7 !important;
+  color: #15803D !important;
+  border-color: #bbf7d0;
+}
+
+.status-select--annulée {
+  background-color: #FEE2E2 !important;
+  color: #B91C1C !important;
+  border-color: #fecaca;
+}
+
+/* --- Suppression & Utilitaires --- */
+.text-center { text-align: center; }
+.font-bold { font-weight: 600; }
+.text-dark { color: #0F172A; }
+
+.btn-delete-row {
+  background: transparent;
+  border: none;
+  color: #EF4444;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.btn-delete-row:hover {
+  background-color: #FEE2E2;
+}
+
+.btn-delete-row .material-symbols-outlined {
+  font-size: 20px;
+}
+
+/* --- Empty State --- */
+.empty-state {
+  padding: 60px 24px;
+  text-align: center;
+  color: #94a3b8;
+}
+
+.empty-state span {
+  font-size: 48px;
+  color: #2563EB;
+  margin-bottom: 12px;
+}

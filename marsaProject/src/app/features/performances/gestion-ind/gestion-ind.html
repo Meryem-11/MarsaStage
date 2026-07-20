@@ -1,0 +1,103 @@
+<div class="ind-page">
+
+  <!-- En-tête -->
+  <header class="ind-header">
+    <div class="ind-header__identity">
+      <span class="ind-header__badge material-symbols-outlined">settings_suggest</span>
+      <div class="ind-header__text">
+        <h1>Gestion des indicateurs</h1>
+        <p>Définition des fiches d'identité des indicateurs, formules de calcul et pilotes</p>
+      </div>
+    </div>
+    <button class="ind-header__cta" (click)="addIndicateurLine()">
+      <span class="material-symbols-outlined">add</span>
+      Créer un indicateur
+    </button>
+  </header>
+
+  <!-- Liste des fiches -->
+  <div class="ind-board">
+    @for (ind of indicateursList; track ind.id) {
+      <div class="ind-card">
+
+        <!-- Bandeau supérieur : code + type + suppression -->
+        <div class="ind-card__top">
+          <span class="ind-card__stamp">{{ ind.code }}</span>
+
+          <select class="ind-card__type-tag"
+                  [(ngModel)]="ind.typeIndicateur"
+                  [class]="'ind-card__type-tag ind-card__type-tag--' + ind.typeIndicateur.toLowerCase()">
+            <option value="Qualité">Qualité</option>
+            <option value="Performance">Performance</option>
+            <option value="Sécurité">Sécurité</option>
+            <option value="Environnement">Environnement</option>
+          </select>
+
+          <button class="ind-card__delete" title="Supprimer cet indicateur" (click)="removeIndicateur(ind.id)">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </div>
+
+        <!-- Identité principale -->
+        <div class="ind-card__identity">
+          <input type="text" class="ind-card__name" [(ngModel)]="ind.nomIndicateur"
+                 placeholder="Nom de l'indicateur (ex : Taux de réclamations)" />
+
+          <div class="ind-card__meta">
+            <div class="ind-card__field">
+              <span class="ind-card__field-label">Processus</span>
+              <select class="form-control" [(ngModel)]="ind.processus">
+                <option value="" disabled selected>Choisir...</option>
+                @for (proc of processusDisponibles; track proc) {
+                  <option [value]="proc">{{ proc }}</option>
+                }
+              </select>
+            </div>
+
+            <div class="ind-card__field">
+              <span class="ind-card__field-label">Pilote</span>
+              <select class="form-control" [(ngModel)]="ind.pilote">
+                <option value="" disabled selected>Choisir...</option>
+                @for (pilote of pilotesDisponibles; track pilote) {
+                  <option [value]="pilote">{{ pilote }}</option>
+                }
+              </select>
+            </div>
+
+            <div class="ind-card__field">
+              <span class="ind-card__field-label">Fréquence</span>
+              <select class="form-control" [(ngModel)]="ind.frequence">
+                <option value="Mensuelle">Mensuelle</option>
+                <option value="Trimestrielle">Trimestrielle</option>
+                <option value="Semestrielle">Semestrielle</option>
+                <option value="Annuelle">Annuelle</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Formule & source -->
+        <div class="ind-card__computation">
+          <div class="formula-chip">
+            <span class="formula-chip__icon">fx</span>
+            <input type="text" class="formula-chip__input" [(ngModel)]="ind.formuleCalcul"
+                   placeholder="Formule de calcul (ex : A / B × 100)" />
+          </div>
+
+          <div class="source-chip">
+            <span class="material-symbols-outlined source-chip__icon">database</span>
+            <input type="text" class="source-chip__input" [(ngModel)]="ind.sourceDonnees"
+                   placeholder="Source des données (système, rapport...)" />
+          </div>
+        </div>
+
+      </div>
+    } @empty {
+      <div class="empty-state">
+        <span class="material-symbols-outlined">settings_suggest</span>
+        <p>Aucun indicateur configuré. Cliquez sur « Créer un indicateur » pour ajouter une fiche de suivi.</p>
+      </div>
+    }
+  </div>
+
+</div>

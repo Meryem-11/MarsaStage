@@ -1,0 +1,98 @@
+<div class="risk-page">
+
+  <!-- En-tête -->
+  <header class="risk-header">
+    <div class="risk-header__identity">
+      <span class="risk-header__icon material-symbols-outlined">security</span>
+      <div>
+        <h1>Analyse des risques</h1>
+        <p>Identification, évaluation et hiérarchisation des risques par processus</p>
+      </div>
+    </div>
+    <button class="risk-header__cta" (click)="addRisqueLine()">
+      <span class="material-symbols-outlined">add</span>
+      Ajouter un risque
+    </button>
+  </header>
+
+  <!-- Tableau -->
+  <div class="risk-table">
+
+    <div class="risk-table__head">
+      <span>Processus</span>
+      <span>Description du risque</span>
+      <span>Causes</span>
+      <span class="text-center">P</span>
+      <span class="text-center">G</span>
+      <span class="text-center">C</span>
+      <span>Action préventive</span>
+      <span></span>
+    </div>
+
+    <div class="risk-table__body">
+      @for (risque of risquesList; track risque.id) {
+        <div class="risk-row" [class]="'risk-row risk-row--' + risque.niveauRisque.toLowerCase()">
+
+          <div class="col-proc">
+            <select class="form-control" [(ngModel)]="risque.processus">
+              <option value="" disabled selected>Choisir...</option>
+              @for (proc of processusDisponibles; track proc) {
+                <option [value]="proc">{{ proc }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="col-desc">
+            <input type="text" class="form-control" [(ngModel)]="risque.description" placeholder="Ex : Chute de conteneur..." />
+          </div>
+
+          <div class="col-cause">
+            <input type="text" class="form-control" [(ngModel)]="risque.cause" placeholder="Ex : Erreur de guidage..." />
+          </div>
+
+          <div class="col-val text-center">
+            <select class="form-control form-control--num" [(ngModel)]="risque.probabilite" (change)="updateCriticite(risque)">
+              <option [value]="1">1</option>
+              <option [value]="2">2</option>
+              <option [value]="3">3</option>
+              <option [value]="4">4</option>
+            </select>
+          </div>
+
+          <div class="col-val text-center">
+            <select class="form-control form-control--num" [(ngModel)]="risque.gravite" (change)="updateCriticite(risque)">
+              <option [value]="1">1</option>
+              <option [value]="2">2</option>
+              <option [value]="3">3</option>
+              <option [value]="4">4</option>
+            </select>
+          </div>
+
+          <div class="col-crit text-center">
+            <span class="crit-pill">
+              <span class="crit-pill__dot"></span>
+              {{ risque.criticite }}
+            </span>
+          </div>
+
+          <div class="col-action">
+            <input type="text" class="form-control" [(ngModel)]="risque.mesurePrevention" placeholder="Mesure préventive..." />
+          </div>
+
+          <div class="col-delete text-center">
+            <button class="btn-delete" title="Supprimer" (click)="removeRisque(risque.id)">
+              <span class="material-symbols-outlined">close</span>
+            </button>
+          </div>
+
+        </div>
+      } @empty {
+        <div class="empty-state">
+          <span class="material-symbols-outlined">gpp_good</span>
+          <p>Aucun risque enregistré. Cliquez sur « Ajouter un risque » pour commencer.</p>
+        </div>
+      }
+    </div>
+
+  </div>
+</div>

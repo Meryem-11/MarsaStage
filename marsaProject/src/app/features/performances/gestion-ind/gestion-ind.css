@@ -1,0 +1,327 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap');
+
+/* ===== Tokens =====
+   --navy:   #0B1E3D
+   --ink:    #0F172A
+   --slate:  #64748B
+   --bg:     #F1F4F8
+   Qualité:       #1E40AF / #EFF6FF
+   Performance:   #065F46 / #ECFDF5
+   Sécurité:      #92400E / #FEF3C7
+   Environnement: #5B21B6 / #F5F3FF
+*/
+
+.ind-page {
+  background: #F1F4F8;
+  min-height: 100vh;
+  font-family: 'Inter', -apple-system, sans-serif;
+  color: #0F172A;
+}
+
+/* ===== Header ===== */
+.ind-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem 2.5rem;
+  background: #0B1E3D;
+  color: #fff;
+}
+
+.ind-header__identity {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.ind-header__badge {
+  width: 52px;
+  height: 52px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  background: rgba(96, 165, 250, 0.15);
+  color: #60A5FA;
+  font-size: 28px;
+}
+
+.ind-header__text h1 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.55rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.ind-header__text p {
+  font-size: 13px;
+  color: #A7B4CC;
+  margin: 6px 0 0 0;
+  max-width: 520px;
+}
+
+.ind-header__cta {
+  background: #60A5FA;
+  color: #0B1E3D;
+  border: none;
+  padding: 12px 22px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: 0 6px 16px rgba(96, 165, 250, 0.3);
+}
+
+.ind-header__cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(96, 165, 250, 0.4);
+}
+
+/* ===== Board ===== */
+.ind-board {
+  padding: 2rem 2.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+  gap: 20px;
+}
+
+/* ===== Carte "fiche d'identité" ===== */
+.ind-card {
+  background: #fff;
+  border-radius: 14px;
+  border: 1px solid #EEF2F6;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.04);
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.ind-card:hover {
+  box-shadow: 0 14px 28px rgba(15, 23, 42, 0.08);
+  transform: translateY(-2px);
+}
+
+/* --- Bandeau supérieur --- */
+.ind-card__top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ind-card__stamp {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 700;
+  color: #0B1E3D;
+  background: #F1F4F8;
+  border: 1px dashed #CBD5E1;
+  border-radius: 6px;
+  padding: 5px 10px;
+  letter-spacing: 0.5px;
+  transform: rotate(-1.5deg);
+}
+
+.ind-card__type-tag {
+  margin-left: auto;
+  border: none;
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  appearance: none;
+  text-align: center;
+}
+
+.ind-card__type-tag--qualité       { background: #EFF6FF; color: #1E40AF; }
+.ind-card__type-tag--performance   { background: #ECFDF5; color: #065F46; }
+.ind-card__type-tag--sécurité      { background: #FEF3C7; color: #92400E; }
+.ind-card__type-tag--environnement { background: #F5F3FF; color: #5B21B6; }
+
+.ind-card__delete {
+  background: transparent;
+  border: none;
+  color: #94A3B8;
+  cursor: pointer;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+}
+
+.ind-card__delete:hover {
+  background: #FEE2E2;
+  color: #DC2626;
+}
+
+.ind-card__delete .material-symbols-outlined {
+  font-size: 18px;
+}
+
+/* --- Identité principale --- */
+.ind-card__name {
+  width: 100%;
+  border: none;
+  border-bottom: 2px solid #EEF2F6;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #0F172A;
+  padding: 4px 0 8px;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.ind-card__name::placeholder {
+  color: #B8C2D1;
+  font-weight: 500;
+}
+
+.ind-card__name:focus {
+  border-bottom-color: #60A5FA;
+}
+
+.ind-card__meta {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.ind-card__field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.ind-card__field-label {
+  font-size: 10.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: #94A3B8;
+}
+
+/* --- Formule & source --- */
+.ind-card__computation {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 12px;
+  border-top: 1px solid #F1F5F9;
+}
+
+.formula-chip,
+.source-chip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #F8FAFC;
+  border: 1px solid #EEF2F6;
+  border-radius: 9px;
+  padding: 8px 12px;
+}
+
+.formula-chip:focus-within,
+.source-chip:focus-within {
+  border-color: #60A5FA;
+  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.12);
+}
+
+.formula-chip__icon {
+  font-family: 'JetBrains Mono', monospace;
+  font-style: italic;
+  font-weight: 700;
+  font-size: 13px;
+  color: #60A5FA;
+  flex-shrink: 0;
+  width: 20px;
+  text-align: center;
+}
+
+.source-chip__icon {
+  font-size: 18px;
+  color: #94A3B8;
+  flex-shrink: 0;
+}
+
+.formula-chip__input,
+.source-chip__input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12.5px;
+  color: #334155;
+}
+
+.source-chip__input {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+}
+
+/* --- Champs standards --- */
+.form-control {
+  width: 100%;
+  border: 1px solid #E2E8F0;
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 12.5px;
+  color: #334155;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.15s ease;
+}
+
+.form-control:focus {
+  border-color: #60A5FA;
+  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.12);
+}
+
+select.form-control {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 13px;
+  padding-right: 26px;
+}
+
+/* ===== Empty state ===== */
+.empty-state {
+  grid-column: 1 / -1;
+  padding: 70px 24px;
+  text-align: center;
+  color: #94A3B8;
+}
+
+.empty-state span {
+  font-size: 46px;
+  color: #60A5FA;
+  margin-bottom: 12px;
+  display: inline-block;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 900px) {
+  .ind-board {
+    grid-template-columns: 1fr;
+  }
+  .ind-card__meta {
+    grid-template-columns: 1fr;
+  }
+}

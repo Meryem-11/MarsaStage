@@ -1,0 +1,244 @@
+<div class="prog-audit-page">
+
+  <!-- HEADER -->
+  <div class="page-header">
+    <div>
+      <h2>Programme Annuel d'Audits</h2>
+      <p class="page-subtitle">
+        Marsa Maroc — Gestion des programmes annuels d'audits
+      </p>
+    </div>
+
+    <button
+      class="btn-primary"
+      (click)="saveProgramme()">
+      Enregistrer le programme
+    </button>
+  </div>
+
+  <!-- INFORMATIONS DU PROGRAMME -->
+
+  <div class="programme-form">
+
+    <div class="form-grid">
+
+      <div class="form-group">
+        <label>Référence</label>
+        <input
+          type="text"
+          [(ngModel)]="programme.reference">
+      </div>
+
+      <div class="form-group">
+        <label>Année</label>
+        <input
+          type="text"
+          [(ngModel)]="programme.annee">
+      </div>
+
+      <div class="form-group">
+        <label>Responsable</label>
+        <input
+          type="text"
+          [(ngModel)]="programme.responsable">
+      </div>
+
+      <div class="form-group">
+        <label>Date de création</label>
+        <input
+          type="date"
+          [(ngModel)]="programme.dateCreation">
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- BOUTON AJOUT AUDIT -->
+
+  <div class="page-header">
+
+    <h3>Audits du programme</h3>
+
+    <button
+      class="btn-primary"
+      (click)="addAudit()">
+
+      + Nouvel audit
+
+    </button>
+
+  </div>
+
+  <!-- TABLE -->
+
+  <div class="audit-table-wrapper">
+
+    <table class="audit-table">
+
+      <thead>
+
+      <tr>
+
+        <th>Référence</th>
+        <th>Titre</th>
+        <th>Type</th>
+        <th>Terminal</th>
+        <th>Auditeur</th>
+        <th>Début</th>
+        <th>Fin</th>
+        <th>Statut</th>
+        <th></th>
+
+      </tr>
+
+      </thead>
+
+      <tbody>
+
+      @for(audit of programme.audits; track $index){
+
+        <tr>
+
+          <td>
+
+            <input
+              type="text"
+              [(ngModel)]="audit.reference">
+
+          </td>
+
+          <td>
+
+            <input
+              type="text"
+              [(ngModel)]="audit.titre">
+
+          </td>
+
+          <td>
+
+            <select
+              [(ngModel)]="audit.type">
+
+              <option>Interne</option>
+              <option>Externe</option>
+
+            </select>
+
+          </td>
+
+          <td>
+
+            <select
+              [(ngModel)]="audit.terminal">
+
+              @for(t of terminaux; track t){
+
+                <option [value]="t">
+                  {{t}}
+                </option>
+
+              }
+
+            </select>
+
+          </td>
+
+          <td>
+
+            <input
+              type="text"
+              [(ngModel)]="audit.auditeur">
+
+          </td>
+
+          <td>
+
+            <input
+              type="date"
+              [(ngModel)]="audit.dateDebut">
+
+          </td>
+
+          <td>
+
+            <input
+              type="date"
+              [(ngModel)]="audit.dateFin">
+
+          </td>
+
+          <td>
+
+            <select
+              [(ngModel)]="audit.statut">
+
+              <option>Planifié</option>
+              <option>En cours</option>
+              <option>Réalisé</option>
+              <option>Reporté</option>
+
+            </select>
+
+          </td>
+
+          <td>
+
+            <button
+              class="btn-delete"
+              (click)="removeAudit($index)">
+
+              ✕
+
+            </button>
+
+          </td>
+
+        </tr>
+
+      }
+
+      @if(programme.audits.length===0){
+
+        <tr>
+
+          <td colspan="9" class="empty-row">
+
+            Aucun audit ajouté.
+
+          </td>
+
+        </tr>
+
+      }
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+  <!-- HISTORIQUE -->
+
+  <div class="programme-section">
+
+    <h3>Programmes enregistrés</h3>
+
+    @for(p of programmes; track p.id){
+
+      <div class="programme-card">
+
+        <strong>{{p.reference}}</strong>
+
+        <p>Année : {{p.annee}}</p>
+
+        <p>Responsable : {{p.responsable}}</p>
+
+      </div>
+
+    }
+
+  </div>
+
+</div>

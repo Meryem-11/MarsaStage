@@ -1,0 +1,148 @@
+<div class="sst-page">
+
+  <!-- Bande de signalisation décorative -->
+  <div class="sst-page__hazard-strip" aria-hidden="true"></div>
+
+  <!-- En-tête -->
+  <header class="sst-header">
+    <div class="sst-header__identity">
+      <span class="sst-header__badge material-symbols-outlined">health_and_safety</span>
+      <div class="sst-header__text">
+        <h1>Analyse SST</h1>
+        <p>Évaluation des risques professionnels, calcul de criticité et planification des mesures préventives</p>
+      </div>
+    </div>
+    <button class="sst-header__cta" (click)="addSSTLine()">
+      <span class="material-symbols-outlined">add</span>
+      Identifier un risque SST
+    </button>
+  </header>
+
+  <!-- KPI -->
+  <div class="sst-kpis">
+    <div class="sst-kpi sst-kpi--total">
+      <span class="sst-kpi__badge material-symbols-outlined">security</span>
+      <div class="sst-kpi__content">
+        <span class="sst-kpi__value">{{ totalRisques }}</span>
+        <span class="sst-kpi__label">Risques identifiés</span>
+      </div>
+    </div>
+
+    <div class="sst-kpi sst-kpi--high">
+      <span class="sst-kpi__badge material-symbols-outlined">gavel</span>
+      <div class="sst-kpi__content">
+        <span class="sst-kpi__value">{{ risquesEleves }}</span>
+        <span class="sst-kpi__label">Criticité élevée</span>
+      </div>
+    </div>
+
+    <div class="sst-kpi sst-kpi--medium">
+      <span class="sst-kpi__badge material-symbols-outlined">warning</span>
+      <div class="sst-kpi__content">
+        <span class="sst-kpi__value">{{ risquesMoyens }}</span>
+        <span class="sst-kpi__label">Criticité moyenne</span>
+      </div>
+    </div>
+
+    <div class="sst-kpi sst-kpi--low">
+      <span class="sst-kpi__badge material-symbols-outlined">check_circle</span>
+      <div class="sst-kpi__content">
+        <span class="sst-kpi__value">{{ risquesFaibles }}</span>
+        <span class="sst-kpi__label">Risques maîtrisés</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Plateau des risques -->
+  <div class="sst-board">
+
+    <div class="sst-board__header">
+      <span>Zone / Poste</span>
+      <span>Danger &amp; situation</span>
+      <span class="sst-board__header-metrics">Fréq. / Grav.</span>
+      <span>Criticité</span>
+      <span>Mesures de prévention</span>
+      <span></span>
+    </div>
+
+    <div class="sst-board__body">
+      @for (risque of sstRisquesList; track risque.id) {
+        <div class="sst-risk-row" [class]="'sst-risk-row sst-risk-row--' + risque.niveauRisque.toLowerCase()">
+
+          <!-- Ligne 1 : identification -->
+          <div class="sst-risk-row__identity">
+            <select class="form-control" [(ngModel)]="risque.zonePoste">
+              <option value="" disabled selected>Choisir une zone...</option>
+              @for (zone of zonesPostes; track zone) {
+                <option [value]="zone">{{ zone }}</option>
+              }
+            </select>
+
+            <select class="form-control" [(ngModel)]="risque.danger">
+              <option value="" disabled selected>Choisir un danger...</option>
+              @for (danger of dangersCommuns; track danger) {
+                <option [value]="danger">{{ danger }}</option>
+              }
+            </select>
+
+            <input type="text" class="form-control sst-risk-row__situation" [(ngModel)]="risque.situationDangereuse"
+                   placeholder="Décrire le contexte du risque..." />
+
+            <button class="sst-risk-row__delete" title="Supprimer ce risque" (click)="removeSSTLine(risque.id)">
+              <span class="material-symbols-outlined">close</span>
+            </button>
+          </div>
+
+          <!-- Ligne 2 : évaluation -->
+          <div class="sst-risk-row__evaluation">
+
+            <div class="sst-risk-row__notes">
+              <label class="sst-note">
+                <span class="sst-note__label">F</span>
+                <select class="form-control form-control--note" [(ngModel)]="risque.frequence" (change)="onNoteChange(risque)">
+                  <option [value]="1">1</option>
+                  <option [value]="2">2</option>
+                  <option [value]="3">3</option>
+                  <option [value]="4">4</option>
+                </select>
+              </label>
+
+              <label class="sst-note">
+                <span class="sst-note__label">G</span>
+                <select class="form-control form-control--note" [(ngModel)]="risque.gravite" (change)="onNoteChange(risque)">
+                  <option [value]="1">1</option>
+                  <option [value]="2">2</option>
+                  <option [value]="3">3</option>
+                  <option [value]="4">4</option>
+                </select>
+              </label>
+            </div>
+
+            <div class="criticality-gauge">
+              <div class="criticality-gauge__track">
+                <span class="criticality-gauge__zone criticality-gauge__zone--low"></span>
+                <span class="criticality-gauge__zone criticality-gauge__zone--medium"></span>
+                <span class="criticality-gauge__zone criticality-gauge__zone--high"></span>
+                <div class="criticality-gauge__fill" [style.width.%]="(risque.criticite / 16) * 100"></div>
+              </div>
+              <div class="criticality-gauge__readout">
+                <span class="criticality-gauge__value">{{ risque.criticite }}<small>/16</small></span>
+                <span class="criticality-gauge__level">{{ risque.niveauRisque }}</span>
+              </div>
+            </div>
+
+            <input type="text" class="form-control sst-risk-row__mesures" [(ngModel)]="risque.mesuresPrevention"
+                   placeholder="Actions de prévention ou EPI..." />
+          </div>
+
+        </div>
+      } @empty {
+        <div class="empty-state">
+          <span class="material-symbols-outlined">health_and_safety</span>
+          <p>Aucun risque répertorié dans cette zone. Cliquez sur « Identifier un risque SST » pour commencer.</p>
+        </div>
+      }
+    </div>
+
+  </div>
+</div>

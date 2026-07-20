@@ -1,0 +1,40 @@
+<div class="dashboard">
+
+  <!-- Header adapté au nouveau style blanc/bleu -->
+  <div class="dashboard__header">
+    <div class="header__title-container">
+      <span class="material-symbols-outlined header__icon">monitoring</span>
+      <h1>Tableau de bord</h1>
+    </div>
+    <p>Vue d'ensemble de votre système de management intégré</p>
+  </div>
+
+  <!-- Section KPIs avec dégradés -->
+  <div class="dashboard__kpis">
+    @for (kpi of kpis; track kpi.label; let i = $index) {
+      <div class="kpi-card" [ngClass]="'kpi-card--theme-' + ((i % 6) + 1)">
+        
+        <!-- Cercles décoratifs en arrière-plan -->
+        <div class="kpi-card__circle-decor"></div>
+        
+        <div class="kpi-card__header">
+          <span class="kpi-card__label">{{ kpi.label }}</span>
+          <!-- Icône dynamique à droite de la carte -->
+          <span class="material-symbols-outlined kpi-card__icon">{{ kpi.icon }}</span>
+        </div>
+        
+        <span class="kpi-card__value">{{ kpi.value }}</span>
+        
+        <span class="kpi-card__trend">
+          {{ kpi.trend }}
+        </span>
+      </div>
+    }
+  </div>
+
+  <!-- Placeholder pour les graphiques -->
+  <div class="dashboard__placeholder">
+    <p>Graphiques et activité récente à venir ici.</p>
+  </div>
+
+</div>

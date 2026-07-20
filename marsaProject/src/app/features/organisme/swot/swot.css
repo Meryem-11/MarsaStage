@@ -1,0 +1,78 @@
+.swot-page {
+  padding: 1.5rem;
+}
+
+.swot-page h2 {
+  margin: 0 0 1.5rem 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.swot-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.swot-quadrant {
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.swot-quadrant--strengths {
+  background: #eaf3de;
+}
+
+.swot-quadrant--weaknesses {
+  background: #fcebeb;
+}
+
+.swot-quadrant--opportunities {
+  background: #e6f1fb;
+}
+
+.swot-quadrant--threats {
+  background: #faeeda;
+}
+
+.swot-quadrant h3 {
+  margin: 0 0 12px 0;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.swot-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: white;
+  border-radius: 6px;
+  padding: 6px 8px;
+  margin-bottom: 8px;
+}
+
+.swot-item input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 13px;
+  background: transparent;
+}
+
+.swot-item button {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: #999;
+  font-size: 14px;
+}
+
+.swot-add-btn {
+  width: 100%;
+  padding: 6px;
+  border: 1px dashed #ccc;
+  background: transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+}

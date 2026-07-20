@@ -1,0 +1,128 @@
+<div class="reclamation-page">
+
+  <div class="page-header">
+    <div>
+      <h2>Réclamations Clients</h2>
+      <p class="page-subtitle">Marsa Maroc — Suivi et traitement des réclamations</p>
+    </div>
+    <button type="button" class="btn-primary" (click)="addReclamation()">+ Nouvelle réclamation</button>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <span class="stat-value">{{ totalReclamations }}</span>
+      <span class="stat-label">Total réclamations</span>
+    </div>
+    <div class="stat-card stat-card--new">
+      <span class="stat-value">{{ totalNouvelles }}</span>
+      <span class="stat-label">Nouvelles</span>
+    </div>
+    <div class="stat-card stat-card--progress">
+      <span class="stat-value">{{ totalEnCours }}</span>
+      <span class="stat-label">En cours</span>
+    </div>
+    <div class="stat-card stat-card--rate">
+      <span class="stat-value">{{ tauxResolution }}%</span>
+      <span class="stat-label">Taux de résolution</span>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <div class="search-box">
+      <input type="text" [(ngModel)]="recherche" placeholder="Rechercher par référence, client, objet..." />
+    </div>
+
+    <div class="filter-group">
+      <select [(ngModel)]="filtreStatut" class="filter-select">
+        <option value="Tous">Tous les statuts</option>
+        <option value="Nouvelle">Nouvelle</option>
+        <option value="En cours">En cours</option>
+        <option value="Résolue">Résolue</option>
+        <option value="Rejetée">Rejetée</option>
+      </select>
+
+      <select [(ngModel)]="filtrePriorite" class="filter-select">
+        <option value="Tous">Toutes priorités</option>
+        <option value="Urgente">Urgente</option>
+        <option value="Normale">Normale</option>
+        <option value="Faible">Faible</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="table-wrapper">
+    <table class="modern-table">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Référence</th>
+          <th>Client</th>
+          <th>Objet</th>
+          <th>Terminal</th>
+          <th>Type</th>
+          <th>Date</th>
+          <th>Priorité</th>
+          <th>Statut</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (rec of reclamationsFiltrees; track rec.id) {
+          <tr [ngClass]="prioriteClass(rec.priorite)" class="table-row">
+            <td class="cell-priority-bar"></td>
+            <td class="cell-ref">{{ rec.reference }}</td>
+            <td>
+              <div class="client-cell">
+                <span class="client-avatar">{{ initiales(rec.client) }}</span>
+                <input type="text" [(ngModel)]="rec.client" placeholder="Nom du client..." class="client-input" />
+              </div>
+            </td>
+            <td>
+              <input type="text" [(ngModel)]="rec.objet" placeholder="Objet de la réclamation..." class="objet-input" />
+            </td>
+            <td>
+              <select [(ngModel)]="rec.terminal" class="cell-select">
+                @for (t of terminaux; track t) {
+                  <option [value]="t">{{ t }}</option>
+                }
+              </select>
+            </td>
+            <td>
+              <select [(ngModel)]="rec.type" class="cell-select">
+                @for (t of types; track t) {
+                  <option [value]="t">{{ t }}</option>
+                }
+              </select>
+            </td>
+            <td><input type="date" [(ngModel)]="rec.date" class="cell-date" /></td>
+            <td>
+              <select [(ngModel)]="rec.priorite" class="prio-select" [ngClass]="prioriteClass(rec.priorite)">
+                <option value="Urgente">Urgente</option>
+                <option value="Normale">Normale</option>
+                <option value="Faible">Faible</option>
+              </select>
+            </td>
+            <td>
+              <select [(ngModel)]="rec.statut" class="statut-select" [ngClass]="statutClass(rec.statut)">
+                <option value="Nouvelle">Nouvelle</option>
+                <option value="En cours">En cours</option>
+                <option value="Résolue">Résolue</option>
+                <option value="Rejetée">Rejetée</option>
+              </select>
+            </td>
+            <td>
+              <button type="button" class="btn-icon-delete" (click)="removeReclamation(rec.id)" aria-label="Supprimer">✕</button>
+            </td>
+          </tr>
+        }
+
+        @if (reclamationsFiltrees.length === 0) {
+          <tr>
+            <td colspan="10" class="empty-row">Aucune réclamation trouvée</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+</div>

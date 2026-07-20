@@ -1,0 +1,316 @@
+.prog-audit-page {
+  padding: 1.5rem;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+
+.page-header h2 {
+  margin: 0 0 4px 0;
+  font-size: 22px;
+  font-weight: 600;
+  color: #0b2545;
+}
+
+.page-subtitle {
+  margin: 0;
+  font-size: 13px;
+  color: #888;
+}
+
+.btn-primary {
+  background: #0b6fb0;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.btn-primary:hover {
+  background: #08578c;
+}
+
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  margin-bottom: 1.5rem;
+}
+
+.stat-card {
+  background: #f4f8fb;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-left: 4px solid #0b6fb0;
+}
+
+.stat-card--progress { border-left-color: #f59e0b; background: #fffaf0; }
+.stat-card--done      { border-left-color: #22c55e; background: #f0fdf4; }
+.stat-card--delayed   { border-left-color: #ef4444; background: #fef2f2; }
+
+.stat-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: #0b2545;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: #777;
+}
+
+.filter-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.filter-chip {
+  border: 1px solid #ddd;
+  background: white;
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 12px;
+  cursor: pointer;
+  color: #555;
+  transition: all 0.15s ease;
+}
+
+.filter-chip:hover {
+  border-color: #0b6fb0;
+  color: #0b6fb0;
+}
+
+.filter-chip--active {
+  background: #0b6fb0;
+  color: white;
+  border-color: #0b6fb0;
+}
+
+.audit-table-wrapper {
+  background: white;
+  border-radius: 14px;
+  border: 1px solid #eee;
+  overflow-x: auto;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.audit-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.audit-table thead {
+  background: #f4f8fb;
+}
+
+.audit-table th {
+  text-align: left;
+  padding: 12px 14px;
+  font-weight: 600;
+  color: #0b2545;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.audit-table td {
+  padding: 8px 14px;
+  border-top: 1px solid #f2f2f2;
+  vertical-align: middle;
+}
+
+.cell-ref {
+  font-weight: 600;
+  color: #0b6fb0;
+  white-space: nowrap;
+}
+
+.audit-table input,
+.audit-table select {
+  border: 1px solid transparent;
+  background: transparent;
+  font-size: 13px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  width: 100%;
+  min-width: 120px;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.audit-table input:hover,
+.audit-table select:hover {
+  background: #fafafa;
+}
+
+.audit-table input:focus,
+.audit-table select:focus {
+  outline: none;
+  border-color: #0b6fb0;
+  background: white;
+}
+
+.badge-select {
+  font-weight: 600;
+  border-radius: 20px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.badge--planned  { background: #eef2ff; color: #6366f1; }
+.badge--progress { background: #fffaf0; color: #f59e0b; }
+.badge--done      { background: #f0fdf4; color: #22c55e; }
+.badge--delayed   { background: #fef2f2; color: #ef4444; }
+
+.btn-delete {
+  border: none;
+  background: transparent;
+  color: #ccc;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+
+.btn-delete:hover {
+  color: #ef4444;
+  background: #fef2f2;
+}
+
+.empty-row {
+  text-align: center;
+  padding: 24px;
+  color: #bbb;
+  font-style: italic;
+}
+/* =======================================================
+   FORMULAIRE PROGRAMME
+======================================================= */
+
+.programme-form {
+  background: white;
+  border: 1px solid #e8edf3;
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 6px rgba(0,0,0,.04);
+}
+
+.form-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:18px;
+}
+
+.form-group{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+
+.form-group label{
+  font-size:13px;
+  font-weight:600;
+  color:#0b2545;
+}
+
+.form-group input{
+  border:1px solid #d9e2ec;
+  border-radius:8px;
+  padding:10px 12px;
+  font-size:13px;
+  transition:.2s;
+  background:white;
+}
+
+.form-group input:focus{
+  outline:none;
+  border-color:#0b6fb0;
+  box-shadow:0 0 0 3px rgba(11,111,176,.10);
+}
+
+/* =======================================================
+   SECTION PROGRAMMES ENREGISTRES
+======================================================= */
+
+.programme-section{
+  margin-top:35px;
+}
+
+.programme-section h3{
+  margin-bottom:16px;
+  color:#0b2545;
+  font-size:18px;
+}
+
+.programme-cards{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:18px;
+}
+
+.programme-card{
+  background:white;
+  border-radius:12px;
+  padding:18px;
+  border:1px solid #e6edf5;
+  box-shadow:0 2px 8px rgba(0,0,0,.05);
+  transition:.2s;
+}
+
+.programme-card:hover{
+  transform:translateY(-3px);
+  box-shadow:0 6px 18px rgba(0,0,0,.08);
+}
+
+.programme-card strong{
+  display:block;
+  color:#0b6fb0;
+  font-size:16px;
+  margin-bottom:10px;
+}
+
+.programme-card p{
+  margin:6px 0;
+  color:#555;
+  font-size:13px;
+}
+
+/* =======================================================
+   RESPONSIVE
+======================================================= */
+
+@media(max-width:900px){
+
+  .page-header{
+    flex-direction:column;
+    gap:16px;
+    align-items:flex-start;
+  }
+
+  .btn-primary{
+    width:100%;
+  }
+
+}
+
+@media(max-width:700px){
+
+  .audit-table{
+    min-width:1050px;
+  }
+
+}

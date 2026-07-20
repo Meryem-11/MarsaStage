@@ -1,0 +1,59 @@
+<div class="swot-page">
+  <h2>Analyse SWOT</h2>
+
+  <div class="swot-grid">
+
+    <div class="swot-quadrant swot-quadrant--strengths">
+      <h3>Forces</h3>
+      <div class="swot-items">
+        @for (item of strengths; track item.id) {
+          <div class="swot-item">
+            <input type="text" [(ngModel)]="item.text" placeholder="Ajouter une force..." />
+            <button type="button" (click)="removeItem(strengths, item.id)" aria-label="Supprimer">✕</button>
+          </div>
+        }
+      </div>
+      <button type="button" class="swot-add-btn" (click)="addItem(strengths)">+ Ajouter</button>
+    </div>
+
+    <div class="swot-quadrant swot-quadrant--weaknesses">
+      <h3>Faiblesses</h3>
+      <div class="swot-items">
+        @for (item of weaknesses; track item.id) {
+          <div class="swot-item">
+            <input type="text" [(ngModel)]="item.text" placeholder="Ajouter une faiblesse..." />
+            <button type="button" (click)="removeItem(weaknesses, item.id)" aria-label="Supprimer">✕</button>
+          </div>
+        }
+      </div>
+      <button type="button" class="swot-add-btn" (click)="addItem(weaknesses)">+ Ajouter</button>
+    </div>
+
+    <div class="swot-quadrant swot-quadrant--opportunities">
+      <h3>Opportunités</h3>
+      <div class="swot-items">
+        @for (item of opportunities; track item.id) {
+          <div class="swot-item">
+            <input type="text" [(ngModel)]="item.text" placeholder="Ajouter une opportunité..." />
+            <button type="button" (click)="removeItem(opportunities, item.id)" aria-label="Supprimer">✕</button>
+          </div>
+        }
+      </div>
+      <button type="button" class="swot-add-btn" (click)="addItem(opportunities)">+ Ajouter</button>
+    </div>
+
+    <div class="swot-quadrant swot-quadrant--threats">
+      <h3>Menaces</h3>
+      <div class="swot-items">
+        @for (item of threats; track item.id) {
+          <div class="swot-item">
+            <input type="text" [(ngModel)]="item.text" placeholder="Ajouter une menace..." />
+            <button type="button" (click)="removeItem(threats, item.id)" aria-label="Supprimer">✕</button>
+          </div>
+        }
+      </div>
+      <button type="button" class="swot-add-btn" (click)="addItem(threats)">+ Ajouter</button>
+    </div>
+
+  </div>
+</div>

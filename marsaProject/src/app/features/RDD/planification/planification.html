@@ -1,0 +1,106 @@
+<div class="rdd-page">
+
+  <header class="rdd-header">
+    <div class="rdd-header__identity">
+      <span class="rdd-header__badge material-symbols-outlined">groups</span>
+      <div>
+        <h1>Planification des revues de direction</h1>
+        <p>Calendrier des sessions RDD, ordre du jour et participants</p>
+      </div>
+    </div>
+    <button class="rdd-header__cta" (click)="addSession()">
+      <span class="material-symbols-outlined">add</span>
+      Planifier une session
+    </button>
+  </header>
+
+  <div class="rdd-kpis">
+    <div class="rdd-kpi">
+      <span class="rdd-kpi__value">{{ totalSessions }}</span>
+      <span class="rdd-kpi__label">Sessions au total</span>
+    </div>
+    <div class="rdd-kpi rdd-kpi--gold">
+      <span class="rdd-kpi__value">{{ sessionsPlanifiees }}</span>
+      <span class="rdd-kpi__label">Planifiées</span>
+    </div>
+    <div class="rdd-kpi rdd-kpi--green">
+      <span class="rdd-kpi__value">{{ sessionsTerminees }}</span>
+      <span class="rdd-kpi__label">Terminées</span>
+    </div>
+    <div class="rdd-kpi rdd-kpi--red">
+      <span class="rdd-kpi__value">{{ sessionsReportees }}</span>
+      <span class="rdd-kpi__label">Reportées</span>
+    </div>
+  </div>
+
+  <!-- Frise chronologique -->
+  <div class="timeline">
+    @for (session of sessionsTriees; track session.id) {
+      <div class="timeline-item" [class]="'timeline-item timeline-item--' + session.statut.toLowerCase()">
+
+        <div class="timeline-item__marker">
+          <span class="timeline-item__dot"></span>
+        </div>
+
+        <div class="timeline-item__card">
+
+          <div class="timeline-item__top">
+            <span class="timeline-item__ref">{{ session.reference }}</span>
+
+            <select class="status-tag"
+                    [(ngModel)]="session.statut"
+                    [class]="'status-tag status-tag--' + session.statut.toLowerCase()">
+              <option value="Planifiée">Planifiée</option>
+              <option value="Terminée">Terminée</option>
+              <option value="Reportée">Reportée</option>
+              <option value="Annulée">Annulée</option>
+            </select>
+
+            <button class="timeline-item__delete" title="Supprimer" (click)="removeSession(session.id)">
+              <span class="material-symbols-outlined">close</span>
+            </button>
+          </div>
+
+          <input type="text" class="timeline-item__titre" [(ngModel)]="session.titre"
+                 placeholder="Titre de la session (ex : Revue de direction semestrielle)" />
+
+          <div class="timeline-item__meta">
+            <label class="meta-field">
+              <span class="material-symbols-outlined">calendar_month</span>
+              <input type="date" class="form-control" [(ngModel)]="session.date" />
+            </label>
+
+            <label class="meta-field">
+              <span class="material-symbols-outlined">schedule</span>
+              <input type="time" class="form-control" [(ngModel)]="session.heure" />
+            </label>
+
+            <label class="meta-field meta-field--wide">
+              <span class="material-symbols-outlined">location_on</span>
+              <input type="text" class="form-control" [(ngModel)]="session.lieu" placeholder="Lieu de la réunion" />
+            </label>
+          </div>
+
+          <div class="timeline-item__block">
+            <span class="timeline-item__block-label">Participants</span>
+            <input type="text" class="form-control" [(ngModel)]="session.participants"
+                   placeholder="Fonctions ou noms des participants..." />
+          </div>
+
+          <div class="timeline-item__block">
+            <span class="timeline-item__block-label">Ordre du jour</span>
+            <textarea class="form-control" rows="2" [(ngModel)]="session.ordreDuJour"
+                      placeholder="Points à aborder, séparés par des points médians..."></textarea>
+          </div>
+
+        </div>
+      </div>
+    } @empty {
+      <div class="empty-state">
+        <span class="material-symbols-outlined">groups</span>
+        <p>Aucune session planifiée. Cliquez sur « Planifier une session » pour commencer.</p>
+      </div>
+    }
+  </div>
+
+</div>

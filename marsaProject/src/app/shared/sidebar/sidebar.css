@@ -1,0 +1,241 @@
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 16px 8px;
+  box-sizing: border-box;
+  background: #FFFFFF; /* Fond blanc pur */
+  border-right: 1px solid #E2E8F0; 
+  transition: width 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sidebar__brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 8px 8px 20px;
+  border-bottom: 1px solid #E2E8F0;
+  margin-bottom: 12px;
+}
+
+.sidebar__logo-full {
+  max-height: 50px;
+  width: auto;
+  max-width: 100%;
+}
+
+.sidebar__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.sidebar__item-group {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Éléments Principaux (Modules) */
+.sidebar__link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  text-decoration: none;
+  color: #475569; /* Texte gris foncé de base */
+  font-size: 12.5px;
+  font-weight: 500;
+  line-height: 1.3;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: all 0.15s ease;
+  white-space: normal; 
+  word-break: break-word; 
+}
+
+/* Effet survol (Hover) */
+.sidebar__link:hover {
+  background: #F1F5F9;
+  color: #0F172A;
+}
+
+/* Module actif ou déplié : Fond bleu & texte blanc */
+.sidebar__link.is-active,
+.sidebar__link.is-expanded {
+  background: #004B87 !important; /* Bleu océan Marsa Maroc */
+  color: #FFFFFF !important;
+}
+
+.sidebar__arrow {
+  font-size: 16px;
+  transition: transform 0.2s ease;
+  margin-left: auto;
+  flex-shrink: 0;
+  color: #94A3B8;
+}
+
+/* Force la flèche et l'icône à devenir blanches quand le module est actif */
+.sidebar__link.is-active .sidebar__arrow,
+.sidebar__link.is-expanded .sidebar__arrow,
+.sidebar__link.is-active .sidebar__icon,
+.sidebar__link.is-expanded .sidebar__icon {
+  color: #FFFFFF !important;
+}
+
+.sidebar__link.is-expanded .sidebar__arrow {
+  transform: rotate(180deg);
+}
+
+/* Structure du sous-menu */
+.sidebar__submenu {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+  display: flex;
+  flex-direction: column;
+  padding-left: 20px;
+  margin-left: 12px;
+  border-left: 1px solid #E2E8F0;
+  gap: 1px;
+}
+
+.sidebar__submenu.is-open {
+  max-height: 500px; /* Augmenté pour ne pas bloquer les longs menus */
+  margin-top: 2px;
+  margin-bottom: 4px;
+}
+
+/* Liens des Sous-modules */
+.sidebar__sublink {
+  display: block;
+  padding: 6px 10px;
+  color: #64748B;
+  font-size: 11.5px;
+  line-height: 1.3;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: all 0.15s ease;
+  white-space: normal;
+  word-break: break-word;
+}
+
+.sidebar__sublink:hover {
+  background: #F8FAFC;
+  color: #0F172A;
+}
+
+/* Sous-module actif */
+.sidebar__sublink.sub-is-active {
+  color: #0088FF;
+  font-weight: 600;
+}
+
+/* Icônes de la Sidebar (État par défaut) */
+.sidebar__icon {
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #64748B; /* Gris par défaut pour éviter l'invisibilité */
+  transition: color 0.15s ease;
+}
+
+/* 
+  =========================================
+  COULEURS PERSONNALISÉES DES ICÔNES (HORS ÉTAT ACTIF)
+  =========================================
+*/
+.sidebar__link:not(.is-active):not(.is-expanded) .sidebar__icon {
+  font-weight: 600;
+}
+
+/* Bleu/Cyan pour Tableau de bord */
+.sidebar__link:not(.is-active):not(.is-expanded) .sidebar__icon[data-icon="home"] {
+  color: #0EA5E9;
+}
+
+/* Vert pour Processus & Environnement */
+.sidebar__link:not(.is-active):not(.is-expanded) .sidebar__icon[data-icon="account_tree"],
+.sidebar__link:not(.is-active):not(.is-expanded) .sidebar__icon[data-icon="eco"] {
+  color: #10B981;
+}
+
+/* Violet/Indigo pour le Contexte & Documents */
+.sidebar__link:not(.is-active):not(.is-expanded) .sidebar__icon[data-icon="corporate_fare"],
+.sidebar__link:not(.is-active):not(.is-expanded) .sidebar__icon[data-icon="description"] {
+  color: #6366F1;
+}
+
+/* Rouge/Orange pour Risques, Sécurité (SST) & Non-conformités */
+.sidebar__link:not(.is-active):not(.is-expanded) .sidebar__icon[data-icon="security"],
+.sidebar__link:not(.is-active):not(.is-expanded) .sidebar__icon[data-icon="health_and_safety"],
+.sidebar__link:not(.is-active):not(.is-expanded) .sidebar__icon[data-icon="warning"] {
+  color: #EF4444;
+}
+
+/* Bleu clair pour Plans d'actions & Conformité */
+.sidebar__link:not(.is-active):not(.is-expanded) .sidebar__icon[data-icon="playlist_add_check"],
+.sidebar__link:not(.is-active):not(.is-expanded) .sidebar__icon[data-icon="fact_check"] {
+  color: #0EA5E9;
+}
+
+/* Jaune/Ambre pour les Performances & Audits */
+.sidebar__link:not(.is-active):not(.is-expanded) .sidebar__icon[data-icon="bar_chart"],
+.sidebar__link:not(.is-active):not(.is-expanded) .sidebar__icon[data-icon="assignment_turned_in"] {
+  color: #F59E0B;
+}
+
+/* Rose/Fuchsia pour Revues de Direction & Réclamations */
+.sidebar__link:not(.is-active):not(.is-expanded) .sidebar__icon[data-icon="rate_review"],
+.sidebar__link:not(.is-active):not(.is-expanded) .sidebar__icon[data-icon="forum"] {
+  color: #D946EF;
+}
+
+.sidebar__label {
+  flex: 1;
+}
+
+.sidebar__footer {
+  padding: 12px 8px 0;
+  border-top: 1px solid #E2E8F0;
+  text-align: center;
+}
+
+.sidebar__version {
+  font-size: 10px;
+  color: #64748B;
+}
+
+/* --- INTERFACE DE DÉFILEMENT (SCROLLBAR) --- */
+.sidebar__nav::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+.sidebar__nav::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar__nav::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.1); 
+  border-radius: 10px;
+  transition: background 0.2s ease;
+}
+
+.sidebar__nav::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 75, 135, 0.3);
+}
+
+.sidebar__nav {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.1) transparent;
+}

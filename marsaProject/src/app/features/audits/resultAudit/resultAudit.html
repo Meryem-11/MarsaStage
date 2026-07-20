@@ -1,0 +1,137 @@
+<div class="result-audit-page">
+
+  <div class="page-header">
+    <div>
+      <h2>Résultats d'Audit</h2>
+      <p class="page-subtitle">Marsa Maroc — Synthèse des constats</p>
+    </div>
+  </div>
+
+  <div class="report-summary">
+
+    <div class="score-panel">
+      <div class="score-ring" [style.background]="'conic-gradient(' + scoreColor + ' ' + scoreGlobal + '%, #eee 0)'">
+        <div class="score-ring-inner">
+          <span class="score-value">{{ scoreGlobal }}</span>
+          <span class="score-max">/100</span>
+        </div>
+      </div>
+      <span class="score-label" [ngClass]="scoreGlobal >= 80 ? 'label--good' : scoreGlobal >= 60 ? 'label--mid' : 'label--bad'">
+        {{ scoreLabel }}
+      </span>
+    </div>
+
+    <div class="audit-info-panel">
+      <label class="field-label">Audit concerné</label>
+      <select class="audit-select" [(ngModel)]="auditSelectionne">
+        @for (audit of auditsDisponibles; track audit.reference) {
+          <option [ngValue]="audit">{{ audit.reference }} — {{ audit.titre }}</option>
+        }
+      </select>
+
+      <div class="info-rows">
+        <div class="info-row">
+          <span class="info-key">Terminal</span>
+          <span class="info-value">{{ auditSelectionne.terminal }}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key">Date de réalisation</span>
+          <span class="info-value">{{ auditSelectionne.dateRealisation }}</span>
+        </div>
+      </div>
+
+      <div class="mini-stats">
+        @for (cat of categories; track cat) {
+          <div class="mini-stat" [ngClass]="categorieClass(cat)">
+            <span class="mini-stat-value">{{ countByCategorie(cat) }}</span>
+            <span class="mini-stat-label">{{ cat }}</span>
+          </div>
+        }
+      </div>
+    </div>
+
+  </div>
+
+  <div class="constats-header">
+    <div class="tab-row">
+      <button type="button" class="tab-chip" [class.tab-chip--active]="filtreCategorie === 'Tous'" (click)="filtreCategorie = 'Tous'">
+        Tous ({{ constats.length }})
+      </button>
+      @for (cat of categories; track cat) {
+        <button type="button" class="tab-chip" [ngClass]="categorieClass(cat)" [class.tab-chip--active]="filtreCategorie === cat" (click)="filtreCategorie = cat">
+          {{ cat }} ({{ countByCategorie(cat) }})
+        </button>
+      }
+    </div>
+    <button type="button" class="btn-add-constat" (click)="addConstat()">+ Nouveau constat</button>
+  </div>
+
+  <div class="constats-list">
+    @for (constat of constatsFiltres; track constat.id) {
+      <div class="constat-card" [ngClass]="categorieClass(constat.categorie)">
+
+        <div class="constat-summary" (click)="toggleExpand(constat)">
+          <div class="constat-summary-left">
+            <span class="constat-tag" [ngClass]="categorieClass(constat.categorie)">{{ constat.categorie }}</span>
+            <span class="constat-desc-preview">{{ constat.description || 'Nouveau constat...' }}</span>
+          </div>
+          <div class="constat-summary-right">
+            <span class="constat-status" [ngClass]="statutClass(constat.statut)">{{ constat.statut }}</span>
+            <span class="expand-arrow" [class.expand-arrow--open]="constat.expanded">›</span>
+          </div>
+        </div>
+
+        @if (constat.expanded) {
+          <div class="constat-detail">
+
+            <div class="detail-row">
+              <label>Catégorie</label>
+              <select [(ngModel)]="constat.categorie">
+                @for (cat of categories; track cat) {
+                  <option [value]="cat">{{ cat }}</option>
+                }
+              </select>
+            </div>
+
+            <div class="detail-row">
+              <label>Description</label>
+              <textarea [(ngModel)]="constat.description" rows="2" placeholder="Décrire le constat..."></textarea>
+            </div>
+
+            <div class="detail-row">
+              <label>Exigence de référence</label>
+              <input type="text" [(ngModel)]="constat.exigence" placeholder="Ex : ISO 9001 §8.5.1..." />
+            </div>
+
+            <div class="detail-grid">
+              <div class="detail-row">
+                <label>Responsable</label>
+                <input type="text" [(ngModel)]="constat.responsable" placeholder="Nom / fonction..." />
+              </div>
+              <div class="detail-row">
+                <label>Échéance</label>
+                <input type="date" [(ngModel)]="constat.echeance" />
+              </div>
+              <div class="detail-row">
+                <label>Statut</label>
+                <select [(ngModel)]="constat.statut">
+                  <option value="Ouvert">Ouvert</option>
+                  <option value="En traitement">En traitement</option>
+                  <option value="Clôturé">Clôturé</option>
+                </select>
+              </div>
+            </div>
+
+            <button type="button" class="btn-remove-constat" (click)="removeConstat(constat.id)">Supprimer ce constat</button>
+          </div>
+        }
+
+      </div>
+    }
+
+    @if (constatsFiltres.length === 0) {
+      <div class="empty-state">Aucun constat dans cette catégorie</div>
+    }
+  </div>
+
+</div>

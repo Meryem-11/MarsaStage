@@ -1,0 +1,162 @@
+.pestel-page {
+  padding: 1.5rem;
+}
+
+.pestel-header {
+  margin-bottom: 1.5rem;
+}
+
+.pestel-header h2 {
+  margin: 0 0 4px 0;
+  font-size: 22px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.pestel-subtitle {
+  margin: 0;
+  font-size: 13px;
+  color: #888;
+}
+
+.pestel-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.pestel-card {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 18px;
+  border: 1px solid #eee;
+  border-left: 4px solid transparent;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.pestel-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+.pestel-card--politique   { border-left-color: #6366f1; }
+.pestel-card--economique  { border-left-color: #22c55e; }
+.pestel-card--social      { border-left-color: #ec4899; }
+.pestel-card--technologique { border-left-color: #3b82f6; }
+.pestel-card--ecologique  { border-left-color: #16a34a; }
+.pestel-card--legal       { border-left-color: #f59e0b; }
+
+.pestel-card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.pestel-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #f4f4f5;
+  font-size: 14px;
+  font-weight: 600;
+  color: #444;
+  flex-shrink: 0;
+}
+
+.pestel-card--politique .pestel-badge     { background: #eef2ff; color: #6366f1; }
+.pestel-card--economique .pestel-badge    { background: #ecfdf5; color: #22c55e; }
+.pestel-card--social .pestel-badge        { background: #fdf2f8; color: #ec4899; }
+.pestel-card--technologique .pestel-badge { background: #eff6ff; color: #3b82f6; }
+.pestel-card--ecologique .pestel-badge    { background: #f0fdf4; color: #16a34a; }
+.pestel-card--legal .pestel-badge         { background: #fffbeb; color: #f59e0b; }
+
+.pestel-card-header h3 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.pestel-items {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 40px;
+  margin-bottom: 12px;
+}
+
+.pestel-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #fafafa;
+  border-radius: 8px;
+  padding: 8px 10px;
+  border: 1px solid #f0f0f0;
+  transition: border-color 0.15s ease;
+}
+
+.pestel-item:focus-within {
+  border-color: #ccc;
+  background: #fff;
+}
+
+.pestel-item input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 13px;
+  color: #333;
+}
+
+.pestel-item input::placeholder {
+  color: #b5b5b5;
+}
+
+.pestel-remove-btn {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: #ccc;
+  font-size: 13px;
+  line-height: 1;
+  padding: 2px 4px;
+  border-radius: 4px;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+
+.pestel-remove-btn:hover {
+  color: #ef4444;
+  background: #fef2f2;
+}
+
+.pestel-empty {
+  font-size: 12px;
+  color: #bbb;
+  font-style: italic;
+  margin: 4px 0;
+}
+
+.pestel-add-btn {
+  width: 100%;
+  padding: 8px;
+  border: 1px dashed #ddd;
+  background: transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  color: #666;
+  transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+}
+
+.pestel-add-btn:hover {
+  border-color: #999;
+  color: #333;
+  background: #fafafa;
+}

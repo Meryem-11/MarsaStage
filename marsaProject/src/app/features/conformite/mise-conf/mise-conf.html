@@ -1,0 +1,140 @@
+<div class="page-container">
+
+  <div class="page-header">
+    <div class="header__title-container">
+      <span class="material-symbols-outlined header__icon">verified</span>
+      <div class="header__text">
+        <h1>Mise en conformité</h1>
+        <p>Suivi des actions correctives liées aux écarts de conformité identifiés</p>
+      </div>
+    </div>
+    <button class="btn-primary" (click)="addAction()">
+      <span class="material-symbols-outlined">add</span>
+      Planifier une action
+    </button>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div>
+        <span>Actions totales</span>
+        <strong>{{ totalActions }}</strong>
+      </div>
+      <span class="material-symbols-outlined stat-icon stat-icon--blue">checklist</span>
+    </div>
+
+    <div class="stat-card">
+      <div>
+        <span>Réalisées</span>
+        <strong>{{ actionsRealisees }}</strong>
+      </div>
+      <span class="material-symbols-outlined stat-icon stat-icon--green">check_circle</span>
+    </div>
+
+    <div class="stat-card">
+      <div>
+        <span>En cours</span>
+        <strong>{{ actionsEnCours }}</strong>
+      </div>
+      <span class="material-symbols-outlined stat-icon stat-icon--amber">pending</span>
+    </div>
+
+    <div class="stat-card">
+      <div>
+        <span>Budget total engagé</span>
+        <strong>{{ budgetTotal | number }} DH</strong>
+      </div>
+      <span class="material-symbols-outlined stat-icon stat-icon--purple">payments</span>
+    </div>
+  </div>
+
+  <div class="table-container-card">
+
+    <div class="mec-grid-header">
+      <div>Réf.</div>
+      <div>Exigence liée</div>
+      <div>Écart constaté</div>
+      <div>Action corrective</div>
+      <div>Responsable</div>
+      <div>Échéance</div>
+      <div class="text-center">Budget (DH)</div>
+      <div class="text-center">Statut</div>
+      <div>Avancement</div>
+      <div></div>
+    </div>
+
+    <div class="mec-grid-body">
+      @for (action of actionsList; track action.id) {
+        <div class="mec-row" [class]="'mec-row mec-row--' + action.statut.toLowerCase().replace(' ', '-')">
+
+          <div class="col-ref font-bold">{{ action.reference }}</div>
+
+          <div class="col-exigence">
+            <select class="form-control" [(ngModel)]="action.exigenceLiee">
+              <option value="" disabled selected>Choisir...</option>
+              @for (exg of exigencesReferences; track exg) {
+                <option [value]="exg">{{ exg }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="col-ecart">
+            <input type="text" class="form-control" [(ngModel)]="action.ecartConstate"
+                   placeholder="Décrire l'écart constaté..." />
+          </div>
+
+          <div class="col-corrective">
+            <input type="text" class="form-control" [(ngModel)]="action.actionCorrective"
+                   placeholder="Décrire l'action corrective..." />
+          </div>
+
+          <div class="col-resp">
+            <select class="form-control" [(ngModel)]="action.responsable">
+              <option value="" disabled selected>Choisir...</option>
+              @for (resp of responsablesDisponibles; track resp) {
+                <option [value]="resp">{{ resp }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="col-echeance">
+            <input type="date" class="form-control" [(ngModel)]="action.echeance" />
+          </div>
+
+          <div class="col-budget text-center">
+            <input type="number" class="form-control" [(ngModel)]="action.budget" min="0" />
+          </div>
+
+          <div class="col-statut text-center">
+            <select class="form-control statut-select"
+                    [(ngModel)]="action.statut"
+                    [class]="'form-control statut-select statut-select--' + action.statut.toLowerCase().replace(' ', '-')">
+              <option value="À faire">À faire</option>
+              <option value="En cours">En cours</option>
+              <option value="Réalisée">Réalisée</option>
+              <option value="Retardée">Retardée</option>
+            </select>
+          </div>
+
+          <div class="col-avancement">
+            <input type="range" min="0" max="100" [(ngModel)]="action.avancement" />
+            <span class="avancement-value">{{ action.avancement }}%</span>
+          </div>
+
+          <div class="col-delete text-center">
+            <button class="btn-delete-row" title="Supprimer" (click)="removeAction(action.id)">
+              <span class="material-symbols-outlined">close</span>
+            </button>
+          </div>
+
+        </div>
+      } @empty {
+        <div class="empty-state">
+          <span class="material-symbols-outlined">verified</span>
+          <p>Aucune action de mise en conformité planifiée. Cliquez sur « Planifier une action » pour commencer.</p>
+        </div>
+      }
+    </div>
+
+  </div>
+</div>

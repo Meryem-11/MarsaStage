@@ -1,0 +1,76 @@
+:host {
+  /* tokens locaux au layout — à terme, à monter dans styles.css global */
+  --sidebar-w: 260px;
+  --sidebar-w-collapsed: 72px;
+  --header-h: 64px;
+
+  --color-bg: #F4F5F7;
+  --color-surface: #FFFFFF;
+  --color-border: #E2E5EA;
+  --color-text: #1F2733;
+  --color-text-muted: #6B7684;
+
+  --color-sidebar-bg: #b8bec7;
+  --color-sidebar-text: #030303;
+  --color-sidebar-text-active: #4656b4ac;
+
+  --color-accent: #ca784d76; /* ambre — réservé aux actifs / alertes */
+}
+
+.app-shell {
+  display: grid;
+  grid-template-columns: var(--sidebar-w) 1fr;
+  min-height: 100vh;
+  background: var(--color-bg);
+  transition: grid-template-columns 0.2s ease;
+}
+
+.app-shell.is-collapsed {
+  grid-template-columns: var(--sidebar-w-collapsed) 1fr;
+}
+
+.app-shell__sidebar {
+  background: var(--color-sidebar-bg);
+  color: var(--color-sidebar-text);
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  overflow-y: auto;
+}
+
+.app-shell__main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0; /* évite l'overflow horizontal des tableaux/listes */
+}
+
+.app-shell__header {
+  height: var(--header-h);
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.app-shell__content {
+  flex: 1;
+  padding: 24px 32px;
+  color: var(--color-text);
+}
+
+@media (max-width: 900px) {
+  .app-shell {
+    grid-template-columns: 1fr;
+  }
+  .app-shell__sidebar {
+    position: fixed;
+    left: 0;
+    z-index: 20;
+    transform: translateX(-100%);
+    transition: transform 0.2s ease;
+  }
+  .app-shell.is-collapsed .app-shell__sidebar {
+    transform: translateX(0);
+  }
+}

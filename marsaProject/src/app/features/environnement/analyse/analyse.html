@@ -1,0 +1,133 @@
+<div class="analyse-page">
+
+  <div class="page-header">
+
+    <div>
+      <h2>Analyse Environnementale</h2>
+      <p>Identification et évaluation des aspects environnementaux</p>
+    </div>
+
+    <button class="add-btn" (click)="addAspect()">
+      Nouvel aspect
+    </button>
+
+  </div>
+
+  <div class="stats-grid">
+
+    <div class="stat-card">
+      <span>Total aspects</span>
+      <strong>{{ totalAspects }}</strong>
+    </div>
+
+    <div class="stat-card">
+      <span>Impacts significatifs</span>
+      <strong>{{ significatifs }}</strong>
+    </div>
+
+    <div class="stat-card">
+      <span>Aspects maîtrisés</span>
+      <strong>{{ maitrises }}</strong>
+    </div>
+
+  </div>
+
+  <div class="cards-grid">
+
+    @for(aspect of aspects; track aspect.id){
+
+    <div class="aspect-card">
+
+      <div class="card-header">
+
+        <input
+          class="activity-input"
+          [(ngModel)]="aspect.activite"
+          placeholder="Activité">
+
+        <button
+          class="delete-btn"
+          (click)="removeAspect(aspect.id)">
+          ✕
+        </button>
+
+      </div>
+
+      <div class="field">
+
+        <label>Aspect environnemental</label>
+
+        <input
+          [(ngModel)]="aspect.aspect"
+          placeholder="Aspect environnemental">
+
+      </div>
+
+      <div class="field">
+
+        <label>Impact environnemental</label>
+
+        <input
+          [(ngModel)]="aspect.impact"
+          placeholder="Impact">
+
+      </div>
+
+      <div class="double-field">
+
+        <div>
+          <label>Situation</label>
+
+          <select [(ngModel)]="aspect.situation">
+            <option>Normale</option>
+            <option>Anormale</option>
+            <option>Urgence</option>
+          </select>
+        </div>
+
+        <div>
+          <label>Niveau</label>
+
+          <select
+            [(ngModel)]="aspect.niveau"
+            [class.low]="aspect.niveau==='Faible'"
+            [class.medium]="aspect.niveau==='Moyen'"
+            [class.high]="aspect.niveau==='Élevé'">
+
+            <option>Faible</option>
+            <option>Moyen</option>
+            <option>Élevé</option>
+
+          </select>
+
+        </div>
+
+      </div>
+
+      <div class="field">
+
+        <label>Mesures existantes</label>
+
+        <textarea
+          [(ngModel)]="aspect.mesures">
+        </textarea>
+
+      </div>
+
+      <div class="field">
+
+        <label>Actions d'amélioration</label>
+
+        <textarea
+          [(ngModel)]="aspect.actions">
+        </textarea>
+
+      </div>
+
+    </div>
+
+    }
+
+  </div>
+
+</div>

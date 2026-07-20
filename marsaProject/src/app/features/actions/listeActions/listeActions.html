@@ -1,0 +1,156 @@
+<div class="actions-page">
+
+  <div class="page-header">
+    <div>
+      <h2>Plan d'Actions</h2>
+      <p>Suivi des actions d'amélioration du SMI</p>
+    </div>
+
+    <button class="add-btn" (click)="addAction()">
+      + Nouvelle action
+    </button>
+  </div>
+
+  <div class="stats-grid">
+
+    <div class="stat-card">
+      <span>Total</span>
+      <strong>{{ totalActions }}</strong>
+    </div>
+
+    <div class="stat-card">
+      <span>À faire</span>
+      <strong>{{ actionsAFaire }}</strong>
+    </div>
+
+    <div class="stat-card">
+      <span>En cours</span>
+      <strong>{{ actionsEnCours }}</strong>
+    </div>
+
+    <div class="stat-card">
+      <span>Terminées</span>
+      <strong>{{ actionsTerminees }}</strong>
+    </div>
+
+  </div>
+
+  <div class="table-container">
+
+    <table>
+
+      <thead>
+        <tr>
+          <th>Réf</th>
+          <th>Action</th>
+          <th>Source</th>
+          <th>Responsable</th>
+          <th>Priorité</th>
+          <th>Échéance</th>
+          <th>Statut</th>
+          <th>Avancement</th>
+          <th>Preuve</th>
+          <th></th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        @for(action of actions; track action.id){
+
+        <tr>
+
+          <td>
+            <input [(ngModel)]="action.reference">
+          </td>
+
+          <td>
+            <input [(ngModel)]="action.action">
+          </td>
+
+          <td>
+            <input [(ngModel)]="action.source">
+          </td>
+
+          <td>
+            <input [(ngModel)]="action.responsable">
+          </td>
+
+          <td>
+            <select [(ngModel)]="action.priorite">
+              <option>Faible</option>
+              <option>Moyenne</option>
+              <option>Élevée</option>
+              <option>Critique</option>
+            </select>
+          </td>
+
+          <td>
+            <input type="date" [(ngModel)]="action.echeance">
+          </td>
+
+          <td>
+            <select [(ngModel)]="action.statut">
+              <option>À faire</option>
+              <option>En cours</option>
+              <option>Terminée</option>
+              <option>Suspendue</option>
+            </select>
+          </td>
+
+          <td>
+
+            <input
+              type="range"
+              min="0"
+              max="100"
+              [(ngModel)]="action.avancement">
+
+            <span>{{ action.avancement }}%</span>
+
+          </td>
+
+          <td>
+
+  <label class="upload-btn">
+    📎
+    <input
+      hidden
+      type="file"
+      (change)="onFileSelected($event, action)">
+  </label>
+
+  @if(action.preuve){
+    <div class="proof-row">
+      <span class="proof-name">{{ action.preuve }}</span>
+      <button
+        class="download-btn"
+        type="button"
+        (click)="downloadProof(action)"
+        title="Télécharger">
+        ⬇
+      </button>
+    </div>
+  }
+
+</td>
+
+          <td>
+            <button
+              class="delete-btn"
+              (click)="removeAction(action.id)">
+              ✕
+            </button>
+          </td>
+
+        </tr>
+
+        }
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+</div>

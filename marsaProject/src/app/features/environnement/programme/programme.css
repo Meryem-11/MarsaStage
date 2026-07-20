@@ -1,0 +1,153 @@
+.programme-page {
+  padding: 1.5rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.header h2 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.header p {
+  margin-top: 4px;
+  color: #64748b;
+}
+
+.add-btn {
+  border: none;
+  background: #0f766e;
+  color: white;
+  padding: 12px 18px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: white;
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 2px 12px rgba(0,0,0,.05);
+}
+
+.stat-card span {
+  color: #64748b;
+  font-size: 13px;
+}
+
+.stat-card strong {
+  display: block;
+  margin-top: 8px;
+  font-size: 28px;
+}
+
+.programmes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(520px, 1fr));
+  gap: 20px;
+}
+
+.programme-card {
+  background: white;
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: 0 4px 14px rgba(0,0,0,.06);
+}
+
+.card-top {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.reference {
+  flex: 1;
+  font-weight: 600;
+}
+
+.field {
+  margin-bottom: 16px;
+}
+
+.field label,
+.two-columns label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 13px;
+  color: #475569;
+}
+
+.two-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #dbe2ea;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+
+textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.progress-section {
+  margin-top: 16px;
+}
+
+.progress-label {
+  margin-bottom: 6px;
+  font-size: 13px;
+}
+
+.progress-bar {
+  height: 10px;
+  background: #e2e8f0;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #0f766e;
+}
+
+.delete-btn {
+  border: none;
+  background: transparent;
+  color: #dc2626;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+@media (max-width: 900px) {
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .programmes-grid {
+    grid-template-columns: 1fr;
+  }
+
+}

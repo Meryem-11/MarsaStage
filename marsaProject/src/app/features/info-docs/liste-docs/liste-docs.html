@@ -1,0 +1,133 @@
+<div class="doc-page">
+
+  <header class="doc-header">
+    <div class="doc-header__identity">
+      <span class="doc-header__badge material-symbols-outlined">folder_managed</span>
+      <div>
+        <h1>Liste des documents</h1>
+        <p>Registre documentaire du SMI : procédures, manuels, formulaires et enregistrements</p>
+      </div>
+    </div>
+    <button class="doc-header__cta" (click)="addDocument()">
+      <span class="material-symbols-outlined">note_add</span>
+      Ajouter un document
+    </button>
+  </header>
+
+  <div class="doc-kpis">
+    <div class="doc-kpi">
+      <span class="doc-kpi__value">{{ totalDocuments }}</span>
+      <span class="doc-kpi__label">Documents au total</span>
+    </div>
+    <div class="doc-kpi doc-kpi--green">
+      <span class="doc-kpi__value">{{ documentsEnVigueur }}</span>
+      <span class="doc-kpi__label">En vigueur</span>
+    </div>
+    <div class="doc-kpi doc-kpi--amber">
+      <span class="doc-kpi__value">{{ documentsEnRevision }}</span>
+      <span class="doc-kpi__label">En révision</span>
+    </div>
+    <div class="doc-kpi doc-kpi--red">
+      <span class="doc-kpi__value">{{ documentsObsoletes }}</span>
+      <span class="doc-kpi__label">Obsolètes</span>
+    </div>
+  </div>
+
+  <!-- Étagère documentaire -->
+  <div class="doc-shelf">
+    @for (doc of documents; track doc.id) {
+      <div class="doc-folder" [class]="'doc-folder doc-folder--' + doc.type.toLowerCase()">
+
+        <div class="doc-folder__tab">
+          <span class="material-symbols-outlined">
+            @switch (doc.type) {
+              @case ('Procédure') { rule_folder }
+              @case ('Manuel') { menu_book }
+              @case ('Politique') { gavel }
+              @case ('Enregistrement') { description }
+              @default { assignment }
+            }
+          </span>
+          {{ doc.type }}
+        </div>
+
+        <div class="doc-folder__body">
+
+          <div class="doc-folder__top">
+            <span class="doc-folder__code">{{ doc.code }}</span>
+
+            <select class="status-tag"
+                    [(ngModel)]="doc.statut"
+                    [class]="'status-tag status-tag--' + doc.statut.toLowerCase().replace(' ', '-')">
+              <option value="En vigueur">En vigueur</option>
+              <option value="En révision">En révision</option>
+              <option value="Brouillon">Brouillon</option>
+              <option value="Obsolète">Obsolète</option>
+            </select>
+
+            <button class="doc-folder__delete" title="Supprimer" (click)="removeDocument(doc.id)">
+              <span class="material-symbols-outlined">close</span>
+            </button>
+          </div>
+
+          <input type="text" class="doc-folder__titre" [(ngModel)]="doc.titre"
+                 placeholder="Titre du document..." />
+
+          <div class="doc-folder__meta">
+            <select class="form-control" [(ngModel)]="doc.type">
+              @for (t of typesDisponibles; track t) {
+                <option [value]="t">{{ t }}</option>
+              }
+            </select>
+
+            <input type="text" class="form-control version-input" [(ngModel)]="doc.version" placeholder="v1.0" />
+
+            <select class="form-control" [(ngModel)]="doc.responsable">
+              <option value="" disabled selected>Responsable...</option>
+              @for (r of responsablesDisponibles; track r) {
+                <option [value]="r">{{ r }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="doc-folder__dates">
+            <label class="date-field">
+              <span>Création</span>
+              <input type="date" class="form-control" [(ngModel)]="doc.dateCreation" />
+            </label>
+            <label class="date-field">
+              <span>Dernière révision</span>
+              <input type="date" class="form-control" [(ngModel)]="doc.dateRevision" />
+            </label>
+          </div>
+
+          <div class="doc-folder__file">
+            <label class="upload-btn">
+              <span class="material-symbols-outlined">upload_file</span>
+              Joindre un fichier
+              <input hidden type="file" (change)="onFileSelected($event, doc)">
+            </label>
+
+            @if (doc.fichierNom) {
+              <div class="file-chip">
+                <span class="material-symbols-outlined">description</span>
+                <span class="file-chip__name">{{ doc.fichierNom }}</span>
+                <span class="file-chip__size">{{ doc.fichierTaille }}</span>
+                <button class="file-chip__download" (click)="downloadDocument(doc)" title="Télécharger">
+                  <span class="material-symbols-outlined">download</span>
+                </button>
+              </div>
+            }
+          </div>
+
+        </div>
+      </div>
+    } @empty {
+      <div class="empty-state">
+        <span class="material-symbols-outlined">folder_managed</span>
+        <p>Aucun document enregistré. Cliquez sur « Ajouter un document » pour commencer.</p>
+      </div>
+    }
+  </div>
+
+</div>

@@ -1,0 +1,147 @@
+<div class="programme-page">
+
+  <div class="header">
+
+    <div>
+      <h2>Programme Environnemental</h2>
+      <p>Pilotage des objectifs et actions environnementales</p>
+    </div>
+
+    <button class="add-btn" (click)="addProgramme()">
+      Nouveau programme
+    </button>
+
+  </div>
+
+  <div class="stats-grid">
+
+    <div class="stat-card">
+      <span>Total Programmes</span>
+      <strong>{{ total }}</strong>
+    </div>
+
+    <div class="stat-card">
+      <span>En cours</span>
+      <strong>{{ enCours }}</strong>
+    </div>
+
+    <div class="stat-card">
+      <span>Terminés</span>
+      <strong>{{ termines }}</strong>
+    </div>
+
+    <div class="stat-card">
+      <span>En retard</span>
+      <strong>{{ retard }}</strong>
+    </div>
+
+  </div>
+
+  <div class="programmes-grid">
+
+    @for(programme of programmes; track programme.id){
+
+    <div class="programme-card">
+
+      <div class="card-top">
+
+        <input
+          class="reference"
+          [(ngModel)]="programme.reference"
+          placeholder="Référence">
+
+        <button
+          class="delete-btn"
+          (click)="removeProgramme(programme.id)">
+          ✕
+        </button>
+
+      </div>
+
+      <div class="field">
+        <label>Objectif environnemental</label>
+        <textarea [(ngModel)]="programme.objectif"></textarea>
+      </div>
+
+      <div class="field">
+        <label>Action</label>
+        <textarea [(ngModel)]="programme.action"></textarea>
+      </div>
+
+      <div class="two-columns">
+
+        <div>
+          <label>Responsable</label>
+          <input [(ngModel)]="programme.responsable">
+        </div>
+
+        <div>
+          <label>Échéance</label>
+          <input type="date" [(ngModel)]="programme.echeance">
+        </div>
+
+      </div>
+
+      <div class="two-columns">
+
+        <div>
+          <label>Indicateur</label>
+          <input [(ngModel)]="programme.indicateur">
+        </div>
+
+        <div>
+          <label>Cible</label>
+          <input [(ngModel)]="programme.cible">
+        </div>
+
+      </div>
+
+      <div class="two-columns">
+
+        <div>
+          <label>Statut</label>
+
+          <select [(ngModel)]="programme.statut">
+            <option>À faire</option>
+            <option>En cours</option>
+            <option>Terminé</option>
+            <option>En retard</option>
+          </select>
+
+        </div>
+
+        <div>
+          <label>Avancement</label>
+
+          <input
+            type="range"
+            min="0"
+            max="100"
+            [(ngModel)]="programme.avancement">
+
+        </div>
+
+      </div>
+
+      <div class="progress-section">
+
+        <div class="progress-label">
+          {{ programme.avancement }}%
+        </div>
+
+        <div class="progress-bar">
+          <div
+            class="progress-fill"
+            [style.width.%]="programme.avancement">
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    }
+
+  </div>
+
+</div>

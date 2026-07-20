@@ -1,0 +1,363 @@
+.liste-audit-page {
+  padding: 1.5rem 2rem 3rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.page-header {
+  margin-bottom: 1.25rem;
+}
+
+.page-header h2 {
+  margin: 0 0 4px 0;
+  font-size: 22px;
+  font-weight: 600;
+  color: #0b2545;
+}
+
+.page-subtitle {
+  margin: 0;
+  font-size: 13px;
+  color: #888;
+}
+
+.master-detail {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+/* --- Colonne gauche --- */
+
+.audits-panel {
+  background: white;
+  border: 1px solid #eee;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.search-box {
+  padding: 14px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.search-box input {
+  width: 100%;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 13px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.search-box input:focus {
+  border-color: #0b6fb0;
+}
+
+.audits-scroll {
+  max-height: 640px;
+  overflow-y: auto;
+}
+
+.audit-list-item {
+  padding: 14px 16px;
+  border-bottom: 1px solid #f5f5f5;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  border-left: 3px solid transparent;
+}
+
+.audit-list-item:hover {
+  background: #fafbfc;
+}
+
+.audit-list-item--active {
+  background: #f0f7fc;
+  border-left-color: #0b6fb0;
+}
+
+.audit-item-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.audit-ref {
+  font-size: 11px;
+  font-weight: 700;
+  color: #0b6fb0;
+}
+
+.audit-badge {
+  font-size: 9px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 10px;
+}
+
+.badge--planned  { background: #eef2ff; color: #6366f1; }
+.badge--progress { background: #fffaf0; color: #f59e0b; }
+.badge--done      { background: #f0fdf4; color: #22c55e; }
+
+.audit-item-title {
+  margin: 0 0 4px 0;
+  font-size: 13px;
+  font-weight: 500;
+  color: #1a1a1a;
+  line-height: 1.3;
+}
+
+.audit-item-terminal {
+  font-size: 11px;
+  color: #999;
+}
+
+.empty-search {
+  padding: 30px 16px;
+  text-align: center;
+  color: #bbb;
+  font-size: 12px;
+  font-style: italic;
+}
+
+/* --- Colonne droite --- */
+
+.detail-panel {
+  background: white;
+  border: 1px solid #eee;
+  border-radius: 14px;
+  padding: 22px 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.detail-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 18px;
+  border-bottom: 1px solid #f0f0f0;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.detail-ref {
+  font-size: 11px;
+  font-weight: 700;
+  color: #0b6fb0;
+}
+
+.detail-top h3 {
+  margin: 4px 0 6px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #0b2545;
+}
+
+.detail-terminal {
+  font-size: 12px;
+  color: #999;
+}
+
+.detail-open-count {
+  font-size: 12px;
+  font-weight: 600;
+  color: #ef4444;
+  background: #fef2f2;
+  padding: 6px 12px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.actions-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.actions-header h4 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.btn-add-action {
+  background: #0b6fb0;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.btn-add-action:hover {
+  background: #08578c;
+}
+
+.actions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.action-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: #fafbfc;
+  border: 1px solid #f0f0f0;
+  border-radius: 10px;
+  padding: 12px 14px;
+  transition: background 0.15s ease;
+}
+
+.action-row--overdue {
+  background: #fff7f7;
+  border-color: #fde0e0;
+}
+
+.action-row--done {
+  opacity: 0.55;
+}
+
+.check-btn {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid #ddd;
+  background: white;
+  cursor: pointer;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: white;
+  margin-top: 2px;
+  transition: all 0.15s ease;
+}
+
+.check-btn--checked {
+  background: #22c55e;
+  border-color: #22c55e;
+}
+
+.action-content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.action-desc-input {
+  border: none;
+  background: transparent;
+  font-size: 13px;
+  color: #1a1a1a;
+  outline: none;
+  padding: 2px 0;
+  width: 100%;
+}
+
+.action-row--done .action-desc-input {
+  text-decoration: line-through;
+}
+
+.action-meta {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.action-meta-input {
+  border: 1px solid #eee;
+  border-radius: 6px;
+  padding: 5px 8px;
+  font-size: 11px;
+  background: white;
+  outline: none;
+  min-width: 120px;
+}
+
+.action-meta-input:focus {
+  border-color: #0b6fb0;
+}
+
+.prio-select {
+  border: none;
+  border-radius: 10px;
+  padding: 5px 10px;
+  font-size: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  outline: none;
+}
+
+.prio--high { background: #fef2f2; color: #dc2626; }
+.prio--mid  { background: #fffaf0; color: #f59e0b; }
+.prio--low  { background: #f0fdf4; color: #22c55e; }
+
+.overdue-tag {
+  align-self: flex-start;
+  font-size: 10px;
+  font-weight: 600;
+  color: #dc2626;
+  background: #fef2f2;
+  padding: 3px 9px;
+  border-radius: 10px;
+}
+
+.btn-icon-delete {
+  border: none;
+  background: transparent;
+  color: #ccc;
+  cursor: pointer;
+  font-size: 13px;
+  padding: 4px 6px;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.btn-icon-delete:hover {
+  color: #ef4444;
+  background: #fef2f2;
+}
+
+.empty-actions {
+  text-align: center;
+  padding: 30px;
+  color: #bbb;
+  font-style: italic;
+  font-size: 13px;
+}
+
+/* --- Responsive --- */
+
+@media (max-width: 900px) {
+  .master-detail {
+    grid-template-columns: 1fr;
+  }
+  .audits-scroll {
+    max-height: 300px;
+  }
+}
+
+@media (max-width: 600px) {
+  .liste-audit-page {
+    padding: 1rem;
+  }
+  .action-meta {
+    flex-direction: column;
+  }
+  .action-meta-input {
+    width: 100%;
+  }
+}

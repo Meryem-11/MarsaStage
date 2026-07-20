@@ -1,0 +1,150 @@
+<div class="ard-page">
+
+  <header class="ard-header">
+    <div class="ard-header__identity">
+      <span class="ard-header__badge material-symbols-outlined">fact_check</span>
+      <div>
+        <h1>Actions issues des revues de direction</h1>
+        <p>Suivi des décisions et engagements pris lors des sessions RDD</p>
+      </div>
+    </div>
+    <button class="ard-header__cta" (click)="addAction()">
+      <span class="material-symbols-outlined">add</span>
+      Ajouter une action
+    </button>
+  </header>
+
+  <!-- Tableau Kanban -->
+  <div class="kanban">
+
+    <div class="kanban-column">
+      <div class="kanban-column__head kanban-column__head--todo">
+        <span>À faire</span>
+        <span class="kanban-column__count">{{ actionsParStatut('À faire').length }}</span>
+      </div>
+      <div class="kanban-column__body">
+        @for (action of actionsParStatut('À faire'); track action.id) {
+          <div class="action-card action-card--todo">
+            <div class="action-card__top">
+              <span class="action-card__ref">{{ action.reference }}</span>
+              <button class="action-card__delete" (click)="removeAction(action.id)">
+                <span class="material-symbols-outlined">close</span>
+              </button>
+            </div>
+            <textarea class="action-card__decision" rows="2" [(ngModel)]="action.decision"
+                      placeholder="Décision / engagement pris..."></textarea>
+            <div class="action-card__meta">
+              <select class="form-control" [(ngModel)]="action.sessionOrigine">
+                <option value="" disabled selected>Session...</option>
+                @for (s of sessionsDisponibles; track s) {
+                  <option [value]="s">{{ s }}</option>
+                }
+              </select>
+              <select class="form-control" [(ngModel)]="action.responsable">
+                <option value="" disabled selected>Responsable...</option>
+                @for (r of responsablesDisponibles; track r) {
+                  <option [value]="r">{{ r }}</option>
+                }
+              </select>
+              <input type="date" class="form-control" [(ngModel)]="action.echeance" />
+            </div>
+            <select class="action-card__move" [(ngModel)]="action.statut">
+              <option value="À faire">À faire</option>
+              <option value="En cours">→ Passer en cours</option>
+              <option value="Terminée">→ Marquer terminée</option>
+            </select>
+          </div>
+        } @empty {
+          <p class="kanban-empty">Aucune action</p>
+        }
+      </div>
+    </div>
+
+    <div class="kanban-column">
+      <div class="kanban-column__head kanban-column__head--progress">
+        <span>En cours</span>
+        <span class="kanban-column__count">{{ actionsParStatut('En cours').length }}</span>
+      </div>
+      <div class="kanban-column__body">
+        @for (action of actionsParStatut('En cours'); track action.id) {
+          <div class="action-card action-card--progress">
+            <div class="action-card__top">
+              <span class="action-card__ref">{{ action.reference }}</span>
+              <button class="action-card__delete" (click)="removeAction(action.id)">
+                <span class="material-symbols-outlined">close</span>
+              </button>
+            </div>
+            <textarea class="action-card__decision" rows="2" [(ngModel)]="action.decision"
+                      placeholder="Décision / engagement pris..."></textarea>
+            <div class="action-card__meta">
+              <select class="form-control" [(ngModel)]="action.sessionOrigine">
+                <option value="" disabled selected>Session...</option>
+                @for (s of sessionsDisponibles; track s) {
+                  <option [value]="s">{{ s }}</option>
+                }
+              </select>
+              <select class="form-control" [(ngModel)]="action.responsable">
+                <option value="" disabled selected>Responsable...</option>
+                @for (r of responsablesDisponibles; track r) {
+                  <option [value]="r">{{ r }}</option>
+                }
+              </select>
+              <input type="date" class="form-control" [(ngModel)]="action.echeance" />
+            </div>
+            <select class="action-card__move" [(ngModel)]="action.statut">
+              <option value="À faire">← Revenir à faire</option>
+              <option value="En cours">En cours</option>
+              <option value="Terminée">→ Marquer terminée</option>
+            </select>
+          </div>
+        } @empty {
+          <p class="kanban-empty">Aucune action</p>
+        }
+      </div>
+    </div>
+
+    <div class="kanban-column">
+      <div class="kanban-column__head kanban-column__head--done">
+        <span>Terminée</span>
+        <span class="kanban-column__count">{{ actionsParStatut('Terminée').length }}</span>
+      </div>
+      <div class="kanban-column__body">
+        @for (action of actionsParStatut('Terminée'); track action.id) {
+          <div class="action-card action-card--done">
+            <div class="action-card__top">
+              <span class="action-card__ref">{{ action.reference }}</span>
+              <button class="action-card__delete" (click)="removeAction(action.id)">
+                <span class="material-symbols-outlined">close</span>
+              </button>
+            </div>
+            <textarea class="action-card__decision" rows="2" [(ngModel)]="action.decision"
+                      placeholder="Décision / engagement pris..."></textarea>
+            <div class="action-card__meta">
+              <select class="form-control" [(ngModel)]="action.sessionOrigine">
+                <option value="" disabled selected>Session...</option>
+                @for (s of sessionsDisponibles; track s) {
+                  <option [value]="s">{{ s }}</option>
+                }
+              </select>
+              <select class="form-control" [(ngModel)]="action.responsable">
+                <option value="" disabled selected>Responsable...</option>
+                @for (r of responsablesDisponibles; track r) {
+                  <option [value]="r">{{ r }}</option>
+                }
+              </select>
+              <input type="date" class="form-control" [(ngModel)]="action.echeance" />
+            </div>
+            <select class="action-card__move" [(ngModel)]="action.statut">
+              <option value="À faire">← Revenir à faire</option>
+              <option value="En cours">← Repasser en cours</option>
+              <option value="Terminée">Terminée</option>
+            </select>
+          </div>
+        } @empty {
+          <p class="kanban-empty">Aucune action</p>
+        }
+      </div>
+    </div>
+
+  </div>
+</div>
