@@ -42,6 +42,9 @@ export class ProgrammeAuditService {
   getProgrammes(): Observable<ProgrammeAudit[]> {
     return this.http.get<ProgrammeAudit[]>(this.apiUrl);
   }
+  getProgrammeById(id: number): Observable<ProgrammeAudit> {
+  return this.http.get<ProgrammeAudit>(`${this.apiUrl}/${id}`);
+}
 
   createProgramme(programme: ProgrammeAudit): Observable<ProgrammeAudit> {
     return this.http.post<ProgrammeAudit>(this.apiUrl, programme);
@@ -50,5 +53,14 @@ export class ProgrammeAuditService {
   deleteProgramme(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
+
+
+
+updateProgramme(programme: ProgrammeAudit): Observable<ProgrammeAudit> {
+  return this.http.put<ProgrammeAudit>(
+    `${this.apiUrl}/${programme.id}`,
+    programme
+  );
+}
 
 }

@@ -190,6 +190,45 @@
   background: #fef2f2;
 }
 
+
+.btn-edit {
+  border: none;
+  background: transparent;
+  color: #ccc;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+
+.btn-edit:hover {
+  color: #f59e0b;
+  background: #fff8e6;
+}
+.btn-secondary {
+  border: none;
+  background: transparent;
+  color: #ccc;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+
+.btn-secondary:hover {
+  color: #0b6fb0;
+  background: #eef7fd;
+}
+.programme-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
 .empty-row {
   text-align: center;
   padding: 24px;

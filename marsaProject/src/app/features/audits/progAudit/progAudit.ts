@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
+import { Router } from '@angular/router';
 import {
   ProgrammeAudit,
   Audit,
   ProgrammeAuditService
-} from '../services/programme-audit';
+} from './../services/programme-audit';
 
 @Component({
   selector: 'app-prog-audit',
@@ -21,8 +21,10 @@ import {
 export class ProgAudit implements OnInit {
 
   constructor(
-    private programmeService: ProgrammeAuditService
+    private programmeService: ProgrammeAuditService,
+    private router: Router
   ) {}
+
 
   /******************************
    * LISTES
@@ -32,6 +34,9 @@ export class ProgAudit implements OnInit {
 
   programmesFiltres: ProgrammeAudit[] = [];
 
+  isEditing = false;
+
+
   terminaux: string[] = [
     'Terminal Conteneurs',
     'Terminal Polyvalent',
@@ -40,10 +45,12 @@ export class ProgAudit implements OnInit {
     'Terminal Passagers'
   ];
 
+
   typesAudit: string[] = [
     'Interne',
     'Externe'
   ];
+
 
   statutsAudit: string[] = [
     'Planifié',
@@ -51,6 +58,7 @@ export class ProgAudit implements OnInit {
     'Réalisé',
     'Reporté'
   ];
+
 
   /******************************
    * FILTRES
@@ -61,6 +69,8 @@ export class ProgAudit implements OnInit {
   filtreAnnee = '';
 
   filtreResponsable = '';
+
+
 
   /******************************
    * STATISTIQUES
@@ -78,17 +88,30 @@ export class ProgAudit implements OnInit {
 
   auditsReportes = 0;
 
+
+
   /******************************
    * FORMULAIRE
    ******************************/
-
+testClick(): void {
+  console.log('LE BOUTON MARCHE');
+}
   programme: ProgrammeAudit = {
+
     reference: '',
+
     annee: '',
+
     responsable: '',
+
     dateCreation: '',
+
     audits: []
+    
+
   };
+
+
 
   /******************************
    * INITIALISATION
@@ -102,36 +125,55 @@ export class ProgAudit implements OnInit {
 
   }
 
+
+
   /******************************
    * CHARGEMENT
    ******************************/
 
   loadProgrammes(): void {
 
-    this.programmeService.getProgrammes().subscribe({
 
-      next: (data) => {
+    this.programmeService
+      .getProgrammes()
+      .subscribe({
 
-        this.programmes = data;
+        next: (data: ProgrammeAudit[]) => {
 
-        this.programmesFiltres = [...data];
 
-        this.updateStatistics();
+          this.programmes = data;
 
-      },
 
-      error: (err) => {
+          this.programmesFiltres = [
+            ...data
+          ];
 
-        console.error(
-          'Erreur chargement des programmes :',
-          err
-        );
 
-      }
+          this.updateStatistics();
 
-    });
+
+        },
+
+
+        error: (err: unknown) => {
+
+
+          console.error(
+            'Erreur chargement programmes : ',
+            err
+          );
+
+
+        }
+
+
+      });
+
 
   }
+
+
+
 
   /******************************
    * STATISTIQUES
@@ -139,7 +181,10 @@ export class ProgAudit implements OnInit {
 
   updateStatistics(): void {
 
-    this.totalProgrammes = this.programmes.length;
+
+    this.totalProgrammes =
+      this.programmes.length;
+
 
     this.totalAudits = 0;
 
@@ -151,37 +196,70 @@ export class ProgAudit implements OnInit {
 
     this.auditsReportes = 0;
 
-    this.programmes.forEach(programme => {
 
-      this.totalAudits += programme.audits.length;
 
-      programme.audits.forEach(audit => {
+    this.programmes.forEach(
+      (programme: ProgrammeAudit) => {
 
-        switch (audit.statut) {
 
-          case 'Planifié':
-            this.auditsPlanifies++;
-            break;
+        this.totalAudits +=
+          programme.audits.length;
 
-          case 'En cours':
-            this.auditsEnCours++;
-            break;
 
-          case 'Réalisé':
-            this.auditsRealises++;
-            break;
 
-          case 'Reporté':
-            this.auditsReportes++;
-            break;
+        programme.audits.forEach(
+          (audit: Audit) => {
 
-        }
 
-      });
+            switch(audit.statut){
 
-    });
+
+              case 'Planifié':
+
+                this.auditsPlanifies++;
+
+                break;
+
+
+
+              case 'En cours':
+
+                this.auditsEnCours++;
+
+                break;
+
+
+
+              case 'Réalisé':
+
+                this.auditsRealises++;
+
+                break;
+
+
+
+              case 'Reporté':
+
+                this.auditsReportes++;
+
+                break;
+
+
+            }
+
+
+          }
+        );
+
+
+      }
+    );
+
 
   }
+
+
+
 
   /******************************
    * FILTRES
@@ -189,265 +267,515 @@ export class ProgAudit implements OnInit {
 
   applyFilters(): void {
 
-    this.programmesFiltres = this.programmes.filter(programme => {
 
-      const okRecherche =
-        this.recherche === '' ||
+    this.programmesFiltres =
+      this.programmes.filter(
+        (programme: ProgrammeAudit) => {
 
-        programme.reference
-          .toLowerCase()
-          .includes(this.recherche.toLowerCase()) ||
 
-        programme.responsable
-          .toLowerCase()
-          .includes(this.recherche.toLowerCase());
+          const recherche =
+            this.recherche.toLowerCase();
 
-      const okAnnee =
-        this.filtreAnnee === '' ||
-        programme.annee === this.filtreAnnee;
 
-      const okResponsable =
-        this.filtreResponsable === '' ||
 
-        programme.responsable
-          .toLowerCase()
-          .includes(this.filtreResponsable.toLowerCase());
+          const okRecherche =
 
-      return (
-        okRecherche &&
-        okAnnee &&
-        okResponsable
+            this.recherche === '' ||
+
+            programme.reference
+              .toLowerCase()
+              .includes(recherche)
+
+            ||
+
+            programme.responsable
+              .toLowerCase()
+              .includes(recherche);
+
+
+
+          const okAnnee =
+
+            this.filtreAnnee === '' ||
+
+            programme.annee === this.filtreAnnee;
+
+
+
+          const okResponsable =
+
+            this.filtreResponsable === '' ||
+
+            programme.responsable
+              .toLowerCase()
+              .includes(
+                this.filtreResponsable
+                  .toLowerCase()
+              );
+
+
+
+          return (
+
+            okRecherche &&
+
+            okAnnee &&
+
+            okResponsable
+
+          );
+
+
+        }
       );
 
-    });
 
   }
-    /******************************
-   * AJOUT D'UN AUDIT
+
+
+
+  /******************************
+   * AJOUT AUDIT
    ******************************/
 
   addAudit(): void {
 
+
     const nouvelAudit: Audit = {
+
 
       reference: '',
 
+
       titre: '',
+
 
       type: 'Interne',
 
+
       terminal: this.terminaux[0],
+
 
       auditeur: '',
 
+
       dateDebut: '',
+
 
       dateFin: '',
 
+
       statut: 'Planifié'
+
 
     };
 
-    this.programme.audits.push(nouvelAudit);
+
+
+    this.programme.audits.push(
+      nouvelAudit
+    );
+
 
   }
 
+
+
   /******************************
-   * SUPPRESSION D'UN AUDIT
+   * SUPPRESSION AUDIT
    ******************************/
 
-  removeAudit(index: number): void {
+  removeAudit(index:number): void {
 
-    if (index < 0 || index >= this.programme.audits.length) {
+
+    if(
+
+      index < 0 ||
+
+      index >= this.programme.audits.length
+
+    ){
+
       return;
+
     }
 
-    this.programme.audits.splice(index, 1);
+
+
+    this.programme.audits.splice(
+      index,
+      1
+    );
+
 
   }
-
-  /******************************
-   * ENREGISTREMENT
+    /******************************
+   * ENREGISTREMENT PROGRAMME
    ******************************/
 
   saveProgramme(): void {
 
-    if (
+
+    if(
+
       this.programme.reference.trim() === '' ||
+
       this.programme.annee.trim() === '' ||
+
       this.programme.responsable.trim() === ''
-    ) {
 
-      alert('Veuillez compléter les informations du programme.');
+    ){
 
-      return;
-
-    }
-
-    if (this.programme.audits.length === 0) {
-
-      alert('Veuillez ajouter au moins un audit.');
+      alert(
+        'Veuillez compléter les informations du programme.'
+      );
 
       return;
 
     }
 
-    for (const audit of this.programme.audits) {
 
-      if (
+
+    if(this.programme.audits.length === 0){
+
+
+      alert(
+        'Veuillez ajouter au moins un audit.'
+      );
+
+      return;
+
+
+    }
+
+
+
+    // Validation des audits
+
+    for(
+      const audit of this.programme.audits
+    ){
+
+
+      if(
+
         audit.reference.trim() === '' ||
+
         audit.titre.trim() === '' ||
+
         audit.auditeur.trim() === ''
-      ) {
 
-        alert('Chaque audit doit être complètement renseigné.');
+      ){
 
-        return;
 
-      }
-
-      if (!audit.dateDebut || !audit.dateFin) {
-
-        alert('Veuillez renseigner les dates de tous les audits.');
+        alert(
+          'Chaque audit doit être complètement renseigné.'
+        );
 
         return;
 
+
       }
+
+
+
+      if(
+
+        !audit.dateDebut ||
+
+        !audit.dateFin
+
+      ){
+
+
+        alert(
+          'Veuillez renseigner les dates de tous les audits.'
+        );
+
+        return;
+
+
+      }
+
+
+    }
+ 
+
+
+
+    /******************************
+     * MODEFICATION
+     ******************************/
+
+    if(this.isEditing){
+
+
+
+      this.programmeService
+        .updateProgramme(this.programme)
+        .subscribe({
+
+
+
+          next: (programme: ProgrammeAudit) => {
+
+
+
+            const index =
+              this.programmes.findIndex(
+                (p: ProgrammeAudit) =>
+                  p.id === programme.id
+              );
+
+
+
+            if(index !== -1){
+
+              this.programmes[index] =
+                programme;
+
+            }
+
+
+
+            alert(
+              'Programme modifié avec succès.'
+            );
+
+
+
+            this.isEditing = false;
+
+
+            this.resetForm();
+
+
+            this.loadProgrammes();
+
+
+          },
+
+
+
+          error: (err: unknown) => {
+
+
+            console.error(
+              'Erreur modification : ',
+              err
+            );
+
+
+          }
+
+
+
+        });
+
+
+
+      return;
+
 
     }
 
-    const programmeAEnvoyer: ProgrammeAudit = {
 
-      reference: this.programme.reference,
 
-      annee: this.programme.annee,
 
-      responsable: this.programme.responsable,
 
-      dateCreation: this.programme.dateCreation,
+    /******************************
+     * MODE CREATION
+     ******************************/
 
-      audits: this.programme.audits.map(audit => ({
 
-        reference: audit.reference,
+    const programmeAEnvoyer:
+      ProgrammeAudit = {
 
-        titre: audit.titre,
 
-        type: audit.type,
 
-        terminal: audit.terminal,
+      reference:
+        this.programme.reference,
 
-        auditeur: audit.auditeur,
 
-        dateDebut: audit.dateDebut,
 
-        dateFin: audit.dateFin,
+      annee:
+        this.programme.annee,
 
-        statut: audit.statut
 
-      }))
+
+      responsable:
+        this.programme.responsable,
+
+
+
+      dateCreation:
+        this.programme.dateCreation,
+
+
+
+      audits:
+        this.programme.audits.map(
+          (audit: Audit) => ({
+
+
+
+            reference:
+              audit.reference,
+
+
+
+            titre:
+              audit.titre,
+
+
+
+            type:
+              audit.type,
+
+
+
+            terminal:
+              audit.terminal,
+
+
+
+            auditeur:
+              audit.auditeur,
+
+
+
+            dateDebut:
+              audit.dateDebut,
+
+
+
+            dateFin:
+              audit.dateFin,
+
+
+
+            statut:
+              audit.statut
+
+
+
+          })
+        )
+
+
 
     };
 
-    this.programmeService.createProgramme(programmeAEnvoyer)
+
+
+
+
+    this.programmeService
+      .createProgramme(programmeAEnvoyer)
       .subscribe({
 
-        next: (programmeSauvegarde) => {
+
+
+        next: (programmeSauvegarde: ProgrammeAudit) => {
+
+
 
           console.log(
-            'Programme enregistré :',
+            'Programme enregistré : ',
             programmeSauvegarde
           );
-                    alert('Programme enregistré avec succès.');
+
+
+
+          alert(
+            'Programme enregistré avec succès.'
+          );
+
+
 
           this.resetForm();
 
+
           this.loadProgrammes();
+
+
 
         },
 
-        error: (err) => {
+
+
+        error: (err: unknown) => {
+
+
 
           console.error(
-            'Erreur lors de l\'enregistrement :',
+            'Erreur enregistrement : ',
             err
           );
 
-          alert("Impossible d'enregistrer le programme.");
+
+
+          alert(
+            "Impossible d'enregistrer le programme."
+          );
+
+
 
         }
 
+
+
       });
+
+
 
   }
 
+
+
+
+
   /******************************
-   * RÉINITIALISATION DU FORMULAIRE
+   * RESET FORMULAIRE
    ******************************/
 
   resetForm(): void {
 
+
     this.programme = {
+
 
       reference: '',
 
-      annee: String(new Date().getFullYear()),
+
+      annee:
+        String(
+          new Date().getFullYear()
+        ),
+
 
       responsable: '',
 
-      dateCreation: new Date()
-        .toISOString()
-        .substring(0, 10),
+
+      dateCreation:
+        new Date()
+          .toISOString()
+          .substring(0,10),
+
+
 
       audits: []
 
     };
 
-  }
-
-  /******************************
-   * SUPPRESSION D'UN PROGRAMME
-   ******************************/
-
-  deleteProgramme(id?: number): void {
-
-    if (id === undefined) {
-      return;
-    }
-
-    const confirmation = confirm(
-      'Voulez-vous vraiment supprimer ce programme ?'
-    );
-
-    if (!confirmation) {
-      return;
-    }
-
-    this.programmeService.deleteProgramme(id)
-      .subscribe({
-
-        next: () => {
-
-          this.loadProgrammes();
-
-        },
-
-        error: (err) => {
-
-          console.error(
-            'Erreur suppression :',
-            err
-          );
-
-          alert('La suppression a échoué.');
-
-        }
-
-      });
 
   }
 
+
+
+
   /******************************
-   * RECHARGEMENT
+   * REFRESH
    ******************************/
 
   refresh(): void {
@@ -456,123 +784,211 @@ export class ProgAudit implements OnInit {
 
   }
 
+
+
+
+
   /******************************
-   * NOMBRE D'AUDITS
+   * STATISTIQUES PAR PROGRAMME
    ******************************/
 
-  getNombreAudits(programme: ProgrammeAudit): number {
+
+  getNombreAudits(
+    programme: ProgrammeAudit
+  ): number {
+
 
     return programme.audits.length;
 
+
   }
 
-  /******************************
-   * AUDITS RÉALISÉS
-   ******************************/
 
-  getAuditsRealises(programme: ProgrammeAudit): number {
+
+
+
+  getAuditsRealises(
+    programme: ProgrammeAudit
+  ): number {
+
 
     return programme.audits.filter(
-      audit => audit.statut === 'Réalisé'
+
+      (audit: Audit) =>
+        audit.statut === 'Réalisé'
+
     ).length;
 
-  }
-    /******************************
-   * AUDITS PLANIFIÉS
-   ******************************/
 
-  getAuditsPlanifies(programme: ProgrammeAudit): number {
+  }
+
+
+
+
+
+  getAuditsPlanifies(
+    programme: ProgrammeAudit
+  ): number {
+
 
     return programme.audits.filter(
-      audit => audit.statut === 'Planifié'
+
+      (audit: Audit) =>
+        audit.statut === 'Planifié'
+
     ).length;
+
 
   }
 
-  /******************************
-   * AUDITS EN COURS
-   ******************************/
 
-  getAuditsEnCours(programme: ProgrammeAudit): number {
+
+
+
+  getAuditsEnCours(
+    programme: ProgrammeAudit
+  ): number {
+
 
     return programme.audits.filter(
-      audit => audit.statut === 'En cours'
+
+      (audit: Audit) =>
+        audit.statut === 'En cours'
+
     ).length;
+
 
   }
 
-  /******************************
-   * AUDITS REPORTÉS
-   ******************************/
 
-  getAuditsReportes(programme: ProgrammeAudit): number {
+
+
+
+  getAuditsReportes(
+    programme: ProgrammeAudit
+  ): number {
+
 
     return programme.audits.filter(
-      audit => audit.statut === 'Reporté'
+
+      (audit: Audit) =>
+        audit.statut === 'Reporté'
+
     ).length;
+
 
   }
 
-  /******************************
-   * POURCENTAGE D'AUDITS RÉALISÉS
-   ******************************/
 
-  getProgression(programme: ProgrammeAudit): number {
 
-    if (programme.audits.length === 0) {
+
+
+  getProgression(
+    programme: ProgrammeAudit
+  ): number {
+
+
+
+    if(programme.audits.length === 0){
+
       return 0;
+
     }
 
+
+
     return Math.round(
+
       (
+
         this.getAuditsRealises(programme)
-        / programme.audits.length
-      ) * 100
+
+        /
+
+        programme.audits.length
+
+      )
+
+      *
+
+      100
+
     );
+
 
   }
 
+
+
+
+
   /******************************
-   * TRI PAR RÉFÉRENCE
+   * TRI
    ******************************/
+
 
   sortByReference(): void {
 
-    this.programmesFiltres.sort((a, b) =>
-      a.reference.localeCompare(b.reference)
+
+    this.programmesFiltres.sort(
+
+      (a: ProgrammeAudit,b: ProgrammeAudit)=>
+
+        a.reference.localeCompare(
+          b.reference
+        )
+
     );
+
 
   }
 
-  /******************************
-   * TRI PAR ANNÉE
-   ******************************/
+
+
+
 
   sortByAnnee(): void {
 
-    this.programmesFiltres.sort((a, b) =>
-      b.annee.localeCompare(a.annee)
+
+    this.programmesFiltres.sort(
+
+      (a: ProgrammeAudit,b: ProgrammeAudit)=>
+
+        b.annee.localeCompare(
+          a.annee
+        )
+
     );
+
 
   }
 
-  /******************************
-   * TRI PAR RESPONSABLE
-   ******************************/
+
+
+
 
   sortByResponsable(): void {
 
-    this.programmesFiltres.sort((a, b) =>
-      a.responsable.localeCompare(b.responsable)
+
+    this.programmesFiltres.sort(
+
+      (a: ProgrammeAudit,b: ProgrammeAudit)=>
+
+        a.responsable.localeCompare(
+          b.responsable
+        )
+
     );
+
 
   }
 
-  /******************************
-   * RÉINITIALISER LES FILTRES
-   ******************************/
+
+
+
 
   clearFilters(): void {
+
 
     this.recherche = '';
 
@@ -580,8 +996,90 @@ export class ProgAudit implements OnInit {
 
     this.filtreResponsable = '';
 
-    this.programmesFiltres = [...this.programmes];
+
+
+    this.programmesFiltres =
+      [
+        ...this.programmes
+      ];
+
 
   }
+
+
+
+
+
+  /******************************
+   * ACTIONS
+   ******************************/
+
+
+
+
+
+  modifierProgramme(id: number): void {
+
+  console.log("OUVERTURE DETAIL", id);
+
+  this.router.navigate([
+    '/audits/progAudit/progDetail',
+    id
+  ]);
+
+}
+
+
+
+  supprimerProgramme(id:number): void {
+
+
+
+    if(
+      confirm(
+        "Supprimer ce programme d'audit ?"
+      )
+    ){
+
+
+
+      this.programmeService
+        .deleteProgramme(id)
+        .subscribe({
+
+
+
+          next: () => {
+
+
+            this.loadProgrammes();
+
+
+          },
+
+
+
+          error: (err: unknown)=>{
+
+
+            console.error(
+              'Erreur suppression : ',
+              err
+            );
+
+
+          }
+
+
+
+        });
+
+
+
+    }
+
+
+  }
+
 
 }

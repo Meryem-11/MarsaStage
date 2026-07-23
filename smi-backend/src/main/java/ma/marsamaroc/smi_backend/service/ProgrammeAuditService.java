@@ -1,9 +1,7 @@
 package ma.marsamaroc.smi_backend.service;
-
 import ma.marsamaroc.smi_backend.model.Audit;
 import ma.marsamaroc.smi_backend.model.ProgrammeAudit;
 import ma.marsamaroc.smi_backend.repository.ProgrammeAuditRepository;
-
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,5 +35,26 @@ public class ProgrammeAuditService {
     public void delete(Long id) {
         repository.deleteById(id);
     }
+   
+
+public ProgrammeAudit getById(Long id) {
+
+    return repository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Programme introuvable"));
 
 }
+public ProgrammeAudit update(ProgrammeAudit programme) {
+
+    if (programme.getAudits() != null) {
+
+        for (Audit audit : programme.getAudits()) {
+
+            audit.setProgrammeAudit(programme);
+
+        }
+
+    }
+
+    return repository.save(programme);
+
+}}

@@ -219,26 +219,50 @@
 
   </div>
 
-  <!-- HISTORIQUE -->
+ <!-- HISTORIQUE -->
 
-  <div class="programme-section">
+<div class="programme-section">
 
-    <h3>Programmes enregistrés</h3>
+  <h3>Programmes enregistrés</h3>
 
-    @for(p of programmes; track p.id){
+  @for(p of programmes; track p.id){
 
-      <div class="programme-card">
+    <div class="programme-card">
 
-        <strong>{{p.reference}}</strong>
+      <div class="programme-info">
 
-        <p>Année : {{p.annee}}</p>
+        <strong>{{ p.reference }}</strong>
 
-        <p>Responsable : {{p.responsable}}</p>
+        <p>Année : {{ p.annee }}</p>
+
+        <p>Responsable : {{ p.responsable }}</p>
 
       </div>
 
-    }
+      <div class="programme-actions">
 
-  </div>
+       
+        <button
+  type="button"
+  class="btn-edit"
+  (click)="modifierProgramme(p.id!)">
+
+  Modifier
+
+</button>
+
+        <button
+          class="btn-delete"
+          (click)="supprimerProgramme(p.id!)">
+          Supprimer
+        </button>
+
+      </div>
+
+    </div>
+
+  }
+
+</div>
 
 </div>
