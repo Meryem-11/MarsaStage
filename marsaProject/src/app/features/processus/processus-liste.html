@@ -58,7 +58,7 @@
             <td class="font-bold text-slate">{{ proc.code }}</td>
             <td>
               <div class="processus-name">
-                <span class="font-medium text-dark">{{ proc.name }}</span>
+                <span class="font-medium text-dark">{{ proc.nom }}</span>
                 <span class="text-muted text-small">{{ proc.description }}</span>
               </div>
             </td>
@@ -67,17 +67,17 @@
                 {{ proc.type }}
               </span>
             </td>
-            <td>{{ proc.owner }}</td>
+            <td>{{ proc.pilote }}</td>
             <td>v{{ proc.version }}</td>
-            <td>{{ proc.lastRevision }}</td>
+            <td>{{ proc.dateRevision }}</td>
             
             <!-- Colonne PDF -->
             <td>
               <div class="pdf-container">
-                @if (proc.pdfName) {
-                  <div class="pdf-file-info" [title]="proc.pdfName">
+                @if (proc.nomPdf) {
+                  <div class="pdf-file-info" [title]="proc.nomPdf">
                     <span class="material-symbols-outlined pdf-icon">picture_as_pdf</span>
-                    <span class="pdf-text-label">{{ proc.pdfName }}</span>
+                    <span class="pdf-text-label">{{ proc.nomPdf }}</span>
                   </div>
                 } @else {
                   <span class="text-muted text-small italic">Aucun PDF</span>
@@ -86,9 +86,11 @@
             </td>
 
             <td>
-              <span class="badge-status" [class]="proc.status === 'À jour' ? 'status-active' : 'status-pending'">
-                {{ proc.status }}
-              </span>
+             <span
+  class="badge-status"
+  [class]="proc.statut === 'A_JOUR' ? 'status-active' : 'status-pending'">
+  {{ proc.statut }}
+</span>
             </td>
             
            <!-- REMPLACEZ l'ancienne balise <td class="text-center"> par celle-ci -->
@@ -103,7 +105,7 @@
 
     @if (openDropdownCode === proc.code) {
       <div class="dropdown-menu" (click)="$event.stopPropagation()">
-        @if (proc.pdfName) {
+        @if (proc.nomPdf) {
           <button class="dropdown-item" (click)="downloadPdf(proc); closeDropdown()">
             <span class="material-symbols-outlined">download</span>
             Télécharger PDF
@@ -159,7 +161,8 @@
 
             <div class="form-group">
               <label>Nom du Processus <span class="required">*</span></label>
-              <input type="text" [(ngModel)]="currentProcessus.name" placeholder="Ex: Gestion de l'Acconage" />
+            <input
+                 type="text"[(ngModel)]="currentProcessus.nom"placeholder="Ex: Gestion de l'Acconage" />
             </div>
 
             <div class="form-group full-width">
@@ -169,16 +172,16 @@
 
             <div class="form-group">
               <label>Type de Processus</label>
-              <select [(ngModel)]="currentProcessus.type">
-                <option value="Pilotage">Pilotage (Management)</option>
-                <option value="Réalisation">Réalisation (Métier)</option>
-                <option value="Support">Support</option>
-              </select>
+     <select [(ngModel)]="currentProcessus.type">
+    <option value="PILOTAGE">Pilotage (Management)</option>
+    <option value="REALISATION">Réalisation (Métier)</option>
+    <option value="SUPPORT">Support</option>
+          </select>
             </div>
 
             <div class="form-group">
               <label>Pilote (Responsable)</label>
-              <input type="text" [(ngModel)]="currentProcessus.owner" placeholder="Ex: Chef de Terminal" />
+             <input type="text"[(ngModel)]="currentProcessus.pilote"placeholder="Ex: Chef de Terminal" />
             </div>
 
             <div class="form-group">
@@ -188,10 +191,10 @@
 
             <div class="form-group">
               <label>Statut</label>
-              <select [(ngModel)]="currentProcessus.status">
-                <option value="À jour">À jour</option>
-                <option value="En révision">En révision</option>
-              </select>
+              <select [(ngModel)]="currentProcessus.statut">
+    <option value="A_JOUR">À jour</option>
+    <option value="EN_REVISION">En révision</option>
+</select>
             </div>
           </div>
         </div>

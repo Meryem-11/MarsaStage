@@ -1,6 +1,5 @@
 <div class="page-container">
-  
-  <!-- Header de la page -->
+
   <div class="page-header">
     <div class="header__title-container">
       <span class="material-symbols-outlined header__icon">playlist_add_check</span>
@@ -15,10 +14,8 @@
     </button>
   </div>
 
-  <!-- Unique carte blanche contenant tout le tableau -->
   <div class="table-container-card">
-    
-    <!-- En-tête du tableau -->
+
     <div class="actions-grid-header">
       <div class="col-risque">Risque concerné</div>
       <div class="col-action-desc">Action à mener</div>
@@ -28,29 +25,33 @@
       <div class="col-delete"></div>
     </div>
 
-    <!-- Lignes du tableau -->
     <div class="actions-grid-body">
-      @for (action of actionsList; track action.id) {
+      <!-- Tracking sécurisé via trackById -->
+      @for (action of actionsList; track trackById($index, action)) {
         <div class="action-row">
-          
-          <!-- Sélection du Risque -->
+
           <div class="col-risque">
-            <select class="form-control" [(ngModel)]="action.risqueConcerne">
-              <option value="" disabled selected>Choisir un risque...</option>
-              @for (risque of risquesDisponibles; track risque) {
-                <option [value]="risque">{{ risque }}</option>
-              }
+            <select class="form-control"
+                    [ngModel]="getRisqueId(action)"
+                    (ngModelChange)="onRisqueChange(action, $event)">
+              <option [value]="undefined" disabled>Choisir un risque...</option>
+              @for (risque of risquesDisponibles; track trackById($index, risque)) {
+  <option [value]="risque.idRisque">{{ labelRisque(risque) }}</option>
+}
             </select>
           </div>
 
-          <!-- Action à mener -->
           <div class="col-action-desc">
-            <input type="text" class="form-control" [(ngModel)]="action.descriptionAction" placeholder="Description de l'action..." />
+            <input type="text" class="form-control"
+                   [(ngModel)]="action.descriptionAction"
+                   (blur)="saveAction(action)"
+                   placeholder="Description de l'action..." />
           </div>
 
-          <!-- Responsable -->
           <div class="col-resp">
-            <select class="form-control" [(ngModel)]="action.responsable">
+            <select class="form-control"
+                    [(ngModel)]="action.responsable"
+                    (change)="saveAction(action)">
               <option value="" disabled selected>Responsable...</option>
               @for (collab of collaborateurs; track collab) {
                 <option [value]="collab">{{ collab }}</option>
@@ -58,16 +59,17 @@
             </select>
           </div>
 
-          <!-- Délai -->
           <div class="col-delai text-center">
-            <input type="date" class="form-control text-center" [(ngModel)]="action.delai" />
+            <input type="date" class="form-control text-center"
+                   [(ngModel)]="action.delai"
+                   (change)="saveAction(action)" />
           </div>
 
-          <!-- Statut avec badge -->
           <div class="col-status text-center">
-            <select class="form-control text-center select-status" 
+            <select class="form-control text-center select-status"
                     [(ngModel)]="action.statut"
-                    [class]="'status-select--' + action.statut.toLowerCase().replace(' ', '-')">
+                    (change)="saveAction(action)"
+                    [class]="'status-select--' + (action.statut || 'non-commencée').toLowerCase().replace(' ', '-')">
               <option value="Non commencée">Non commencée</option>
               <option value="En cours">En cours</option>
               <option value="Réalisée">Réalisée</option>
@@ -75,11 +77,10 @@
             </select>
           </div>
 
-          <!-- Bouton de suppression -->
           <div class="col-delete text-center">
-            <button class="btn-delete-row" title="Supprimer cette action" (click)="removeAction(action.id)">
-              <span class="material-symbols-outlined">close</span>
-            </button>
+            <button class="btn-delete-row" title="Supprimer cette action" (click)="removeAction(action)">
+  <span class="material-symbols-outlined">close</span>
+</button>
           </div>
 
         </div>

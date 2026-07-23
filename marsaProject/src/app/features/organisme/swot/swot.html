@@ -1,58 +1,82 @@
 <div class="swot-page">
-  <h2>Analyse SWOT</h2>
+  <h2>Analyse SWOT — Contexte de l'Organisme</h2>
 
   <div class="swot-grid">
 
+    <!-- Forces -->
     <div class="swot-quadrant swot-quadrant--strengths">
       <h3>Forces</h3>
       <div class="swot-items">
-        @for (item of strengths; track item.id) {
+        @for (item of strengths; track item.idSWOT) {
           <div class="swot-item">
-            <input type="text" [(ngModel)]="item.text" placeholder="Ajouter une force..." />
-            <button type="button" (click)="removeItem(strengths, item.id)" aria-label="Supprimer">✕</button>
+            <input type="text" 
+                   [(ngModel)]="item.description" 
+                   (change)="saveItem(item)" 
+                   (keyup.enter)="saveItem(item)" 
+                   (blur)="saveItem(item)" 
+                   placeholder="Ajouter une force..." />
+            <button type="button" (click)="removeItem(item, strengths)" aria-label="Supprimer">✕</button>
           </div>
         }
       </div>
-      <button type="button" class="swot-add-btn" (click)="addItem(strengths)">+ Ajouter</button>
+      <button type="button" class="swot-add-btn" (click)="addItem('FORCE')">+ Ajouter</button>
     </div>
 
+    <!-- Faiblesses -->
     <div class="swot-quadrant swot-quadrant--weaknesses">
       <h3>Faiblesses</h3>
       <div class="swot-items">
-        @for (item of weaknesses; track item.id) {
+        @for (item of weaknesses; track item.idSWOT) {
           <div class="swot-item">
-            <input type="text" [(ngModel)]="item.text" placeholder="Ajouter une faiblesse..." />
-            <button type="button" (click)="removeItem(weaknesses, item.id)" aria-label="Supprimer">✕</button>
+            <input type="text" 
+                   [(ngModel)]="item.description" 
+                   (change)="saveItem(item)" 
+                   (keyup.enter)="saveItem(item)" 
+                   (blur)="saveItem(item)" 
+                   placeholder="Ajouter une faiblesse..." />
+            <button type="button" (click)="removeItem(item, weaknesses)" aria-label="Supprimer">✕</button>
           </div>
         }
       </div>
-      <button type="button" class="swot-add-btn" (click)="addItem(weaknesses)">+ Ajouter</button>
+      <button type="button" class="swot-add-btn" (click)="addItem('FAIBLESSE')">+ Ajouter</button>
     </div>
 
+    <!-- Opportunités -->
     <div class="swot-quadrant swot-quadrant--opportunities">
       <h3>Opportunités</h3>
       <div class="swot-items">
-        @for (item of opportunities; track item.id) {
+        @for (item of opportunities; track item.idSWOT) {
           <div class="swot-item">
-            <input type="text" [(ngModel)]="item.text" placeholder="Ajouter une opportunité..." />
-            <button type="button" (click)="removeItem(opportunities, item.id)" aria-label="Supprimer">✕</button>
+            <input type="text" 
+                   [(ngModel)]="item.description" 
+                   (change)="saveItem(item)" 
+                   (keyup.enter)="saveItem(item)" 
+                   (blur)="saveItem(item)" 
+                   placeholder="Ajouter une opportunité..." />
+            <button type="button" (click)="removeItem(item, opportunities)" aria-label="Supprimer">✕</button>
           </div>
         }
       </div>
-      <button type="button" class="swot-add-btn" (click)="addItem(opportunities)">+ Ajouter</button>
+      <button type="button" class="swot-add-btn" (click)="addItem('OPPORTUNITE')">+ Ajouter</button>
     </div>
 
+    <!-- Menaces -->
     <div class="swot-quadrant swot-quadrant--threats">
       <h3>Menaces</h3>
       <div class="swot-items">
-        @for (item of threats; track item.id) {
+        @for (item of threats; track item.idSWOT) {
           <div class="swot-item">
-            <input type="text" [(ngModel)]="item.text" placeholder="Ajouter une menace..." />
-            <button type="button" (click)="removeItem(threats, item.id)" aria-label="Supprimer">✕</button>
+            <input type="text" 
+                   [(ngModel)]="item.description" 
+                   (change)="saveItem(item)" 
+                   (keyup.enter)="saveItem(item)" 
+                   (blur)="saveItem(item)" 
+                   placeholder="Ajouter une menace..." />
+            <button type="button" (click)="removeItem(item, threats)" aria-label="Supprimer">✕</button>
           </div>
         }
       </div>
-      <button type="button" class="swot-add-btn" (click)="addItem(threats)">+ Ajouter</button>
+      <button type="button" class="swot-add-btn" (click)="addItem('MENACE')">+ Ajouter</button>
     </div>
 
   </div>

@@ -30,28 +30,38 @@
     </div>
 
     <div class="risk-table__body">
-      @for (risque of risquesList; track risque.id) {
-        <div class="risk-row" [class]="'risk-row risk-row--' + risque.niveauRisque.toLowerCase()">
+      @for (risque of risquesList; track risque.idRisque) {
+        <div class="risk-row" [class]="'risk-row risk-row--' + niveauRisque(risque).toLowerCase()">
 
           <div class="col-proc">
-            <select class="form-control" [(ngModel)]="risque.processus">
-              <option value="" disabled selected>Choisir...</option>
-              @for (proc of processusDisponibles; track proc) {
-                <option [value]="proc">{{ proc }}</option>
+            <select class="form-control"
+                    [ngModel]="getProcessusId(risque)"
+                    (ngModelChange)="onProcessusChange(risque, $event)">
+              <option [value]="undefined" disabled>Choisir...</option>
+              @for (proc of processusDisponibles; track proc.id) {
+                <option [value]="proc.id">{{ proc.code }} : {{ proc.nom }}</option>
               }
             </select>
           </div>
 
           <div class="col-desc">
-            <input type="text" class="form-control" [(ngModel)]="risque.description" placeholder="Ex : Chute de conteneur..." />
+            <input type="text" class="form-control"
+                   [(ngModel)]="risque.description"
+                   (blur)="saveRisque(risque)"
+                   placeholder="Ex : Chute de conteneur..." />
           </div>
 
           <div class="col-cause">
-            <input type="text" class="form-control" [(ngModel)]="risque.cause" placeholder="Ex : Erreur de guidage..." />
+            <input type="text" class="form-control"
+                   [(ngModel)]="risque.cause"
+                   (blur)="saveRisque(risque)"
+                   placeholder="Ex : Erreur de guidage..." />
           </div>
 
           <div class="col-val text-center">
-            <select class="form-control form-control--num" [(ngModel)]="risque.probabilite" (change)="updateCriticite(risque)">
+            <select class="form-control form-control--num"
+                    [(ngModel)]="risque.probabilite"
+                    (change)="updateCriticite(risque)">
               <option [value]="1">1</option>
               <option [value]="2">2</option>
               <option [value]="3">3</option>
@@ -60,7 +70,9 @@
           </div>
 
           <div class="col-val text-center">
-            <select class="form-control form-control--num" [(ngModel)]="risque.gravite" (change)="updateCriticite(risque)">
+            <select class="form-control form-control--num"
+                    [(ngModel)]="risque.gravite"
+                    (change)="updateCriticite(risque)">
               <option [value]="1">1</option>
               <option [value]="2">2</option>
               <option [value]="3">3</option>
@@ -76,11 +88,14 @@
           </div>
 
           <div class="col-action">
-            <input type="text" class="form-control" [(ngModel)]="risque.mesurePrevention" placeholder="Mesure préventive..." />
+            <input type="text" class="form-control"
+                   [(ngModel)]="risque.mesurePrevention"
+                   (blur)="saveRisque(risque)"
+                   placeholder="Mesure préventive..." />
           </div>
 
           <div class="col-delete text-center">
-            <button class="btn-delete" title="Supprimer" (click)="removeRisque(risque.id)">
+            <button class="btn-delete" title="Supprimer" (click)="removeRisque(risque.idRisque!)">
               <span class="material-symbols-outlined">close</span>
             </button>
           </div>
