@@ -1,0 +1,610 @@
+<div class="prog-detail-page">
+
+  <!-- HEADER -->
+
+  <div class="page-header">
+
+    <div>
+
+      <h2>Détail du programme d'audit</h2>
+
+      <p>
+        Consultation et modification du programme
+      </p>
+
+    </div>
+
+
+    <div class="header-actions">
+
+
+      <button
+        class="btn-secondary"
+        (click)="retour()">
+
+        ← Retour
+
+      </button>
+
+
+
+      @if(!modeEdition){
+
+        <button
+          class="btn-primary"
+          (click)="activerEdition()">
+
+          Modifier
+
+        </button>
+
+      }
+
+
+      @else {
+
+        <button
+          class="btn-primary"
+          (click)="saveProgramme()">
+
+          Enregistrer
+
+        </button>
+
+
+        <button
+          class="btn-secondary"
+          (click)="annulerEdition()">
+
+          Annuler
+
+        </button>
+
+      }
+
+
+    </div>
+
+
+  </div>
+
+
+
+
+  @if(loading){
+
+    <div class="loading">
+
+      Chargement...
+
+    </div>
+
+  }
+
+
+  @else {
+
+
+    <div class="programme-card">
+
+
+      <div class="form-grid">
+
+
+        <div class="form-group">
+
+
+          <label>
+            Référence
+          </label>
+
+
+          <input
+            [(ngModel)]="programme.reference"
+            [disabled]="!modeEdition">
+
+
+        </div>
+
+
+
+
+
+        <div class="form-group">
+
+
+          <label>
+            Année
+          </label>
+
+
+          <input
+            [(ngModel)]="programme.annee"
+            [disabled]="!modeEdition">
+
+
+        </div>
+
+
+
+
+
+        <div class="form-group">
+
+
+          <label>
+            Responsable
+          </label>
+
+
+          <input
+            [(ngModel)]="programme.responsable"
+            [disabled]="!modeEdition">
+
+
+        </div>
+
+
+
+
+
+        <div class="form-group">
+
+
+          <label>
+            Date création
+          </label>
+
+
+          <input
+            type="date"
+            [(ngModel)]="programme.dateCreation"
+            [disabled]="!modeEdition">
+
+
+        </div>
+
+
+      </div>
+
+
+    </div>
+
+
+
+
+
+    <!-- STATISTIQUES -->
+
+
+    <div class="stats-grid">
+
+
+      <div class="stat-card">
+
+        <h4>
+          Total audits
+        </h4>
+
+
+        <span>
+          {{ nbAudits }}
+        </span>
+
+
+      </div>
+
+
+
+
+
+      <div class="stat-card">
+
+        <h4>
+          Planifiés
+        </h4>
+
+
+        <span>
+          {{ nbPlanifies }}
+        </span>
+
+
+      </div>
+
+
+
+
+
+      <div class="stat-card">
+
+        <h4>
+          En cours
+        </h4>
+
+
+        <span>
+          {{ nbEnCours }}
+        </span>
+
+
+      </div>
+
+
+
+
+
+      <div class="stat-card">
+
+        <h4>
+          Réalisés
+        </h4>
+
+
+        <span>
+          {{ nbRealises }}
+        </span>
+
+
+      </div>
+
+
+    </div>
+
+
+
+
+
+    <!-- AUDITS -->
+
+
+    <div class="page-header">
+
+
+      <h3>
+        Audits du programme
+      </h3>
+
+
+      @if(modeEdition){
+
+        <button
+          class="btn-primary"
+          (click)="addAudit()">
+
+          + Nouvel audit
+
+        </button>
+
+      }
+
+
+    </div>
+        <div class="audit-table-wrapper">
+
+
+      <table class="audit-table">
+
+
+        <thead>
+
+
+          <tr>
+
+
+            <th>Référence</th>
+
+            <th>Titre</th>
+
+            <th>Type</th>
+
+            <th>Terminal</th>
+
+            <th>Auditeur</th>
+
+            <th>Début</th>
+
+            <th>Fin</th>
+
+            <th>Statut</th>
+
+
+
+            @if(modeEdition){
+
+              <th></th>
+
+            }
+
+
+          </tr>
+
+
+        </thead>
+
+
+
+
+        <tbody>
+
+
+
+          @for(audit of programme.audits; track $index){
+
+
+
+            <tr>
+
+
+
+              <td>
+
+
+                <input
+
+                  [(ngModel)]="audit.reference"
+
+                  [disabled]="!modeEdition">
+
+
+              </td>
+
+
+
+
+
+              <td>
+
+
+                <input
+
+                  [(ngModel)]="audit.titre"
+
+                  [disabled]="!modeEdition">
+
+
+              </td>
+
+
+
+
+
+              <td>
+
+
+                <select
+
+                  [(ngModel)]="audit.type"
+
+                  [disabled]="!modeEdition">
+
+
+
+                  <option>
+                    Interne
+                  </option>
+
+
+                  <option>
+                    Externe
+                  </option>
+
+
+
+                </select>
+
+
+              </td>
+
+
+
+
+
+              <td>
+
+
+                <select
+
+                  [(ngModel)]="audit.terminal"
+
+                  [disabled]="!modeEdition">
+
+
+
+                  @for(t of terminaux; track t){
+
+
+                    <option [value]="t">
+
+
+                      {{ t }}
+
+
+                    </option>
+
+
+                  }
+
+
+
+                </select>
+
+
+              </td>
+
+
+
+
+
+              <td>
+
+
+                <input
+
+                  [(ngModel)]="audit.auditeur"
+
+                  [disabled]="!modeEdition">
+
+
+              </td>
+
+
+
+
+
+              <td>
+
+
+                <input
+
+                  type="date"
+
+                  [(ngModel)]="audit.dateDebut"
+
+                  [disabled]="!modeEdition">
+
+
+              </td>
+
+
+
+
+
+              <td>
+
+
+                <input
+
+                  type="date"
+
+                  [(ngModel)]="audit.dateFin"
+
+                  [disabled]="!modeEdition">
+
+
+              </td>
+
+
+
+
+
+              <td>
+
+
+                <select
+
+                  [(ngModel)]="audit.statut"
+
+                  [disabled]="!modeEdition">
+
+
+
+                  <option>
+                    Planifié
+                  </option>
+
+
+                  <option>
+                    En cours
+                  </option>
+
+
+                  <option>
+                    Réalisé
+                  </option>
+
+
+                  <option>
+                    Reporté
+                  </option>
+
+
+
+                </select>
+
+
+              </td>
+
+
+
+
+
+              @if(modeEdition){
+
+
+                <td>
+
+
+                  <button
+
+                    class="btn-delete"
+
+                    (click)="removeAudit($index)">
+
+
+                    ✕
+
+                  </button>
+
+
+                </td>
+
+
+              }
+
+
+
+
+
+            </tr>
+
+
+
+          }
+
+
+
+
+
+          @if(programme.audits.length === 0){
+
+
+            <tr>
+
+
+              <td
+
+                colspan="9"
+
+                class="empty-row">
+
+
+                Aucun audit.
+
+
+              </td>
+
+
+            </tr>
+
+
+          }
+
+
+
+
+        </tbody>
+
+
+      </table>
+
+
+
+    </div>
+
+
+
+  }
+
+
+</div>

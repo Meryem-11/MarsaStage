@@ -29,10 +29,23 @@ public class ProgrammeAuditController {
     public ProgrammeAudit create(@RequestBody ProgrammeAudit programme) {
         return service.save(programme);
     }
+@PutMapping("/{id}")
+public ProgrammeAudit update(
+        @PathVariable Long id,
+        @RequestBody ProgrammeAudit programme) {
 
+    programme.setId(id);
+
+    return service.update(programme);
+
+}
     // Supprimer un programme
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         service.delete(id);
     }
-}
+
+@GetMapping("/{id}")
+public ProgrammeAudit getById(@PathVariable Long id) {
+    return service.getById(id);
+}}
