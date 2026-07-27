@@ -89,74 +89,74 @@
   min-height: 40px;
   margin-bottom: 12px;
 }
-
 .pestel-item {
   display: flex;
   align-items: center;
-  gap: 6px;
-  background: #fafafa;
-  border-radius: 8px;
-  padding: 8px 10px;
-  border: 1px solid #f0f0f0;
-  transition: border-color 0.15s ease;
+  gap: 8px;
+  margin-bottom: 8px;
 }
 
-.pestel-item:focus-within {
-  border-color: #ccc;
-  background: #fff;
+.pestel-item-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
-.pestel-item input {
-  flex: 1;
-  border: none;
-  outline: none;
+/* Boutons symboles simples (sans fond) */
+.pestel-icon-btn {
   background: transparent;
-  font-size: 13px;
-  color: #333;
-}
-
-.pestel-item input::placeholder {
-  color: #b5b5b5;
-}
-
-.pestel-remove-btn {
   border: none;
-  background: transparent;
   cursor: pointer;
-  color: #ccc;
-  font-size: 13px;
-  line-height: 1;
-  padding: 2px 4px;
+  font-size: 1rem;
+  padding: 4px 6px;
   border-radius: 4px;
-  transition: color 0.15s ease, background 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.7;
+  transition: opacity 0.2s ease, color 0.2s ease, transform 0.1s ease;
 }
 
-.pestel-remove-btn:hover {
-  color: #ef4444;
-  background: #fef2f2;
+.pestel-icon-btn:hover {
+  opacity: 1;
+  transform: scale(1.1);
 }
 
-.pestel-empty {
-  font-size: 12px;
-  color: #bbb;
-  font-style: italic;
-  margin: 4px 0;
+/* Couleur du symbole d'enregistrement au survol */
+.pestel-icon-btn.save:hover {
+  color: #10b981; /* Vert discret */
 }
 
-.pestel-add-btn {
-  width: 100%;
-  padding: 8px;
-  border: 1px dashed #ddd;
-  background: transparent;
-  border-radius: 8px;
+/* Couleur du symbole de suppression au survol */
+.pestel-icon-btn.delete {
+  color: #ef4444; /* Rouge discret */
+}
+
+.pestel-icon-btn.delete:hover {
+  color: #dc2626;
+}
+.pestel-save-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 6px;
+  background: #f0fdf4;
+  color: #16a34a;
   cursor: pointer;
-  font-size: 13px;
-  color: #666;
-  transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+  opacity: 0.9;
+  transition: background 0.2s ease, transform 0.1s ease, opacity 0.2s ease;
 }
 
-.pestel-add-btn:hover {
-  border-color: #999;
-  color: #333;
-  background: #fafafa;
+.pestel-save-btn:hover {
+  background: #16a34a;
+  color: #ffffff;
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+.pestel-save-btn:active {
+  transform: scale(0.95);
 }

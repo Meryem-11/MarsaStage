@@ -3,8 +3,12 @@ package ma.marsamaroc.smi_backend.service;
 import org.springframework.stereotype.Service;
 import ma.marsamaroc.smi_backend.model.Processus;
 import ma.marsamaroc.smi_backend.repository.ProcessusRepository;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
-
 @Service
 public class ProcessusService {
 
@@ -40,4 +44,17 @@ public class ProcessusService {
     public void delete(Long id) {
         repository.deleteById(id);
     }
+    public Processus uploadPdf(String code, MultipartFile file) throws IOException {
+    Processus existing = repository.findByCode(code)
+            .orElseThrow(() -> new RuntimeException("Processus introuvable : " + code));
+
+    String uploadDir = "uploads/processus/";
+    Files.createDirectories(Paths.get(uploadDir));
+    String fileName = code + "_" + file.getOriginalFilename();
+    Files.copy(file.getInputStream(), Paths.get(uploadDir + fileName), StandardCopyOption.REPLACE_EXISTING);
+
+    existing.setCheminPdf(uploadDir + fileName);
+
+    return repository.save(existing);
+}
 }

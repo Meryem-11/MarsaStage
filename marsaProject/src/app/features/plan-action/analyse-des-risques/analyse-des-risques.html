@@ -9,7 +9,7 @@
         <p>Identification, évaluation et hiérarchisation des risques par processus</p>
       </div>
     </div>
-    <button class="risk-header__cta" (click)="addRisqueLine()">
+    <button class="risk-header__cta" (click)="openAddModal()">
       <span class="material-symbols-outlined">add</span>
       Ajouter un risque
     </button>
@@ -26,7 +26,7 @@
       <span class="text-center">G</span>
       <span class="text-center">C</span>
       <span>Action préventive</span>
-      <span></span>
+      <span>Actions</span>
     </div>
 
     <div class="risk-table__body">
@@ -34,50 +34,23 @@
         <div class="risk-row" [class]="'risk-row risk-row--' + niveauRisque(risque).toLowerCase()">
 
           <div class="col-proc">
-            <select class="form-control"
-                    [ngModel]="getProcessusId(risque)"
-                    (ngModelChange)="onProcessusChange(risque, $event)">
-              <option [value]="undefined" disabled>Choisir...</option>
-              @for (proc of processusDisponibles; track proc.id) {
-                <option [value]="proc.id">{{ proc.code }} : {{ proc.nom }}</option>
-              }
-            </select>
+            {{ getProcessusLabel(risque) }}
           </div>
 
           <div class="col-desc">
-            <input type="text" class="form-control"
-                   [(ngModel)]="risque.description"
-                   (blur)="saveRisque(risque)"
-                   placeholder="Ex : Chute de conteneur..." />
+            {{ risque.description }}
           </div>
 
           <div class="col-cause">
-            <input type="text" class="form-control"
-                   [(ngModel)]="risque.cause"
-                   (blur)="saveRisque(risque)"
-                   placeholder="Ex : Erreur de guidage..." />
+            {{ risque.cause }}
           </div>
 
           <div class="col-val text-center">
-            <select class="form-control form-control--num"
-                    [(ngModel)]="risque.probabilite"
-                    (change)="updateCriticite(risque)">
-              <option [value]="1">1</option>
-              <option [value]="2">2</option>
-              <option [value]="3">3</option>
-              <option [value]="4">4</option>
-            </select>
+            {{ risque.probabilite }}
           </div>
 
           <div class="col-val text-center">
-            <select class="form-control form-control--num"
-                    [(ngModel)]="risque.gravite"
-                    (change)="updateCriticite(risque)">
-              <option [value]="1">1</option>
-              <option [value]="2">2</option>
-              <option [value]="3">3</option>
-              <option [value]="4">4</option>
-            </select>
+            {{ risque.gravite }}
           </div>
 
           <div class="col-crit text-center">
@@ -88,13 +61,13 @@
           </div>
 
           <div class="col-action">
-            <input type="text" class="form-control"
-                   [(ngModel)]="risque.mesurePrevention"
-                   (blur)="saveRisque(risque)"
-                   placeholder="Mesure préventive..." />
+            {{ risque.mesurePrevention }}
           </div>
 
           <div class="col-delete text-center">
+            <button class="btn-edit" title="Modifier" (click)="openEditModal(risque)">
+              <span class="material-symbols-outlined">edit</span>
+            </button>
             <button class="btn-delete" title="Supprimer" (click)="removeRisque(risque.idRisque!)">
               <span class="material-symbols-outlined">close</span>
             </button>
@@ -110,4 +83,57 @@
     </div>
 
   </div>
+
+  <!-- Modal d'ajout / modification -->
+  @if (isModalOpen) {
+    <div class="modal-overlay" (click)="closeModal()">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        <h2>{{ isEditMode ? 'Modifier le risque' : 'Ajouter un risque' }}</h2>
+
+        <label>Processus</label>
+        <select class="form-control" [(ngModel)]="currentRisque.processus.id">
+          @for (proc of processusDisponibles; track proc.id) {
+            <option [value]="proc.id">{{ proc.code }} : {{ proc.nom }}</option>
+          }
+        </select>
+
+        <label>Description du risque</label>
+        <input type="text" class="form-control"
+               [(ngModel)]="currentRisque.description"
+               placeholder="Ex : Chute de conteneur..." />
+
+        <label>Cause</label>
+        <input type="text" class="form-control"
+               [(ngModel)]="currentRisque.cause"
+               placeholder="Ex : Erreur de guidage..." />
+
+        <label>Probabilité</label>
+        <select class="form-control" [(ngModel)]="currentRisque.probabilite">
+          <option [ngValue]="1">1</option>
+          <option [ngValue]="2">2</option>
+          <option [ngValue]="3">3</option>
+          <option [ngValue]="4">4</option>
+        </select>
+
+        <label>Gravité</label>
+        <select class="form-control" [(ngModel)]="currentRisque.gravite">
+          <option [ngValue]="1">1</option>
+          <option [ngValue]="2">2</option>
+          <option [ngValue]="3">3</option>
+          <option [ngValue]="4">4</option>
+        </select>
+
+        <label>Mesure préventive</label>
+        <input type="text" class="form-control"
+               [(ngModel)]="currentRisque.mesurePrevention"
+               placeholder="Mesure préventive..." />
+
+        <div class="modal-actions">
+          <button class="btn-cancel" (click)="closeModal()">Annuler</button>
+          <button class="btn-save" (click)="saveRisqueModal()">Enregistrer</button>
+        </div>
+      </div>
+    </div>
+  }
+
 </div>

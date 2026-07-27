@@ -139,15 +139,18 @@ export class ProcessusListe implements OnInit {
 }
 
   // Simulation de l'Upload PDF
-  onFileSelected(event: any, proc: Processus) {
-    const file = event.target.files[0];
-    if (file && file.type === 'application/pdf') {
-      proc.nomPdf = file.name;
-      proc.cheminPdf = URL.createObjectURL(file);
-    } else {
-      alert('Veuillez sélectionner un fichier au format PDF uniquement.');
-    }
+onFileSelected(event: Event, proc: Processus) {
+  const input = event.target as HTMLInputElement;
+  const file = input.files?.[0];
+  if (file && file.type === 'application/pdf') {
+    this.processusService.uploadPdf(proc.code, file).subscribe({
+      next: (updated: Processus) => this.loadProcessus(),
+      error: (err: unknown) => console.error('Erreur upload PDF', err)
+    });
+  } else {
+    alert('Veuillez sélectionner un fichier au format PDF uniquement.');
   }
+}
 
   triggerFileInput(fileInputId: string) {
     const fileInput = document.getElementById(fileInputId) as HTMLElement;

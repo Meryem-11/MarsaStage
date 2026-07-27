@@ -26,6 +26,11 @@ export class ActionsRisques implements OnInit {
   ];
   actionsList: ActionRisque[] = [];
 
+  // Gestion de la Modal
+  isModalOpen = false;
+  isEditMode = false;
+  currentAction: ActionRisque = this.getEmptyAction();
+
   constructor(
     private actionService: ActionRisqueService,
     private risqueService: RisqueService
@@ -35,21 +40,17 @@ export class ActionsRisques implements OnInit {
     this.loadData();
   }
 
-  // Charger d'abord les risques ET les actions en parallèle sans conflit de temps
   loadData(): void {
     forkJoin({
       risques: this.risqueService.getAll(),
       actions: this.actionService.getAll()
     }).subscribe({
       next: (res: { risques: any[]; actions: any[] }) => {
-
-        // 1. Normalisation des Risques (convertit id en idRisque si besoin)
         this.risquesDisponibles = res.risques.map(r => ({
           ...r,
           idRisque: r.idRisque ?? r.id
         }));
 
-        // 2. Normalisation des Actions (convertit id en idAction et formate le risque imbriqué)
         this.actionsList = res.actions.map(a => ({
           ...a,
           idAction: a.idAction ?? a.id,
@@ -62,66 +63,89 @@ export class ActionsRisques implements OnInit {
     });
   }
 
-  addActionLine(): void {
-    if (this.risquesDisponibles.length === 0) {
-      console.error('Aucun risque disponible pour créer une action.');
-      return;
-    }
-
-    const firstRisqueId = this.risquesDisponibles[0].idRisque ?? (this.risquesDisponibles[0] as any).id;
-
-    const newAction: ActionRisque = {
-      risque: { idRisque: firstRisqueId },
+  getEmptyAction(): ActionRisque {
+    const defaultRisqueId = this.risquesDisponibles[0]?.idRisque ?? (this.risquesDisponibles[0] as any)?.id ?? 0;
+    return {
+      risque: { idRisque: defaultRisqueId },
       descriptionAction: '',
       responsable: '',
       delai: '',
       statut: 'Non commencée'
     };
-
-    this.actionService.create(newAction).subscribe({
-      next: (saved: any) => {
-        const normalizedSaved: ActionRisque = {
-          ...saved,
-          idAction: saved.idAction ?? saved.id,
-          risque: typeof saved.risque === 'object' && saved.risque !== null
-            ? { ...saved.risque, idRisque: saved.risque.idRisque ?? saved.risque.id }
-            : { idRisque: saved.risque }
-        };
-        this.actionsList.push(normalizedSaved);
-      },
-      error: (err: HttpErrorResponse) => console.error('Erreur création action :', err)
-    });
   }
 
-  saveAction(action: ActionRisque): void {
-    const idToUpdate = action.idAction ?? (action as any).id;
-    if (idToUpdate) {
-      this.actionService.update(idToUpdate, action).subscribe({
+  openAddModal(): void {
+    if (this.risquesDisponibles.length === 0) {
+      alert("Aucun risque disponible. Veuillez d'abord enregistrer un risque.");
+      return;
+    }
+    this.isEditMode = false;
+    this.currentAction = this.getEmptyAction();
+    this.isModalOpen = true;
+  }
+
+  openEditModal(action: ActionRisque): void {
+    this.isEditMode = true;
+    const currentRisqueId = this.getRisqueId(action) ?? 0;
+    
+    // Copie profonde pour éviter d'impacter la ligne avant l'enregistrement
+    this.currentAction = {
+      ...action,
+      risque: { idRisque: currentRisqueId }
+    };
+    this.isModalOpen = true;
+  }
+
+  closeModal(): void {
+    this.isModalOpen = false;
+  }
+
+  saveActionModal(): void {
+    if (!this.currentAction.descriptionAction?.trim()) {
+      alert("La description de l'action est obligatoire !");
+      return;
+    }
+
+    // Sécurisation de l'ID du risque sélectionné
+    if (this.currentAction.risque) {
+      this.currentAction.risque.idRisque = Number(this.currentAction.risque.idRisque);
+    }
+
+    const idToUpdate = this.currentAction.idAction ?? (this.currentAction as any).id;
+
+    if (this.isEditMode && idToUpdate) {
+      // Modification
+      this.actionService.update(idToUpdate, this.currentAction).subscribe({
+        next: () => {
+          this.loadData();
+          this.closeModal();
+        },
         error: (err: HttpErrorResponse) => console.error('Erreur mise à jour action :', err)
+      });
+    } else {
+      // Création
+      this.actionService.create(this.currentAction).subscribe({
+        next: () => {
+          this.loadData();
+          this.closeModal();
+        },
+        error: (err: HttpErrorResponse) => console.error('Erreur création action :', err)
       });
     }
   }
 
- removeAction(action: ActionRisque): void {
-  const idToDelete = action.idAction ?? (action as any).id;
+  removeAction(action: ActionRisque): void {
+    const idToDelete = action.idAction ?? (action as any).id;
+    if (!idToDelete) return;
 
-  // Sécurité si l'action n'a pas encore d'ID en BDD
-  if (!idToDelete) {
-    this.actionsList = this.actionsList.filter(a => a !== action);
-    return;
-  }
-
-  this.actionService.delete(idToDelete).subscribe({
-    next: () => {
-      this.actionsList = this.actionsList.filter(a => (a.idAction ?? (a as any).id) !== idToDelete);
-    },
-    error: (err: HttpErrorResponse) => console.error('Erreur suppression action :', err)
-  });
-}
-
-  onRisqueChange(action: ActionRisque, idRisque: string): void {
-    action.risque = { idRisque: Number(idRisque) };
-    this.saveAction(action);
+    if (confirm('Voulez-vous vraiment supprimer cette action ?')) {
+      this.actionService.delete(idToDelete).subscribe({
+        next: () => {
+          this.actionsList = this.actionsList.filter(a => (a.idAction ?? (a as any).id) !== idToDelete);
+        },
+        error: (err: HttpErrorResponse) => console.error('Erreur suppression action :', err)
+      });
+    }
   }
 
   getRisqueId(action: ActionRisque): number | undefined {
@@ -130,12 +154,16 @@ export class ActionsRisques implements OnInit {
   }
 
   labelRisque(risque: Risque): string {
-    return `${risque.code} : ${risque.description}`;
+    return `${risque.code || 'R'} : ${risque.description || ''}`;
   }
 
-  // Fonction de tracking sécurisée contre les clés undefined
+  getRisqueLabelByAction(action: ActionRisque): string {
+    const rId = this.getRisqueId(action);
+    const risque = this.risquesDisponibles.find(r => (r.idRisque ?? (r as any).id) === rId);
+    return risque ? this.labelRisque(risque) : `Risque #${rId ?? '-'}`;
+  }
+
   trackById(index: number, item: any): number {
     return item?.idAction ?? item?.idRisque ?? item?.id ?? index;
   }
-  
 }

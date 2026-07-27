@@ -1,9 +1,9 @@
-import { ProcessusService } from './../../processus/processus.service';
+import { Processus } from './../../processus/processus-liste';
 
 export interface Risque {
   idRisque?: number;
     id?: number;
-  processus: ProcessusService | { id: number };
+  processus: Processus| { id: number };
   code: string;
   description: string;
   categorie?: string;

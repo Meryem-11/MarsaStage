@@ -8,7 +8,7 @@
         <p>Planification, affectation et suivi des actions préventives et correctives</p>
       </div>
     </div>
-    <button class="btn-primary" (click)="addActionLine()">
+    <button class="btn-primary" (click)="openAddModal()">
       <span class="material-symbols-outlined">add</span>
       Ajouter une action
     </button>
@@ -22,65 +22,42 @@
       <div class="col-resp">Responsable</div>
       <div class="col-delai text-center">Délai</div>
       <div class="col-status text-center">Statut</div>
-      <div class="col-delete"></div>
+      <div class="col-delete text-center">Actions</div>
     </div>
 
     <div class="actions-grid-body">
-      <!-- Tracking sécurisé via trackById -->
       @for (action of actionsList; track trackById($index, action)) {
         <div class="action-row">
 
           <div class="col-risque">
-            <select class="form-control"
-                    [ngModel]="getRisqueId(action)"
-                    (ngModelChange)="onRisqueChange(action, $event)">
-              <option [value]="undefined" disabled>Choisir un risque...</option>
-              @for (risque of risquesDisponibles; track trackById($index, risque)) {
-  <option [value]="risque.idRisque">{{ labelRisque(risque) }}</option>
-}
-            </select>
+            {{ getRisqueLabelByAction(action) }}
           </div>
 
           <div class="col-action-desc">
-            <input type="text" class="form-control"
-                   [(ngModel)]="action.descriptionAction"
-                   (blur)="saveAction(action)"
-                   placeholder="Description de l'action..." />
+            {{ action.descriptionAction }}
           </div>
 
           <div class="col-resp">
-            <select class="form-control"
-                    [(ngModel)]="action.responsable"
-                    (change)="saveAction(action)">
-              <option value="" disabled selected>Responsable...</option>
-              @for (collab of collaborateurs; track collab) {
-                <option [value]="collab">{{ collab }}</option>
-              }
-            </select>
+            {{ action.responsable || '-' }}
           </div>
 
           <div class="col-delai text-center">
-            <input type="date" class="form-control text-center"
-                   [(ngModel)]="action.delai"
-                   (change)="saveAction(action)" />
+            {{ action.delai | date:'dd/MM/yyyy' }}
           </div>
 
           <div class="col-status text-center">
-            <select class="form-control text-center select-status"
-                    [(ngModel)]="action.statut"
-                    (change)="saveAction(action)"
-                    [class]="'status-select--' + (action.statut || 'non-commencée').toLowerCase().replace(' ', '-')">
-              <option value="Non commencée">Non commencée</option>
-              <option value="En cours">En cours</option>
-              <option value="Réalisée">Réalisée</option>
-              <option value="En retard">En retard</option>
-            </select>
+            <span [class]="'status-badge status-badge--' + (action.statut || 'non-commencée').toLowerCase().replace(' ', '-')">
+              {{ action.statut }}
+            </span>
           </div>
 
           <div class="col-delete text-center">
+            <button class="btn-edit-row" title="Modifier cette action" (click)="openEditModal(action)">
+              <span class="material-symbols-outlined">edit</span>
+            </button>
             <button class="btn-delete-row" title="Supprimer cette action" (click)="removeAction(action)">
-  <span class="material-symbols-outlined">close</span>
-</button>
+              <span class="material-symbols-outlined">close</span>
+            </button>
           </div>
 
         </div>
@@ -93,4 +70,50 @@
     </div>
 
   </div>
+
+  <!-- Modal d'ajout / modification -->
+  @if (isModalOpen) {
+    <div class="modal-overlay" (click)="closeModal()">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        <h2>{{ isEditMode ? 'Modifier l\'action' : 'Ajouter une nouvelle action' }}</h2>
+
+        <label>Risque concerné</label>
+        <select class="form-control" [(ngModel)]="currentAction.risque.idRisque">
+          @for (risque of risquesDisponibles; track trackById($index, risque)) {
+            <option [ngValue]="risque.idRisque">{{ labelRisque(risque) }}</option>
+          }
+        </select>
+
+        <label>Action à mener</label>
+        <input type="text" class="form-control"
+               [(ngModel)]="currentAction.descriptionAction"
+               placeholder="Description de l'action..." />
+
+        <label>Responsable</label>
+        <select class="form-control" [(ngModel)]="currentAction.responsable">
+          <option value="" disabled selected>Choisir un responsable...</option>
+          @for (collab of collaborateurs; track collab) {
+            <option [value]="collab">{{ collab }}</option>
+          }
+        </select>
+
+        <label>Délai</label>
+        <input type="date" class="form-control" [(ngModel)]="currentAction.delai" />
+
+        <label>Statut</label>
+        <select class="form-control" [(ngModel)]="currentAction.statut">
+          <option value="Non commencée">Non commencée</option>
+          <option value="En cours">En cours</option>
+          <option value="Réalisée">Réalisée</option>
+          <option value="En retard">En retard</option>
+        </select>
+
+        <div class="modal-actions">
+          <button class="btn-cancel" (click)="closeModal()">Annuler</button>
+          <button class="btn-save" (click)="saveActionModal()">Enregistrer</button>
+        </div>
+      </div>
+    </div>
+  }
+
 </div>

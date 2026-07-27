@@ -12,7 +12,6 @@
   </div>
 
   <div class="stats-grid">
-
     <div class="stat-card">
       <span>Total</span>
       <strong>{{ totalActions }}</strong>
@@ -32,56 +31,39 @@
       <span>Terminées</span>
       <strong>{{ actionsTerminees }}</strong>
     </div>
-
   </div>
 
   <div class="table-container">
-
     <table>
-
       <thead>
         <tr>
-          <th>Réf</th>
-          <th>Action</th>
-          <th>Source</th>
+          <th>Intitulé</th>
           <th>Responsable</th>
           <th>Priorité</th>
           <th>Échéance</th>
           <th>Statut</th>
-          <th>Avancement</th>
           <th>Preuve</th>
-          <th></th>
+          <th>Actions</th>
         </tr>
       </thead>
 
       <tbody>
-
-        @for(action of actions; track action.id){
-
-        <tr>
-
+        @for(action of actions; track action.idAction || $index; let i = $index){
+        <tr [class.new-row]="!action.idAction">
           <td>
-            <input [(ngModel)]="action.reference">
+            <input [(ngModel)]="action.intitule" placeholder="Titre de l'action...">
           </td>
 
           <td>
-            <input [(ngModel)]="action.action">
-          </td>
-
-          <td>
-            <input [(ngModel)]="action.source">
-          </td>
-
-          <td>
-            <input [(ngModel)]="action.responsable">
+            <input [(ngModel)]="action.responsable" placeholder="Responsable...">
           </td>
 
           <td>
             <select [(ngModel)]="action.priorite">
-              <option>Faible</option>
-              <option>Moyenne</option>
-              <option>Élevée</option>
-              <option>Critique</option>
+              <option value="FAIBLE">Faible</option>
+              <option value="MOYENNE">Moyenne</option>
+              <option value="ELEVEE">Élevée</option>
+              <option value="CRITIQUE">Critique</option>
             </select>
           </td>
 
@@ -91,66 +73,42 @@
 
           <td>
             <select [(ngModel)]="action.statut">
-              <option>À faire</option>
-              <option>En cours</option>
-              <option>Terminée</option>
-              <option>Suspendue</option>
+              <option value="A_FAIRE">À faire</option>
+              <option value="EN_COURS">En cours</option>
+              <option value="TERMINEE">Terminée</option>
+              <option value="SUSPENDUE">Suspendue</option>
             </select>
           </td>
 
           <td>
+            <label class="upload-btn">
+              📎
+              <input hidden type="file" (change)="onFileSelected($event, action)">
+            </label>
 
-            <input
-              type="range"
-              min="0"
-              max="100"
-              [(ngModel)]="action.avancement">
-
-            <span>{{ action.avancement }}%</span>
-
+            @if(action.preuveNom){
+              <span class="proof-name" [title]="action.preuveNom">{{ action.preuveNom }}</span>
+            }
           </td>
 
-          <td>
-
-  <label class="upload-btn">
-    📎
-    <input
-      hidden
-      type="file"
-      (change)="onFileSelected($event, action)">
-  </label>
-
-  @if(action.preuve){
-    <div class="proof-row">
-      <span class="proof-name">{{ action.preuve }}</span>
-      <button
-        class="download-btn"
-        type="button"
-        (click)="downloadProof(action)"
-        title="Télécharger">
-        ⬇
-      </button>
-    </div>
-  }
-
-</td>
-
-          <td>
-            <button
-              class="delete-btn"
-              (click)="removeAction(action.id)">
+          <td class="action-buttons">
+            <button class="save-btn" (click)="saveAction(action, i)" title="Enregistrer en base de données">
+              💾
+            </button>
+            <button class="delete-btn" (click)="removeAction(action, i)" title="Supprimer / Annuler">
               ✕
             </button>
           </td>
-
         </tr>
-
+        } @empty {
+          <tr>
+            <td colspan="7" style="text-align: center; padding: 20px;">
+              Aucune action enregistrée dans le plan d'action.
+            </td>
+          </tr>
         }
-
       </tbody>
-
     </table>
-
   </div>
 
 </div>
