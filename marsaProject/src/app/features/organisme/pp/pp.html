@@ -6,7 +6,7 @@
       <p>Identification et suivi des parties prenantes du SMI</p>
     </div>
 
-    <button class="add-btn" (click)="addPartie()">
+    <button class="add-btn" (click)="openAddForm()">
       + Ajouter
     </button>
   </div>
@@ -34,88 +34,29 @@
         @for (partie of parties; track partie.id) {
 
         <tr>
-
-          <td>
-            <input
-              type="text"
-              [(ngModel)]="partie.nom"
-              placeholder="Nom">
-          </td>
-          <td>
-  <input
-    list="roles"
-    [(ngModel)]="partie.role"
-    placeholder="Choisir ou saisir un rôle">
-
-  <datalist id="roles">
-    <option value="Pilotage stratégique">
-    <option value="Management du SMI">
-    <option value="Réalisation des opérations">
-    <option value="Utilisation des services portuaires">
-    <option value="Fourniture de biens et services">
-    <option value="Sous-traitance">
-    <option value="Contrôle réglementaire">
-    <option value="Régulation portuaire">
-    <option value="Certification et audit">
-    <option value="Contrôle sanitaire">
-    <option value="Sécurité portuaire">
-    <option value="Voisinage et environnement">
-  </datalist>
-
-</td>
-
-          <td>
-            <select [(ngModel)]="partie.type">
-              <option>Interne</option>
-              <option>Externe</option>
-            </select>
-          </td>
-
-          <td>
-            <select
-              [(ngModel)]="partie.influence"
-              [class]="getBadgeClass(partie.influence)">
-              <option>Faible</option>
-              <option>Moyenne</option>
-              <option>Élevée</option>
-            </select>
-          </td>
-
-          <td>
-            <select
-              [(ngModel)]="partie.interet"
-              [class]="getBadgeClass(partie.interet)">
-              <option>Faible</option>
-              <option>Moyen</option>
-              <option>Élevé</option>
-            </select>
-          </td>
-
-          <td>
-            <input
-              type="text"
-              [(ngModel)]="partie.attentes"
-              placeholder="Attentes">
-          </td>
-
-          <td>
-            <input
-              type="text"
-              [(ngModel)]="partie.risque"
-              placeholder="Risque">
-          </td>
-
-          <td>
-            <input
-              type="text"
-              [(ngModel)]="partie.action"
-              placeholder="Action">
-          </td>
+          <td>{{ partie.nom }}</td>
+          <td>{{ partie.role }}</td>
+          <td>{{ partie.type }}</td>
+          <td><span [class]="getBadgeClass(partie.influence)">{{ partie.influence }}</span></td>
+          <td><span [class]="getBadgeClass(partie.interet)">{{ partie.interet }}</span></td>
+          <td>{{ partie.attentes }}</td>
+          <td>{{ partie.risque }}</td>
+          <td>{{ partie.action }}</td>
 
           <td>
             <button
+              class="pp-edit-btn"
+              (click)="openEditForm(partie)"
+              title="Modifier">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+              </svg>
+            </button>
+            <button
               class="delete-btn"
-              (click)="removePartie(partie.id)">
+              (click)="removePartie(partie)"
+              title="Supprimer">
               ✕
             </button>
           </td>
@@ -124,10 +65,98 @@
 
         }
 
+        @if (parties.length === 0) {
+          <tr>
+            <td colspan="9" class="pp-empty">Aucune partie prenante enregistrée</td>
+          </tr>
+        }
+
       </tbody>
 
     </table>
 
   </div>
+
+  <!-- Formulaire modal -->
+  @if (showForm) {
+    <div class="pp-modal-overlay" (click)="closeForm()">
+      <div class="pp-modal" (click)="$event.stopPropagation()">
+
+        <div class="pp-modal-header">
+          <h3>{{ isEditMode ? 'Modifier la partie prenante' : 'Ajouter une partie prenante' }}</h3>
+          <button class="pp-modal-close" (click)="closeForm()">✕</button>
+        </div>
+
+        <div class="pp-modal-body">
+
+          <label>Nom
+            <input type="text" [(ngModel)]="formData.nom" placeholder="Ex: Clients" />
+          </label>
+
+          <label>Rôle
+            <input list="roles-modal" [(ngModel)]="formData.role" placeholder="Choisir ou saisir un rôle" />
+            <datalist id="roles-modal">
+              <option value="Pilotage stratégique">
+              <option value="Management du SMI">
+              <option value="Réalisation des opérations">
+              <option value="Utilisation des services portuaires">
+              <option value="Fourniture de biens et services">
+              <option value="Sous-traitance">
+              <option value="Contrôle réglementaire">
+              <option value="Régulation portuaire">
+              <option value="Certification et audit">
+              <option value="Contrôle sanitaire">
+              <option value="Sécurité portuaire">
+              <option value="Voisinage et environnement">
+            </datalist>
+          </label>
+
+          <div class="pp-modal-row">
+            <label>Type
+              <select [(ngModel)]="formData.type">
+                <option>Interne</option>
+                <option>Externe</option>
+              </select>
+            </label>
+
+            <label>Influence
+              <select [(ngModel)]="formData.influence">
+                <option>Faible</option>
+                <option>Moyenne</option>
+                <option>Élevée</option>
+              </select>
+            </label>
+
+            <label>Intérêt
+              <select [(ngModel)]="formData.interet">
+                <option>Faible</option>
+                <option>Moyen</option>
+                <option>Élevé</option>
+              </select>
+            </label>
+          </div>
+
+          <label>Attentes
+            <textarea [(ngModel)]="formData.attentes" placeholder="Attentes de cette partie prenante"></textarea>
+          </label>
+
+          <label>Risque
+            <textarea [(ngModel)]="formData.risque" placeholder="Risque associé"></textarea>
+          </label>
+
+          <label>Action
+            <textarea [(ngModel)]="formData.action" placeholder="Action prévue"></textarea>
+          </label>
+
+        </div>
+
+        <div class="pp-modal-footer">
+          <button class="pp-btn-cancel" (click)="closeForm()">Annuler</button>
+          <button class="pp-btn-save" (click)="saveForm()">Enregistrer</button>
+        </div>
+
+      </div>
+    </div>
+  }
 
 </div>

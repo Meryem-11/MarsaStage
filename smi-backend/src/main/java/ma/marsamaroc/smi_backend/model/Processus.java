@@ -40,7 +40,7 @@ public class Processus {
     @Enumerated(EnumType.STRING)
     private StatutProcessus statut;
 
-    private String nomPdf;
+
 
     private String cheminPdf;
 

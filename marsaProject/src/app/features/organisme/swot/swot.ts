@@ -35,40 +35,57 @@ export class Swot implements OnInit {
     });
   }
 
+  // Ajoute uniquement une ligne vide LOCALE (pas d'appel API ici)
   addItem(type: 'FORCE' | 'FAIBLESSE' | 'OPPORTUNITE' | 'MENACE'): void {
     const newItem: AnalyseSWOT = {
       type: type,
       description: '',
       priorite: 'MOYENNE'
     };
-
-    // Création immédiate en base de données pour obtenir l'idSWOT
-    this.swotService.create(newItem).subscribe({
-      next: (savedItem) => {
-        this.getQuadrantList(type).push(savedItem);
-      },
-      error: (err) => console.error('Erreur lors de la création :', err)
-    });
+    this.getQuadrantList(type).push(newItem);
   }
 
+  // Enregistrement manuel : création si nouvel élément, mise à jour sinon
   saveItem(item: AnalyseSWOT): void {
+    if (!item.description?.trim()) {
+      alert('Veuillez renseigner une description avant d\'enregistrer.');
+      return;
+    }
+
     if (item.idSWOT) {
       this.swotService.update(item.idSWOT, item).subscribe({
+        next: () => alert('Élément modifié avec succès !'),
         error: (err) => console.error('Erreur lors de la mise à jour :', err)
+      });
+    } else {
+      this.swotService.create(item).subscribe({
+        next: (savedItem) => {
+          // On remplace l'objet local par celui renvoyé par le backend (avec son idSWOT)
+          const list = this.getQuadrantList(item.type);
+          const index = list.indexOf(item);
+          if (index !== -1) list[index] = savedItem;
+          alert('Élément enregistré avec succès !');
+        },
+        error: (err) => console.error('Erreur lors de la création :', err)
       });
     }
   }
 
   removeItem(item: AnalyseSWOT, list: AnalyseSWOT[]): void {
-    if (item.idSWOT) {
-      this.swotService.delete(item.idSWOT).subscribe({
-        next: () => {
-          const index = list.findIndex(i => i.idSWOT === item.idSWOT);
-          if (index !== -1) list.splice(index, 1);
-        },
-        error: (err) => console.error('Erreur lors de la suppression :', err)
-      });
+    // Élément jamais enregistré : on le retire simplement du tableau local
+    if (!item.idSWOT) {
+      const index = list.indexOf(item);
+      if (index !== -1) list.splice(index, 1);
+      return;
     }
+
+    this.swotService.delete(item.idSWOT).subscribe({
+      next: () => {
+        const index = list.findIndex(i => i.idSWOT === item.idSWOT);
+        if (index !== -1) list.splice(index, 1);
+      },
+      error: (err) => console.error('Erreur lors de la suppression :', err)
+    });
   }
 
   private getQuadrantList(type: 'FORCE' | 'FAIBLESSE' | 'OPPORTUNITE' | 'MENACE'): AnalyseSWOT[] {

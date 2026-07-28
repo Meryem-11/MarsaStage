@@ -27,4 +27,9 @@ export class ProcessusService {
   delete(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
+  uploadPdf(code: string, file: File) {
+  const formData = new FormData();
+  formData.append('file', file);
+  return this.http.post<Processus>(`${this.apiUrl}/${code}/upload-pdf`, formData);
+}
 }

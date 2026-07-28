@@ -1,3 +1,4 @@
+/* --- Conteneur Principal & En-tête --- */
 .actions-page {
   padding: 1.5rem;
 }
@@ -12,11 +13,13 @@
 .page-header h2 {
   margin: 0;
   font-size: 22px;
+  color: #0f172a;
 }
 
 .page-header p {
   margin-top: 4px;
   color: #64748b;
+  font-size: 14px;
 }
 
 .add-btn {
@@ -27,8 +30,14 @@
   border-radius: 8px;
   cursor: pointer;
   font-weight: 500;
+  transition: background-color 0.2s ease;
 }
 
+.add-btn:hover {
+  background: #1d4ed8;
+}
+
+/* --- Cartes de Statistiques --- */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -40,7 +49,7 @@
   background: white;
   border-radius: 12px;
   padding: 16px;
-  box-shadow: 0 2px 10px rgba(0,0,0,.06);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, .06);
 }
 
 .stat-card span {
@@ -51,13 +60,15 @@
 
 .stat-card strong {
   font-size: 28px;
+  color: #1e293b;
 }
 
+/* --- Tableau & Formulaire --- */
 .table-container {
   background: white;
   border-radius: 12px;
   overflow-x: auto;
-  box-shadow: 0 2px 10px rgba(0,0,0,.06);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, .06);
 }
 
 table {
@@ -70,19 +81,40 @@ th {
   padding: 14px;
   text-align: left;
   font-size: 13px;
+  color: #475569;
+  font-weight: 600;
 }
 
 td {
   padding: 10px;
   border-top: 1px solid #edf2f7;
+  vertical-align: middle;
 }
 
+/* Mise en évidence d'une nouvelle ligne en cours de saisie */
+tr.new-row {
+  background-color: #f0f9ff;
+  border-left: 4px solid #2563eb;
+}
+
+/* --- Champs de saisie (Inputs & Selects) --- */
 input,
 select {
   width: 100%;
-  padding: 8px;
+  min-width: 120px;
+  padding: 8px 10px;
+  font-size: 13px;
   border: 1px solid #dbe2ea;
   border-radius: 8px;
+  box-sizing: border-box;
+  background-color: #fff;
+  transition: border-color 0.2s ease;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: #2563eb;
 }
 
 input[type="range"] {
@@ -90,6 +122,7 @@ input[type="range"] {
   padding: 0;
 }
 
+/* --- Fichier Preuve & Bouton Upload --- */
 .upload-btn {
   display: inline-flex;
   align-items: center;
@@ -100,21 +133,13 @@ input[type="range"] {
   background: #2563eb;
   color: white;
   cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
-.proof-name {
-  margin-top: 4px;
-  font-size: 12px;
-  color: #475569;
+.upload-btn:hover {
+  background: #1d4ed8;
 }
 
-.delete-btn {
-  border: none;
-  background: transparent;
-  color: #ef4444;
-  cursor: pointer;
-  font-size: 18px;
-}
 .proof-row {
   display: flex;
   align-items: center;
@@ -144,24 +169,60 @@ input[type="range"] {
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: background-color 0.2s ease;
 }
 
 .download-btn:hover {
   background: #059669;
 }
-input,
-select {
-  width: 100%;
-  min-width: 120px;
-  padding: 8px 10px;
-  font-size: 13px;
-  border: 1px solid #dbe2ea;
-  border-radius: 8px;
-  box-sizing: border-box;
+
+/* --- Boutons d'Action (Enregistrer / Supprimer) --- */
+.action-buttons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-@media (max-width: 1200px) {
+.save-btn {
+  border: none;
+  background: #10b981;
+  color: white;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
 
+.save-btn:hover {
+  background: #059669;
+}
+
+.delete-btn {
+  border: none;
+  background: transparent;
+  color: #ef4444;
+  cursor: pointer;
+  font-size: 18px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+}
+
+.delete-btn:hover {
+  background: #fee2e2;
+}
+
+/* --- Adaptabilité Mobile / Écrans Moyens --- */
+@media (max-width: 1200px) {
   .stats-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -169,5 +230,4 @@ select {
   table {
     min-width: 1400px;
   }
-
 }

@@ -67,6 +67,40 @@
   font-size: 14px;
 }
 
+.swot-save-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  color: #4a8f3c !important;
+  transition: background 0.15s ease;
+}
+
+.swot-save-btn:hover {
+  background: #eaf3de;
+}
+
+.swot-save-btn .material-symbols-outlined {
+  font-size: 18px;
+}
+
+.swot-delete-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  transition: background 0.15s ease;
+}
+
+.swot-delete-btn:hover {
+  background: #fcebeb;
+  color: #c0392b;
+}
+
 .swot-add-btn {
   width: 100%;
   padding: 6px;
