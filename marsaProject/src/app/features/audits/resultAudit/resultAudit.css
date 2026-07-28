@@ -517,3 +517,67 @@ RESPONSIVE
     }
 
 }
+.resultats-section {
+
+  margin-top: 50px;
+  padding: 25px;
+  background: white;
+  border-radius: 16px;
+
+}
+
+
+.resultats-section h3 {
+
+  margin-bottom: 5px;
+
+}
+
+
+.resultats-section p {
+
+  color: #6b7280;
+
+}
+
+
+.table-container {
+
+  margin-top: 20px;
+  overflow-x: auto;
+
+}
+
+
+.resultats-table {
+
+  width: 100%;
+  border-collapse: collapse;
+
+}
+
+
+.resultats-table th {
+
+  text-align: left;
+  padding: 14px;
+  background: #f3f4f6;
+
+}
+
+
+.resultats-table td {
+
+  padding: 14px;
+  border-bottom: 1px solid #e5e7eb;
+
+}
+
+
+.score-badge {
+
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-weight: 600;
+
+}

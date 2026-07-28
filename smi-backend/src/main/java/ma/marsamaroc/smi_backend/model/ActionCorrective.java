@@ -1,36 +1,34 @@
 package ma.marsamaroc.smi_backend.model;
 
 import jakarta.persistence.*;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
-@Table(name = "constat_audit")
-public class ConstatAudit {
+@Table(name = "action_corrective")
+public class ActionCorrective {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String categorie;
-
-    @Column(columnDefinition = "TEXT")
     private String description;
-
-    private String exigence;
 
     private String responsable;
 
     private String echeance;
 
+    private String priorite;
+
     private String statut;
 
-   @ManyToOne
-@JoinColumn(name = "resultat_audit_id")
-@JsonBackReference
-private ResultatAudit resultatAudit;
 
-    public ConstatAudit() {
+    @ManyToOne
+    @JoinColumn(name = "audit_id")
+    private Audit audit;
+
+
+    public ActionCorrective() {
     }
+
 
     public Long getId() {
         return id;
@@ -40,13 +38,6 @@ private ResultatAudit resultatAudit;
         this.id = id;
     }
 
-    public String getCategorie() {
-        return categorie;
-    }
-
-    public void setCategorie(String categorie) {
-        this.categorie = categorie;
-    }
 
     public String getDescription() {
         return description;
@@ -56,13 +47,6 @@ private ResultatAudit resultatAudit;
         this.description = description;
     }
 
-    public String getExigence() {
-        return exigence;
-    }
-
-    public void setExigence(String exigence) {
-        this.exigence = exigence;
-    }
 
     public String getResponsable() {
         return responsable;
@@ -72,6 +56,7 @@ private ResultatAudit resultatAudit;
         this.responsable = responsable;
     }
 
+
     public String getEcheance() {
         return echeance;
     }
@@ -79,6 +64,16 @@ private ResultatAudit resultatAudit;
     public void setEcheance(String echeance) {
         this.echeance = echeance;
     }
+
+
+    public String getPriorite() {
+        return priorite;
+    }
+
+    public void setPriorite(String priorite) {
+        this.priorite = priorite;
+    }
+
 
     public String getStatut() {
         return statut;
@@ -88,12 +83,12 @@ private ResultatAudit resultatAudit;
         this.statut = statut;
     }
 
-    public ResultatAudit getResultatAudit() {
-        return resultatAudit;
+
+    public Audit getAudit() {
+        return audit;
     }
 
-    public void setResultatAudit(ResultatAudit resultatAudit) {
-        this.resultatAudit = resultatAudit;
+    public void setAudit(Audit audit) {
+        this.audit = audit;
     }
-
 }

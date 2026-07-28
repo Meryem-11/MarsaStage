@@ -1,0 +1,603 @@
+.page{
+
+    max-width:1600px;
+
+    margin:auto;
+
+    padding:35px;
+
+    background:#f7f9fc;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:30px;
+
+}
+
+
+/******************************
+HEADER
+******************************/
+
+.page-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+}
+
+.page-header h2{
+
+    margin:0;
+
+    font-size:32px;
+
+    color:#0f172a;
+
+}
+
+.page-header p{
+
+    margin-top:8px;
+
+    color:#64748b;
+
+}
+
+
+/******************************
+LAYOUT
+******************************/
+
+.layout{
+
+    display:grid;
+
+    grid-template-columns:350px 1fr;
+
+    gap:30px;
+
+}
+
+
+/******************************
+AUDITS
+******************************/
+
+.audits-panel{
+
+    background:white;
+
+    border-radius:18px;
+
+    padding:25px;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.05);
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:20px;
+
+}
+
+.panel-title h3{
+
+    margin:0;
+
+    color:#0f172a;
+
+}
+
+.search-box input{
+
+    width:100%;
+
+    padding:13px;
+
+    border-radius:12px;
+
+    border:1px solid #dbe3ef;
+
+    font-size:15px;
+
+}
+
+.audit-card{
+
+    border:1px solid #e5e7eb;
+
+    border-radius:14px;
+
+    padding:18px;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:10px;
+
+}
+
+.audit-card:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:0 8px 20px rgba(37,99,235,.15);
+
+}
+
+.audit-card.active{
+
+    border:2px solid #2563eb;
+
+    background:#eff6ff;
+
+}
+
+.audit-top{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+}
+
+.reference{
+
+    font-weight:700;
+
+    color:#2563eb;
+
+}
+
+.status{
+
+    padding:5px 12px;
+
+    border-radius:20px;
+
+    background:#dbeafe;
+
+    color:#1d4ed8;
+
+    font-size:13px;
+
+    font-weight:600;
+
+}
+
+.audit-card h4{
+
+    margin:0;
+
+    color:#0f172a;
+
+}
+
+.audit-card p{
+
+    margin:0;
+
+    color:#64748b;
+
+}
+
+
+/******************************
+DETAIL
+******************************/
+
+.details-panel{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:25px;
+
+}
+
+.audit-details{
+
+    background:white;
+
+    border-radius:18px;
+
+    padding:25px;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.05);
+
+}
+
+.details-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:25px;
+
+}
+
+.details-header h3{
+
+    margin:0;
+
+    color:#0f172a;
+
+}
+
+.details-header span{
+
+    background:#dbeafe;
+
+    color:#1d4ed8;
+
+    padding:8px 16px;
+
+    border-radius:25px;
+
+    font-weight:600;
+
+}
+
+.details-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(3,1fr);
+
+    gap:20px;
+
+}
+
+.details-grid div{
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+.details-grid label{
+
+    font-size:13px;
+
+    color:#64748b;
+
+    margin-bottom:5px;
+
+}
+
+.details-grid span{
+
+    font-weight:600;
+
+    color:#0f172a;
+
+}
+
+
+/******************************
+HEADER ACTIONS
+******************************/
+
+.actions-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+}
+
+.actions-header h3{
+
+    margin:0;
+
+}
+
+.btn-add{
+
+    border:none;
+
+    background:#2563eb;
+
+    color:white;
+
+    padding:12px 18px;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    font-weight:600;
+
+}
+
+.btn-add:hover{
+
+    background:#1d4ed8;
+
+}
+
+
+/******************************
+ACTION CARD
+******************************/
+
+.action-card{
+
+    background:white;
+
+    border-radius:18px;
+
+    padding:25px;
+
+    box-shadow:0 8px 25px rgba(0,0,0,.05);
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:20px;
+
+}
+
+.action-row{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:8px;
+
+}
+
+.action-row label{
+
+    font-weight:600;
+
+}
+
+.action-row textarea{
+
+    width:100%;
+
+    min-height:90px;
+
+    padding:12px;
+
+    border-radius:12px;
+
+    border:1px solid #dbe3ef;
+
+    resize:vertical;
+
+}
+
+.grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:20px;
+
+}
+
+.grid div{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:8px;
+
+}
+
+.grid label{
+
+    font-weight:600;
+
+}
+
+.grid input,
+
+.grid select{
+
+    padding:12px;
+
+    border-radius:10px;
+
+    border:1px solid #dbe3ef;
+
+    font-size:15px;
+
+}
+
+
+/******************************
+FOOTER CARD
+******************************/
+
+.card-footer{
+
+    display:flex;
+
+    justify-content:flex-end;
+
+}
+
+.btn-delete{
+
+    background:#ef4444;
+
+    color:white;
+
+    border:none;
+
+    padding:10px 18px;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+}
+
+.btn-delete:hover{
+
+    background:#dc2626;
+
+}
+
+
+/******************************
+SAVE
+******************************/
+
+.footer{
+
+    display:flex;
+
+    justify-content:flex-end;
+
+}
+
+.btn-save{
+
+    border:none;
+
+    background:#16a34a;
+
+    color:white;
+
+    padding:15px 28px;
+
+    border-radius:12px;
+
+    font-size:16px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+}
+
+.btn-save:hover{
+
+    background:#15803d;
+
+}
+
+
+/******************************
+EMPTY
+******************************/
+
+.empty{
+
+    background:white;
+
+    border-radius:18px;
+
+    padding:80px;
+
+    text-align:center;
+
+    color:#64748b;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.05);
+
+}
+
+.empty h3{
+
+    color:#0f172a;
+
+}
+
+
+/******************************
+RESPONSIVE
+******************************/
+
+@media(max-width:1100px){
+
+.layout{
+
+grid-template-columns:1fr;
+
+}
+
+.details-grid{
+
+grid-template-columns:1fr;
+
+}
+
+.grid{
+
+grid-template-columns:1fr;
+
+}
+
+.actions-header{
+
+flex-direction:column;
+
+align-items:flex-start;
+
+gap:15px;
+
+}
+
+}
+
+@media(max-width:700px){
+
+.page{
+
+padding:20px;
+
+}
+
+.page-header{
+
+flex-direction:column;
+
+align-items:flex-start;
+
+gap:10px;
+
+}
+
+.audit-card{
+
+padding:15px;
+
+}
+
+.action-card{
+
+padding:18px;
+
+}
+
+}

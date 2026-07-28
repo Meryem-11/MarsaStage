@@ -5,6 +5,12 @@ export const AUDITS_ROUTES: Routes = [
   {path: 'progAudit/progDetail/:id',loadComponent: () =>import('./progAudit/progDetail/progDetail').then(m => m.ProgDetail)},
   { path: 'planAudit', loadComponent: () => import('./planAudit/planAudit').then(m => m.PlanAudit) },
   { path: 'resultAudit', loadComponent: () => import('./resultAudit/resultAudit').then(m => m.ResultAudit) },
-  { path: 'listeAudit', loadComponent: () => import('./listeAudit/listeAudit').then(m => m.ListeAudit) },
+  { path: 'listeAudit', loadComponent: () => import('./listeActions/listeAction').then(m => m.ListeAudit) },
+  {
+    path: 'liste-resultats',
+    loadComponent: () =>
+      import('./resultAudit/liste-resultats/listeResultats')
+        .then(c => c.ListeResultats)
+  },
   { path: '', redirectTo: 'progAudit', pathMatch: 'full' }
 ];

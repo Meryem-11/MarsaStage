@@ -11,6 +11,7 @@ import java.util.List;
 public class ResultatAuditService {
 
     private final ResultatAuditRepository repository;
+    
 
     public ResultatAuditService(ResultatAuditRepository repository) {
 
@@ -38,19 +39,28 @@ public class ResultatAuditService {
 
     public ResultatAudit save(ResultatAudit resultat) {
 
-        if(resultat.getConstats()!=null){
+    if(repository.existsByAuditId(resultat.getAudit().getId())){
 
-            for(ConstatAudit constat : resultat.getConstats()){
+        throw new RuntimeException(
+            "Un résultat existe déjà pour cet audit"
+        );
 
-                constat.setResultatAudit(resultat);
+    }
 
-            }
+
+    if(resultat.getConstats()!=null){
+
+        for(ConstatAudit constat : resultat.getConstats()){
+
+            constat.setResultatAudit(resultat);
 
         }
 
-        return repository.save(resultat);
-
     }
+
+    return repository.save(resultat);
+
+}
 
     public ResultatAudit update(ResultatAudit resultat){
 

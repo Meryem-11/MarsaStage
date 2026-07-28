@@ -1,0 +1,362 @@
+<div class="page">
+
+  <!-- =========================
+       HEADER
+  ========================== -->
+
+  <div class="page-header">
+
+    <div>
+
+      <h2>Actions correctives</h2>
+
+      <p>
+        Gestion des actions correctives issues des audits
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================
+       CONTENU
+  ========================== -->
+
+  <div class="layout">
+
+
+    <!-- =========================
+         COLONNE AUDITS
+    ========================== -->
+
+    <div class="audits-panel">
+
+      <div class="panel-title">
+
+        <h3>Audits</h3>
+
+      </div>
+
+
+      <div class="search-box">
+
+        <input
+          type="text"
+          placeholder="Rechercher un audit...">
+
+      </div>
+
+
+      @for(audit of audits; track audit.id){
+
+      <div
+        class="audit-card"
+        [class.active]="audit.id===auditSelectionne?.id"
+        (click)="selectAudit(audit)">
+
+        <div class="audit-top">
+
+          <span class="reference">
+
+            {{audit.reference}}
+
+          </span>
+
+          <span class="status">
+
+            {{audit.statut}}
+
+          </span>
+
+        </div>
+
+        <h4>
+
+          {{audit.titre}}
+
+        </h4>
+
+        <p>
+
+          {{audit.type}}
+
+        </p>
+
+      </div>
+
+      }
+
+    </div>
+
+
+
+    <!-- =========================
+         DETAIL AUDIT
+    ========================== -->
+
+    <div class="details-panel">
+
+
+      @if(auditSelectionne){
+
+      <div class="audit-details">
+
+        <div class="details-header">
+
+          <h3>
+
+            {{auditSelectionne.reference}}
+
+          </h3>
+
+          <span>
+
+            {{auditSelectionne.statut}}
+
+          </span>
+
+        </div>
+
+
+        <div class="details-grid">
+
+          <div>
+
+            <label>Titre</label>
+
+            <span>
+
+              {{auditSelectionne.titre}}
+
+            </span>
+
+          </div>
+
+          <div>
+
+            <label>Type</label>
+
+            <span>
+
+              {{auditSelectionne.type}}
+
+            </span>
+
+          </div>
+
+          <div>
+
+            <label>Terminal</label>
+
+            <span>
+
+              {{auditSelectionne.terminal}}
+
+            </span>
+
+          </div>
+
+          <div>
+
+            <label>Auditeur</label>
+
+            <span>
+
+              {{auditSelectionne.auditeur}}
+
+            </span>
+
+          </div>
+
+          <div>
+
+            <label>Date début</label>
+
+            <span>
+
+              {{auditSelectionne.dateDebut}}
+
+            </span>
+
+          </div>
+
+          <div>
+
+            <label>Date fin</label>
+
+            <span>
+
+              {{auditSelectionne.dateFin}}
+
+            </span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- =========================
+           ACTIONS
+      ========================== -->
+
+      <div class="actions-header">
+
+        <h3>
+
+          Actions correctives
+
+        </h3>
+
+        <button
+          class="btn-add"
+          (click)="addAction()">
+
+          + Nouvelle action
+
+        </button>
+
+      </div>
+
+
+
+      @for(action of actions; track $index){
+
+      <div class="action-card">
+
+        <div class="action-row">
+
+          <label>Description</label>
+
+          <textarea
+            rows="3"
+            [(ngModel)]="action.description">
+          </textarea>
+
+        </div>
+
+
+        <div class="grid">
+
+          <div>
+
+            <label>Responsable</label>
+
+            <input
+              type="text"
+              [(ngModel)]="action.responsable">
+
+          </div>
+
+
+          <div>
+
+            <label>Échéance</label>
+
+            <input
+              type="date"
+              [(ngModel)]="action.echeance">
+
+          </div>
+
+        </div>
+
+
+        <div class="grid">
+
+          <div>
+
+            <label>Priorité</label>
+
+            <select
+              [(ngModel)]="action.priorite">
+
+              <option>Haute</option>
+
+              <option>Moyenne</option>
+
+              <option>Basse</option>
+
+            </select>
+
+          </div>
+
+
+          <div>
+
+            <label>Statut</label>
+
+            <select
+              [(ngModel)]="action.statut">
+
+              <option>À faire</option>
+
+              <option>En cours</option>
+
+              <option>Terminée</option>
+
+            </select>
+
+          </div>
+
+        </div>
+
+
+        <div class="card-footer">
+
+          <button
+            class="btn-delete"
+            (click)="removeAction($index)">
+
+            Supprimer
+
+          </button>
+
+        </div>
+
+      </div>
+
+      }
+
+
+      <div class="footer">
+
+  <button
+    type="button"
+    class="btn-save"
+    (click)="saveActions()">
+
+    Enregistrer les actions
+
+  </button>
+
+</div>
+
+
+}
+
+@else{
+
+<div class="empty">
+
+  <h3>
+    Aucun audit sélectionné
+  </h3>
+
+  <p>
+    Sélectionnez un audit dans la liste de gauche pour gérer ses actions correctives.
+  </p>
+
+</div>
+
+}
+      
+
+    </div>
+
+  </div>
+
+</div>

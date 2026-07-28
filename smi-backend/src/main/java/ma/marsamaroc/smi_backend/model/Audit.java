@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Entity
 @Table(name = "audit")
@@ -33,6 +36,12 @@ public class Audit {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "programme_id")
     private ProgrammeAudit programmeAudit;
+    
+   @OneToMany(
+    mappedBy = "audit",
+    cascade = CascadeType.ALL
+)
+private List<ActionCorrective> actions = new ArrayList<>();
 
     public Audit() {
     }

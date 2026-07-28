@@ -1,11 +1,13 @@
 package ma.marsamaroc.smi_backend.model;
-
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @Entity
 @Table(name = "resultat_audit")
+
 public class ResultatAudit {
 
     @Id
@@ -21,12 +23,13 @@ public class ResultatAudit {
     @JoinColumn(name = "audit_id")
     private Audit audit;
 
-    @OneToMany(
-            mappedBy = "resultatAudit",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
-    private List<ConstatAudit> constats = new ArrayList<>();
+   @OneToMany(
+        mappedBy = "resultatAudit",
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+)
+@JsonManagedReference
+private List<ConstatAudit> constats = new ArrayList<>();
 
     public ResultatAudit() {
     }

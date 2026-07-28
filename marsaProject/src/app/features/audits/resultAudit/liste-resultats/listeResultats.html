@@ -1,0 +1,71 @@
+<div class="page">
+
+<h2>Résultats d'audit enregistrés</h2>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Référence</th>
+<th>Titre</th>
+<th>Score</th>
+<th>Conclusion</th>
+<th>Constats</th>
+<th>Actions</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+@for(resultat of resultats; track resultat.id){
+
+<tr>
+
+<td>{{ resultat.audit.reference }}</td>
+
+<td>{{ resultat.audit.titre }}</td>
+
+<td>{{ resultat.score }}/100</td>
+
+<td>{{ resultat.conclusion }}</td>
+
+<td>{{ resultat.constats.length }}</td>
+
+<td>
+
+<button
+(click)="consulter(resultat.id!)">
+
+Consulter
+
+</button>
+
+<button
+(click)="modifier(resultat.id!)">
+
+Modifier
+
+</button>
+
+<button
+(click)="deleteResultat(resultat.id!)">
+
+Supprimer
+
+</button>
+
+</td>
+
+</tr>
+
+}
+
+</tbody>
+
+</table>
+
+</div>

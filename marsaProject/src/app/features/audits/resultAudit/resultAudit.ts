@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
+import { Router } from '@angular/router';
 import {
   ProgrammeAudit,
   ProgrammeAuditService,
@@ -17,7 +17,7 @@ import {
 type Categorie =
   | 'Non-conformité majeure'
   | 'Non-conformité mineure'
-  | 'Observation'
+  | 'Recommandation'
   | 'Point fort';
 
 type StatutConstat =
@@ -58,7 +58,8 @@ export class ResultAudit implements OnInit {
   constructor(
 
     private programmeService: ProgrammeAuditService,
-    private resultatService: ResultatAuditService
+    private resultatService: ResultatAuditService,
+    private router:Router
 
   ) {}
 
@@ -67,6 +68,7 @@ export class ResultAudit implements OnInit {
    **********************************/
 
   programmes: ProgrammeAudit[] = [];
+  resultats: ResultatAudit[] = [];
 
   auditsDisponibles: Audit[] = [];
 
@@ -88,7 +90,7 @@ export class ResultAudit implements OnInit {
 
     'Non-conformité mineure',
 
-    'Observation',
+    'Recommandation',
 
     'Point fort'
 
@@ -99,13 +101,33 @@ export class ResultAudit implements OnInit {
   ngOnInit(): void {
 
     this.loadAudits();
+    this.loadResultats();
 
   }
 
   /**********************************
    * CHARGER LES AUDITS
    **********************************/
+loadResultats(): void {
 
+  this.resultatService.getResultats()
+    .subscribe({
+
+      next: (data) => {
+
+        this.resultats = data;
+
+      },
+
+      error: (err) => {
+
+        console.error(err);
+
+      }
+
+    });
+
+}
   loadAudits(): void {
 
     this.programmeService
@@ -218,7 +240,7 @@ export class ResultAudit implements OnInit {
     this.constats.push({
 
 
-      categorie: 'Observation',
+      categorie: 'Recommandation',
 
       description: '',
 
@@ -235,17 +257,9 @@ export class ResultAudit implements OnInit {
   }
 
 
-  removeConstat(id: number): void {
-
-    this.constats = this.constats.filter(
-
-      (c: Constat) =>
-
-        c.id !== id
-
-    );
-
-  }
+  removeConstat(index: number): void {
+  this.constats.splice(index, 1);
+}
 
 
   /**********************************
@@ -274,7 +288,7 @@ export class ResultAudit implements OnInit {
 
             break;
 
-          case 'Observation':
+          case 'Recommandation':
 
             score -= 2;
 
@@ -367,12 +381,10 @@ export class ResultAudit implements OnInit {
 
 
   /**********************************
-   * SAUVEGARDE
-   **********************************/
+ * SAUVEGARDE
+ **********************************/
 
- 
-
-  saveResultatAudit(): void {
+saveResultatAudit(): void {
 
   if (!this.auditSelectionne) {
 
@@ -394,17 +406,16 @@ export class ResultAudit implements OnInit {
 
   };
 
+
   this.resultatService
-
     .createResultat(resultat)
-
     .subscribe({
 
       next: (res: ResultatAudit) => {
 
         alert("Résultat enregistré avec succès.");
 
-        console.log(res);
+        this.loadResultats();
 
       },
 
@@ -421,3 +432,4 @@ export class ResultAudit implements OnInit {
 }
 
 }
+

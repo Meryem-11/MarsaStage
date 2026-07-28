@@ -291,7 +291,7 @@
 
         class="btn-delete"
 
-        (click)="removeConstat(constat.id)">
+        (click)="removeConstat($index)">
 
         Supprimer
 
@@ -497,4 +497,83 @@
 
 </div>
 
+
+<!-- ===========================
+     LISTE DES RESULTATS
+=========================== -->
+
+@if(resultats.length > 0){
+
+<div class="resultats-section">
+
+  <div class="section-header">
+
+    <div>
+      <h3>Résultats d'audit enregistrés</h3>
+
+      <p>
+        Historique des résultats sauvegardés.
+      </p>
+    </div>
+
+  </div>
+
+
+  <div class="table-container">
+
+    <table class="resultats-table">
+
+      <thead>
+
+        <tr>
+          <th>Référence audit</th>
+          <th>Titre</th>
+          <th>Score</th>
+          <th>Conclusion</th>
+          <th>Constats</th>
+        </tr>
+
+      </thead>
+
+
+      <tbody>
+
+      @for(resultat of resultats; track resultat.id){
+
+        <tr>
+
+          <td>
+            {{resultat.audit.reference}}
+          </td>
+
+          <td>
+            {{resultat.audit.titre}}
+          </td>
+
+          <td>
+            <span class="score-badge">
+              {{resultat.score}}/100
+            </span>
+          </td>
+
+          <td>
+            {{resultat.conclusion || '-'}}
+          </td>
+
+          <td>
+            {{resultat.constats.length}}
+          </td>
+
+        </tr>
+
+      }
+
+      </tbody>
+
+    </table>
+
+  </div>
+
 </div>
+
+}
