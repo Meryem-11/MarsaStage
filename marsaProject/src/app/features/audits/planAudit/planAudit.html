@@ -1,115 +1,355 @@
-<div class="plan-audit-page">
+<div class="audit-selector-card">
 
-  <div class="page-header">
-    <div>
-      <h2>Plan d'Audit</h2>
-      <p class="page-subtitle">Marsa Maroc — Détail de préparation d'un audit</p>
-    </div>
-    <div class="progress-indicator">
-      <svg viewBox="0 0 36 36" class="progress-ring">
-        <path class="progress-ring-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-        <path class="progress-ring-fill" [attr.stroke-dasharray]="progression + ', 100'" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-      </svg>
-      <span class="progress-text">{{ progression }}%</span>
-    </div>
-  </div>
+  <label class="field-label">
+    Audit concerné
+  </label>
 
-  <div class="audit-selector-card">
-    <label class="field-label">Audit concerné</label>
-    <select class="audit-select" [(ngModel)]="auditSelectionne.reference" (ngModelChange)="onAuditChange($event)">
-      @for (audit of auditsDisponibles; track audit.reference) {
-        <option [value]="audit.reference">{{ audit.reference }} — {{ audit.titre }}</option>
-      }
-    </select>
-    <div class="audit-selected-info">
-      <span class="terminal-tag">{{ auditSelectionne.terminal }}</span>
-    </div>
-  </div>
+  <select
+    class="audit-select"
+    [(ngModel)]="auditSelectionneId"
+    (change)="onAuditChange()">
 
-  <div class="plan-grid">
+    <option [ngValue]="null">
+      -- Sélectionner un audit --
+    </option>
 
-    <div class="plan-section">
-      <div class="section-header">
-        <span class="section-icon">🎯</span>
-        <h3>Objectifs de l'audit</h3>
-      </div>
-      <textarea
-        [(ngModel)]="objectifs"
-        rows="3"
-        placeholder="Ex : Vérifier la conformité des procédures de manutention aux exigences ISO 9001 et aux instructions internes de sécurité..."
-        class="section-textarea"></textarea>
-    </div>
+    @for(audit of auditsDisponibles; track audit.id){
 
-    <div class="plan-section">
-      <div class="section-header">
-        <span class="section-icon">📍</span>
-        <h3>Périmètre</h3>
-      </div>
-      <textarea
-        [(ngModel)]="perimetre"
-        rows="3"
-        placeholder="Ex : Zones de stockage conteneurs, quai 3 à 5, poste de contrôle opérationnel..."
-        class="section-textarea"></textarea>
-    </div>
+      <option [ngValue]="audit.id">
 
-    <div class="plan-section plan-section--full">
-      <div class="section-header">
-        <span class="section-icon">📋</span>
-        <h3>Critères d'audit</h3>
-      </div>
-      <textarea
-        [(ngModel)]="criteres"
-        rows="2"
-        placeholder="Ex : ISO 9001:2015, Procédure interne PR-QSE-012, Code ISPS..."
-        class="section-textarea"></textarea>
-    </div>
+        {{audit.reference}} —
+        {{audit.titre}}
+
+      </option>
+
+    }
+
+  </select>
+
+</div>
+
+
+@if(auditSelectionne){
+
+<div class="audit-info-card">
+
+  <div class="info-item">
+
+    <span class="info-label">
+      Programme
+    </span>
+
+    <span class="info-value">
+
+      {{programmeSelectionne?.reference}}
+
+    </span>
 
   </div>
 
-  <div class="plan-section plan-section--full">
-    <div class="section-header">
-      <span class="section-icon">👥</span>
-      <h3>Équipe d'audit</h3>
-    </div>
+  <div class="info-item">
 
-    <div class="equipe-list">
-      @for (membre of equipe; track membre.id) {
-        <div class="equipe-row">
-          <input type="text" [(ngModel)]="membre.nom" placeholder="Nom de l'auditeur..." class="equipe-nom" />
-          <select [(ngModel)]="membre.role" class="equipe-role">
-            @for (role of rolesDisponibles; track role) {
-              <option [value]="role">{{ role }}</option>
-            }
-          </select>
-          <button type="button" class="btn-icon-delete" (click)="removeEquipeMembre(membre.id)" aria-label="Retirer">✕</button>
-        </div>
-      }
-    </div>
-    <button type="button" class="btn-add-line" (click)="addEquipeMembre()">+ Ajouter un membre</button>
+    <span class="info-label">
+      Responsable
+    </span>
+
+    <span class="info-value">
+
+      {{programmeSelectionne?.responsable}}
+
+    </span>
+
   </div>
 
-  <div class="plan-section plan-section--full">
-    <div class="section-header">
-      <span class="section-icon">🗓️</span>
-      <h3>Planning de l'audit</h3>
-    </div>
+  <div class="info-item">
 
-    <div class="planning-timeline">
-      @for (etape of planning; track etape.id) {
-        <div class="planning-row">
-          <div class="timeline-dot"></div>
-          <input type="text" [(ngModel)]="etape.jour" placeholder="Jour 1..." class="planning-jour" />
-          <input type="time" [(ngModel)]="etape.horaire" class="planning-horaire" />
-          <input type="text" [(ngModel)]="etape.activite" placeholder="Activité prévue..." class="planning-activite" />
-          <button type="button" class="btn-icon-delete" (click)="removePlanningActivite(etape.id)" aria-label="Retirer">✕</button>
-        </div>
-      }
-    </div>
-    <button type="button" class="btn-add-line" (click)="addPlanningActivite()">+ Ajouter une étape</button>
+    <span class="info-label">
+      Année
+    </span>
+
+    <span class="info-value">
+
+      {{programmeSelectionne?.annee}}
+
+    </span>
+
   </div>
 
-  <div class="plan-footer">
-    <button type="button" class="btn-save">Enregistrer le plan d'audit</button>
+  <div class="info-item">
+
+    <span class="info-label">
+      Type
+    </span>
+
+    <span class="info-value">
+
+      {{auditSelectionne.type}}
+
+    </span>
+
+  </div>
+
+  <div class="info-item">
+
+    <span class="info-label">
+      Terminal
+    </span>
+
+    <span class="info-value">
+
+      {{auditSelectionne.terminal}}
+
+    </span>
+
+  </div>
+
+  <div class="info-item">
+
+    <span class="info-label">
+      Auditeur
+    </span>
+
+    <span class="info-value">
+
+      {{auditSelectionne.auditeur}}
+
+    </span>
+
+  </div>
+
+  <div class="info-item">
+
+    <span class="info-label">
+      Période
+    </span>
+
+    <span class="info-value">
+
+      {{auditSelectionne.dateDebut}}
+
+      →
+
+      {{auditSelectionne.dateFin}}
+
+    </span>
+
+  </div>
+
+  <div class="info-item">
+
+    <span class="info-label">
+      Statut
+    </span>
+
+    <span class="status-badge">
+
+      {{auditSelectionne.statut}}
+
+    </span>
+
   </div>
 
 </div>
+
+}
+<div class="plan-grid">
+
+  <div class="plan-section">
+
+    <div class="section-header">
+
+      <span class="section-icon">🎯</span>
+
+      <h3>Objectifs de l'audit</h3>
+
+    </div>
+
+    <textarea
+      class="section-textarea"
+      rows="4"
+      [(ngModel)]="objectifs"
+      placeholder="Décrire les objectifs de l'audit...">
+    </textarea>
+
+  </div>
+
+  <div class="plan-section">
+
+    <div class="section-header">
+
+      <span class="section-icon">📍</span>
+
+      <h3>Périmètre</h3>
+
+    </div>
+
+    <textarea
+      class="section-textarea"
+      rows="4"
+      [(ngModel)]="perimetre"
+      placeholder="Décrire le périmètre concerné...">
+    </textarea>
+
+  </div>
+
+  <div class="plan-section plan-section--full">
+
+    <div class="section-header">
+
+      <span class="section-icon">📋</span>
+
+      <h3>Critères d'audit</h3>
+
+    </div>
+
+    <textarea
+      class="section-textarea"
+      rows="3"
+      [(ngModel)]="criteres"
+      placeholder="Normes ISO, procédures internes, exigences légales...">
+    </textarea>
+
+  </div>
+
+</div>
+
+
+<div class="plan-section plan-section--full">
+
+  <div class="section-header">
+
+    <span class="section-icon">👥</span>
+
+    <h3>Équipe d'audit</h3>
+
+  </div>
+
+  <div class="equipe-list">
+
+    @for(membre of equipe; track membre.id){
+
+      <div class="equipe-row">
+
+        <input
+          type="text"
+          class="equipe-nom"
+          [(ngModel)]="membre.nom"
+          placeholder="Nom du membre">
+
+        <select
+          class="equipe-role"
+          [(ngModel)]="membre.role">
+
+          @for(role of rolesDisponibles; track role){
+
+            <option [value]="role">
+
+              {{role}}
+
+            </option>
+
+          }
+
+        </select>
+
+        <button
+          type="button"
+          class="btn-icon-delete"
+          (click)="removeEquipeMembre(membre.id)">
+
+          ✕
+
+        </button>
+
+      </div>
+
+    }
+
+  </div>
+
+  <button
+    type="button"
+    class="btn-add-line"
+    (click)="addEquipeMembre()">
+
+    + Ajouter un membre
+
+  </button>
+
+</div>
+
+
+<div class="plan-section plan-section--full">
+
+  <div class="section-header">
+
+    <span class="section-icon">🗓️</span>
+
+    <h3>Planning de l'audit</h3>
+
+  </div>
+
+  <div class="planning-timeline">
+
+    @for(etape of planning; track etape.id){
+
+      <div class="planning-row">
+
+        <div class="timeline-dot"></div>
+
+        <input
+          class="planning-jour"
+          [(ngModel)]="etape.jour"
+          placeholder="Jour">
+
+        <input
+          type="time"
+          class="planning-horaire"
+          [(ngModel)]="etape.horaire">
+
+        <input
+          class="planning-activite"
+          [(ngModel)]="etape.activite"
+          placeholder="Activité">
+
+        <button
+          type="button"
+          class="btn-icon-delete"
+          (click)="removePlanningActivite(etape.id)">
+
+          ✕
+
+        </button>
+
+      </div>
+
+    }
+
+  </div>
+
+  <button
+    type="button"
+    class="btn-add-line"
+    (click)="addPlanningActivite()">
+
+    + Ajouter une étape
+
+  </button>
+
+</div>
+
+
+<div class="plan-footer">
+
+  <button
+    type="button"
+    class="btn-save"
+    (click)="savePlanAudit()"
+    [disabled]="!auditSelectionne">
+
+    Enregistrer le plan d'audit
+
+  </button>
+
+</div>
+

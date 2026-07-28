@@ -1,150 +1,423 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { NgClass } from '@angular/common';
 
-type Categorie = 'Non-conformité majeure' | 'Non-conformité mineure' | 'Observation' | 'Point fort';
-type StatutConstat = 'Ouvert' | 'En traitement' | 'Clôturé';
+import {
+  ProgrammeAudit,
+  ProgrammeAuditService,
+  Audit
+
+} from '../services/programme-audit';
+
+import {
+  ResultatAudit,
+  ResultatAuditService
+} from '../services/resultat-audit';
+
+type Categorie =
+  | 'Non-conformité majeure'
+  | 'Non-conformité mineure'
+  | 'Observation'
+  | 'Point fort';
+
+type StatutConstat =
+  | 'Ouvert'
+  | 'En traitement'
+  | 'Clôturé';
 
 interface Constat {
-  id: string;
-  categorie: Categorie;
-  description: string;
-  exigence: string;
-  responsable: string;
-  echeance: string;
-  statut: StatutConstat;
-  expanded: boolean;
-}
 
-interface AuditRefOption {
-  reference: string;
-  titre: string;
-  terminal: string;
-  dateRealisation: string;
+  id?: number;
+
+  categorie: Categorie;
+
+  description: string;
+
+  exigence: string;
+
+  responsable: string;
+
+  echeance: string;
+
+  statut: StatutConstat;
+
 }
 
 @Component({
   selector: 'app-result-audit',
   standalone: true,
-  imports: [FormsModule, NgClass],
+  imports: [
+    CommonModule,
+    FormsModule
+  ],
   templateUrl: './resultAudit.html',
   styleUrl: './resultAudit.css'
 })
-export class ResultAudit {
-  auditsDisponibles: AuditRefOption[] = [
-    { reference: 'AUD-2026-001', titre: 'Audit qualité manutention conteneurs', terminal: 'Terminal à Conteneurs - Casablanca', dateRealisation: '2026-02-12' }
+export class ResultAudit implements OnInit {
+
+  constructor(
+
+    private programmeService: ProgrammeAuditService,
+    private resultatService: ResultatAuditService
+
+  ) {}
+
+  /**********************************
+   * AUDITS
+   **********************************/
+
+  programmes: ProgrammeAudit[] = [];
+
+  auditsDisponibles: Audit[] = [];
+
+  auditSelectionne?: Audit;
+
+  programmeSelectionne?: ProgrammeAudit;
+
+  auditSelectionneId?: number;
+
+  /**********************************
+   * RESULTAT
+   **********************************/
+
+  conclusion = '';
+
+  categories: Categorie[] = [
+
+    'Non-conformité majeure',
+
+    'Non-conformité mineure',
+
+    'Observation',
+
+    'Point fort'
+
   ];
 
-  auditSelectionne: AuditRefOption = this.auditsDisponibles[0];
+  constats: Constat[] = [];
 
-  categories: Categorie[] = ['Non-conformité majeure', 'Non-conformité mineure', 'Observation', 'Point fort'];
-  filtreCategorie: Categorie | 'Tous' = 'Tous';
+  ngOnInit(): void {
 
-  constats: Constat[] = [
-    {
-      id: this.generateId(),
-      categorie: 'Non-conformité majeure',
-      description: 'Absence de contrôle documenté des équipements de levage sur le quai 3',
-      exigence: 'ISO 9001 §8.5.1 — Maîtrise des équipements',
-      responsable: 'Chef d\'exploitation quai',
-      echeance: '2026-03-15',
-      statut: 'Ouvert',
-      expanded: false
-    },
-    {
-      id: this.generateId(),
-      categorie: 'Non-conformité mineure',
-      description: 'Fiches de traçabilité incomplètes pour 2 conteneurs sur 15 vérifiés',
-      exigence: 'Procédure interne PR-QSE-012',
-      responsable: 'Responsable manutention',
-      echeance: '2026-03-01',
-      statut: 'En traitement',
-      expanded: false
-    },
-    {
-      id: this.generateId(),
-      categorie: 'Point fort',
-      description: 'Excellente réactivité de l\'équipe lors des simulations d\'incident',
-      exigence: '—',
-      responsable: '—',
-      echeance: '—',
-      statut: 'Clôturé',
-      expanded: false
+    this.loadAudits();
+
+  }
+
+  /**********************************
+   * CHARGER LES AUDITS
+   **********************************/
+
+  loadAudits(): void {
+
+    this.programmeService
+      .getProgrammes()
+      .subscribe({
+
+        next: (programmes: ProgrammeAudit[]) => {
+
+          this.programmes = programmes;
+
+          this.auditsDisponibles = [];
+
+          programmes.forEach(
+
+            (programme: ProgrammeAudit) => {
+
+              programme.audits.forEach(
+
+                (audit: Audit) => {
+
+                  this.auditsDisponibles.push(audit);
+
+                }
+
+              );
+
+            }
+
+          );
+
+        },
+
+        error: (err: unknown) => {
+
+          console.error(err);
+
+          alert(
+
+            "Impossible de charger les audits."
+
+          );
+
+        }
+
+      });
+
+  }
+
+  /**********************************
+   * AUDIT SELECTIONNE
+   **********************************/
+
+  onAuditChange(): void {
+
+    this.auditSelectionne =
+
+      this.auditsDisponibles.find(
+
+        (a: Audit) =>
+
+          a.id === this.auditSelectionneId
+
+      );
+
+    if (!this.auditSelectionne) {
+
+      this.programmeSelectionne = undefined;
+
+      return;
+
     }
-  ];
+
+    this.programmeSelectionne =
+
+      this.programmes.find(
+
+        (programme: ProgrammeAudit) =>
+
+          programme.audits.some(
+
+            (audit: Audit) =>
+
+              audit.id === this.auditSelectionne!.id
+
+          )
+
+      );
+
+  }
+    /**********************************
+   * ID UNIQUE
+   **********************************/
 
   private generateId(): string {
-    return Math.random().toString(36).substring(2, 9);
+
+    return Math.random()
+
+      .toString(36)
+
+      .substring(2, 10);
+
   }
 
-  get constatsFiltres(): Constat[] {
-    if (this.filtreCategorie === 'Tous') return this.constats;
-    return this.constats.filter(c => c.categorie === this.filtreCategorie);
-  }
-
-  countByCategorie(cat: Categorie): number {
-    return this.constats.filter(c => c.categorie === cat).length;
-  }
-
-  get scoreGlobal(): number {
-    const poids: Record<Categorie, number> = {
-      'Non-conformité majeure': -20,
-      'Non-conformité mineure': -8,
-      'Observation': -2,
-      'Point fort': 5
-    };
-    const base = 100;
-    const impact = this.constats.reduce((sum, c) => sum + poids[c.categorie], 0);
-    return Math.max(0, Math.min(100, base + impact));
-  }
-
-  get scoreColor(): string {
-    if (this.scoreGlobal >= 80) return '#22c55e';
-    if (this.scoreGlobal >= 60) return '#f59e0b';
-    return '#ef4444';
-  }
-
-  get scoreLabel(): string {
-    if (this.scoreGlobal >= 80) return 'Conforme';
-    if (this.scoreGlobal >= 60) return 'Conforme avec réserves';
-    return 'Non conforme';
-  }
-
-  toggleExpand(constat: Constat): void {
-    constat.expanded = !constat.expanded;
-  }
+  /**********************************
+   * CONSTATS
+   **********************************/
 
   addConstat(): void {
+
     this.constats.push({
-      id: this.generateId(),
+
+
       categorie: 'Observation',
+
       description: '',
+
       exigence: '',
+
       responsable: '',
+
       echeance: '',
-      statut: 'Ouvert',
-      expanded: true
+
+      statut: 'Ouvert'
+
     });
+
   }
 
-  removeConstat(id: string): void {
-    this.constats = this.constats.filter(c => c.id !== id);
+
+  removeConstat(id: number): void {
+
+    this.constats = this.constats.filter(
+
+      (c: Constat) =>
+
+        c.id !== id
+
+    );
+
   }
 
-  categorieClass(cat: Categorie): string {
-    switch (cat) {
-      case 'Non-conformité majeure': return 'tag--major';
-      case 'Non-conformité mineure': return 'tag--minor';
-      case 'Observation': return 'tag--obs';
-      case 'Point fort': return 'tag--strength';
+
+  /**********************************
+   * SCORE GLOBAL
+   **********************************/
+
+  get scoreGlobal(): number {
+
+    let score = 100;
+
+    this.constats.forEach(
+
+      (c: Constat) => {
+
+        switch (c.categorie) {
+
+          case 'Non-conformité majeure':
+
+            score -= 20;
+
+            break;
+
+          case 'Non-conformité mineure':
+
+            score -= 8;
+
+            break;
+
+          case 'Observation':
+
+            score -= 2;
+
+            break;
+
+          case 'Point fort':
+
+            score += 5;
+
+            break;
+
+        }
+
+      }
+
+    );
+
+    if (score < 0) {
+
+      score = 0;
+
     }
+
+    if (score > 100) {
+
+      score = 100;
+
+    }
+
+    return score;
+
   }
 
-  statutClass(statut: StatutConstat): string {
-    switch (statut) {
-      case 'Ouvert': return 'status--open';
-      case 'En traitement': return 'status--progress';
-      case 'Clôturé': return 'status--closed';
+
+  get scoreColor(): string {
+
+    if (this.scoreGlobal >= 80) {
+
+      return '#22c55e';
+
     }
+
+    if (this.scoreGlobal >= 60) {
+
+      return '#f59e0b';
+
+    }
+
+    return '#ef4444';
+
   }
+
+
+  get scoreLabel(): string {
+
+    if (this.scoreGlobal >= 80) {
+
+      return 'Conforme';
+
+    }
+
+    if (this.scoreGlobal >= 60) {
+
+      return 'Conforme avec réserves';
+
+    }
+
+    return 'Non conforme';
+
+  }
+
+
+  get scoreClass(): string {
+
+    if (this.scoreGlobal >= 80) {
+
+      return 'label-good';
+
+    }
+
+    if (this.scoreGlobal >= 60) {
+
+      return 'label-warning';
+
+    }
+
+    return 'label-danger';
+
+  }
+
+
+  /**********************************
+   * SAUVEGARDE
+   **********************************/
+
+ 
+
+  saveResultatAudit(): void {
+
+  if (!this.auditSelectionne) {
+
+    alert("Veuillez sélectionner un audit.");
+
+    return;
+
+  }
+
+  const resultat: ResultatAudit = {
+
+    score: this.scoreGlobal,
+
+    conclusion: this.conclusion,
+
+    audit: this.auditSelectionne,
+
+    constats: this.constats
+
+  };
+
+  this.resultatService
+
+    .createResultat(resultat)
+
+    .subscribe({
+
+      next: (res: ResultatAudit) => {
+
+        alert("Résultat enregistré avec succès.");
+
+        console.log(res);
+
+      },
+
+      error: (err: unknown) => {
+
+        console.error(err);
+
+        alert("Erreur lors de l'enregistrement.");
+
+      }
+
+    });
+
+}
+
 }
